@@ -14,6 +14,18 @@
     },
     {
       "source": "/(.*)",
+      "has": [{ "type": "host", "value": "scfca-survey.us" }],
+      "destination": "/sonoma",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.scfca-survey.us" }],
+      "destination": "/sonoma",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
       "has": [{ "type": "host", "value": "fcasurvey.com" }],
       "destination": "/",
       "permanent": true
