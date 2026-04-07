@@ -1,0 +1,37 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "familycourtawarenesssurvey.com" }],
+      "destination": "/sonoma",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.familycourtawarenesssurvey.com" }],
+      "destination": "/sonoma",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "fcasurvey.com" }],
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "www.fcasurvey.com" }],
+      "destination": "/",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    { "source": "/sonoma/survey", "destination": "/sonoma/survey.html" },
+    { "source": "/sonoma/about",  "destination": "/sonoma/about.html" },
+    { "source": "/sonoma",        "destination": "/sonoma/index.html" },
+    { "source": "/napa",          "destination": "/napa/index.html" },
+    { "source": "/mendocino",     "destination": "/mendocino/index.html" },
+    { "source": "/solano",        "destination": "/solano/index.html" },
+    { "source": "/lake",          "destination": "/lake/index.html" }
+  ]
+}

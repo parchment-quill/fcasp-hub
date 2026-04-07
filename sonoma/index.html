@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Sonoma County — Family Court Accountability Survey Project</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #2E2926;
+  --text: #F5F0E8;
+  --accent: #8C7B6B;
+  --accent-light: #a89585;
+  --county: #722F37;
+  --county-light: #9a4350;
+  --county-dim: rgba(114,47,55,0.18);
+  --county-border: rgba(114,47,55,0.45);
+  --border: rgba(140,123,107,0.25);
+  --border-light: rgba(245,240,232,0.08);
+  --card-bg: rgba(245,240,232,0.04);
+  --shadow: 0 2px 20px rgba(0,0,0,0.4);
+  --radius: 12px;
+  --danger: #c0392b;
+  --success: #2a6b4a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+input, button { font-family: inherit; }
+body {
+  font-family: 'Source Serif 4', Georgia, serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* HEADER */
+.header {
+  padding: 44px 24px 36px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--county), transparent);
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent-light);
+  font-size: 0.78rem;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  margin-bottom: 28px;
+  opacity: 0.8;
+}
+.back-link:hover { opacity: 1; }
+.header-eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+.header h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  color: var(--text);
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.county-subtitle {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+  color: var(--county-light);
+  font-weight: 600;
+  font-style: italic;
+}
+
+/* MAIN */
+.main {
+  max-width: 580px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+
+/* CARD */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  margin-bottom: 16px;
+}
+.card-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.15rem;
+  color: var(--text);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.card-body {
+  font-size: 0.92rem;
+  color: rgba(245,240,232,0.72);
+  line-height: 1.75;
+  margin-bottom: 20px;
+}
+.card-body p { margin-bottom: 10px; }
+.card-body p:last-child { margin-bottom: 0; }
+
+/* PRIVACY BANNER */
+.privacy-banner {
+  background: rgba(114,47,55,0.12);
+  border: 1px solid var(--county-border);
+  border-radius: var(--radius);
+  padding: 22px 20px;
+  margin-bottom: 16px;
+}
+.privacy-banner h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.05rem;
+  color: var(--text);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.privacy-banner p {
+  font-size: 0.88rem;
+  color: rgba(245,240,232,0.75);
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+.privacy-banner p:last-child { margin-bottom: 0; }
+.privacy-note {
+  background: rgba(245,240,232,0.05);
+  border-left: 2px solid var(--county);
+  padding: 10px 14px;
+  border-radius: 0 8px 8px 0;
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: rgba(245,240,232,0.65);
+  font-style: italic;
+}
+
+/* FORM */
+.field { margin-bottom: 0; }
+label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgba(245,240,232,0.85);
+  margin-bottom: 8px;
+}
+input[type="text"] {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--text);
+  background: rgba(245,240,232,0.05);
+  -webkit-appearance: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--county-light);
+  box-shadow: 0 0 0 3px rgba(114,47,55,0.2);
+  background: rgba(245,240,232,0.08);
+}
+input[type="text"]::placeholder { color: rgba(245,240,232,0.25); }
+.field-hint {
+  font-size: 0.78rem;
+  color: rgba(245,240,232,0.4);
+  margin-top: 6px;
+  font-style: italic;
+}
+
+/* ALERT */
+.alert {
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 0.86rem;
+  margin-top: 14px;
+  line-height: 1.5;
+}
+.alert-error { background: rgba(192,57,43,0.15); border: 1px solid rgba(192,57,43,0.4); color: #f5a39a; }
+.alert-success { background: rgba(42,107,74,0.15); border: 1px solid rgba(42,107,74,0.4); color: #7dd3a8; }
+
+/* BUTTON */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 16px 24px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+  text-align: center;
+  letter-spacing: 0.03em;
+  margin-top: 20px;
+}
+.btn:active { transform: scale(0.98); }
+.btn-primary {
+  background: var(--county);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(114,47,55,0.35);
+}
+.btn-primary:hover { background: var(--county-light); box-shadow: 0 6px 20px rgba(114,47,55,0.45); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+/* LOADING */
+.loading {
+  display: inline-block;
+  width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ABOUT LINK */
+.about-link-wrap {
+  text-align: center;
+  margin-top: 32px;
+}
+.about-link {
+  color: var(--accent-light);
+  font-size: 0.82rem;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(140,123,107,0.3);
+  padding-bottom: 1px;
+}
+.about-link:hover { border-color: var(--accent-light); }
+
+/* FOOTER */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 24px;
+  text-align: center;
+  font-size: 0.72rem;
+  color: rgba(245,240,232,0.3);
+  font-style: italic;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a href="/" class="back-link">← All Counties</a>
+  <div class="header-eyebrow">Family Court Accountability Survey Project</div>
+  <h1>Family Court Accountability Survey</h1>
+  <div class="county-subtitle">Sonoma County</div>
+</div>
+
+<div class="main">
+
+  <div class="privacy-banner">
+    <h2>You are safe here.</h2>
+    <p>This survey is completely anonymous. We will never ask for your name, case number, or anything that could identify you. Your access code is simply a key to keep the data clean — it has no connection to who you are.</p>
+    <p>Nothing you share here can be traced back to you, your children, or your case.</p>
+    <div class="privacy-note">When filling out open fields, you don't need to include specific dates, locations, or details that feel too identifying. Share what you're comfortable sharing. Every response — no matter how brief — adds to the picture we're building.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Enter Your Access Code</div>
+    <div class="card-body">Each code is single-use. Your code is not connected to your identity in any way.</div>
+
+    <div class="field">
+      <label for="accessCode">Access Code</label>
+      <input type="text" id="accessCode" placeholder="XXXX-XXXX-XXXX" maxlength="14" autocomplete="off" autocorrect="off" spellcheck="false">
+      <div class="field-hint">Format: XXXX-XXXX-XXXX (provided by your contact)</div>
+    </div>
+
+    <div id="codeAlert"></div>
+
+    <button class="btn btn-primary" onclick="validateCode()" id="codeBtn">Verify Code &amp; Begin Survey</button>
+  </div>
+
+  <div class="about-link-wrap">
+    <a href="/sonoma/about" class="about-link">About this project and why it matters →</a>
+  </div>
+
+</div>
+
+<div class="footer">
+  Family Court Accountability Survey Project — Sonoma County — 2026
+</div>
+
+<script>
+const SUPABASE_URL = 'https://gjzdpqgbfgzephsqowex.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqemRwcWdiZmd6ZXBoc3Fvd2V4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MjY5MDEsImV4cCI6MjA5MDMwMjkwMX0.Pn2PQBWkqrB7Ffz_Ovhaelegga-BjTI1XM9rtpGHE1g';
+
+document.getElementById('accessCode').addEventListener('input', function() {
+  let v = this.value.replace(/[^A-Za-z0-9]/g,'').toUpperCase();
+  if (v.length > 4) v = v.slice(0,4) + '-' + v.slice(4);
+  if (v.length > 9) v = v.slice(0,9) + '-' + v.slice(9);
+  if (v.length > 14) v = v.slice(0,14);
+  this.value = v;
+});
+
+document.getElementById('accessCode').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') validateCode();
+});
+
+async function validateCode() {
+  const code = document.getElementById('accessCode').value.trim().toUpperCase();
+  const alertEl = document.getElementById('codeAlert');
+  const btn = document.getElementById('codeBtn');
+
+  if (!code || code.length < 14) {
+    alertEl.innerHTML = '<div class="alert alert-error">Please enter a complete access code (format: XXXX-XXXX-XXXX)</div>';
+    return;
+  }
+
+  btn.innerHTML = '<span class="loading"></span>Verifying...';
+  btn.disabled = true;
+  alertEl.innerHTML = '';
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/access_codes?code=eq.${encodeURIComponent(code)}&select=id,code,is_used`, {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`
+      }
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      alertEl.innerHTML = `<div class="alert alert-error">Server error (${res.status}): ${data.message || data.hint || JSON.stringify(data)}</div>`;
+      btn.innerHTML = 'Verify Code &amp; Begin Survey';
+      btn.disabled = false;
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      alertEl.innerHTML = '<div class="alert alert-error">This code was not found. Please check it and try again, or contact the person who gave you the code.</div>';
+      btn.innerHTML = 'Verify Code &amp; Begin Survey';
+      btn.disabled = false;
+      return;
+    }
+
+    if (data[0].is_used === true) {
+      alertEl.innerHTML = '<div class="alert alert-error">This code has already been used. Each code can only be used once. Please contact your gatekeeper for assistance.</div>';
+      btn.innerHTML = 'Verify Code &amp; Begin Survey';
+      btn.disabled = false;
+      return;
+    }
+
+    // Valid — store code in sessionStorage and redirect to survey
+    sessionStorage.setItem('fcasp_validated_id', data[0].id);
+    sessionStorage.setItem('fcasp_validated_code', data[0].code);
+    window.location.href = '/sonoma/survey';
+
+  } catch(err) {
+    alertEl.innerHTML = '<div class="alert alert-error">Connection error. Please check your internet and try again.</div>';
+    btn.innerHTML = 'Verify Code &amp; Begin Survey';
+    btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
