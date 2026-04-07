@@ -29,7 +29,7 @@ async function validateCode() {
 
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/access_codes?code=eq.${encodeURIComponent(code)}&select=id,code,is_used`,
+      `${SUPABASE_URL}/rest/v1/access_codes?code=eq.${encodeURIComponent(code)}&select=id,code,is_used,batch_label`,
       { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }
     );
     const data = await res.json();
@@ -48,14 +48,17 @@ async function validateCode() {
       return;
     }
 
-    if (data[0].is_used === true) {
+    const isMaster = data[0].batch_label === 'master';
+
+    if (!isMaster && data[0].is_used === true) {
       alertEl.innerHTML = '<div class="alert alert-error">This code has already been used. Each code can only be used once. Please contact your gatekeeper for assistance.</div>';
       btn.innerHTML = 'Verify Code &amp; Begin Survey';
       btn.disabled = false;
       return;
     }
 
-    sessionStorage.setItem('fcasp_validated_id', data[0].id);
+    // Master codes are never consumed — store a sentinel so survey.js skips the mark-used PATCH
+    sessionStorage.setItem('fcasp_validated_id', isMaster ? 'master' : data[0].id);
     sessionStorage.setItem('fcasp_validated_code', data[0].code);
     window.location.href = '/sonoma/survey';
 

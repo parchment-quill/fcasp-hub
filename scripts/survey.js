@@ -8,6 +8,7 @@ const validatedCodeStr = sessionStorage.getItem('fcasp_validated_code');
 if (!validatedCode) {
   window.location.href = '/sonoma';
 }
+const isMasterCode = validatedCode === 'master';
 
 const TOTAL_STEPS  = 6;
 let currentStep    = 1;
@@ -176,15 +177,18 @@ async function submitSurvey() {
       throw new Error(`Insert failed (${resInsert.status}): ${errBody.message || errBody.hint || JSON.stringify(errBody)}`);
     }
 
-    await fetch(`${SUPABASE_URL}/rest/v1/access_codes?id=eq.${validatedCode}`, {
-      method: 'PATCH',
-      headers: {
-        apikey:         SUPABASE_KEY,
-        Authorization:  `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ is_used: true })
-    });
+    // Master codes are never consumed
+    if (!isMasterCode) {
+      await fetch(`${SUPABASE_URL}/rest/v1/access_codes?id=eq.${validatedCode}`, {
+        method: 'PATCH',
+        headers: {
+          apikey:         SUPABASE_KEY,
+          Authorization:  `Bearer ${SUPABASE_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ is_used: true })
+      });
+    }
 
     sessionStorage.removeItem('fcasp_validated_id');
     sessionStorage.removeItem('fcasp_validated_code');
