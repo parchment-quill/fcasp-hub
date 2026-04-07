@@ -38,12 +38,18 @@
     }
   ],
   "rewrites": [
-    { "source": "/sonoma/survey", "destination": "/sonoma/survey.html" },
-    { "source": "/sonoma/about",  "destination": "/sonoma/about.html" },
-    { "source": "/sonoma",        "destination": "/sonoma/index.html" },
-    { "source": "/napa",          "destination": "/napa/index.html" },
-    { "source": "/mendocino",     "destination": "/mendocino/index.html" },
-    { "source": "/solano",        "destination": "/solano/index.html" },
-    { "source": "/lake",          "destination": "/lake/index.html" }
+    { "source": "/sonoma/survey",    "destination": "/sonoma/survey.html" },
+    { "source": "/sonoma/about",     "destination": "/sonoma/about.html" },
+    { "source": "/sonoma",           "destination": "/sonoma/index.html" },
+    { "source": "/napa/survey",      "destination": "/napa/survey.html" },
+    { "source": "/napa",             "destination": "/napa/index.html" },
+    { "source": "/marin/survey",     "destination": "/marin/survey.html" },
+    { "source": "/marin",            "destination": "/marin/index.html" },
+    { "source": "/mendocino/survey", "destination": "/mendocino/survey.html" },
+    { "source": "/mendocino",        "destination": "/mendocino/index.html" },
+    { "source": "/solano/survey",    "destination": "/solano/survey.html" },
+    { "source": "/solano",           "destination": "/solano/index.html" },
+    { "source": "/lake/survey",      "destination": "/lake/survey.html" },
+    { "source": "/lake",             "destination": "/lake/index.html" }
   ]
 }

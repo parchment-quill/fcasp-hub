@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Access Code Manager — SCFCA Survey</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #1e6b6b;
+  --teal-deep: #134545;
+  --gold: #b8943a;
+  --gold-light: #d4af60;
+  --ink: #1a1a2e;
+  --parchment: #faf7f0;
+  --border: #d4c9b0;
+  --white: #fff;
+  --stone: #6b7280;
+  --success: #166534;
+  --success-bg: #f0fdf4;
+  --danger: #991b1b;
+  --danger-bg: #fef2f2;
+  --radius: 12px;
+  --shadow: 0 2px 16px rgba(26,26,46,0.10);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'Source Serif 4', Georgia, serif; background: var(--parchment); color: var(--ink); min-height: 100vh; font-size: 16px; }
+
+.header {
+  background: var(--teal-deep);
+  padding: 28px 20px 24px;
+  text-align: center;
+  position: relative;
+}
+.header::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
+.header h1 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #fff; font-weight: 700; }
+.header p { font-size: 0.82rem; color: rgba(255,255,255,0.6); margin-top: 6px; }
+
+.main { padding: 20px 16px 60px; max-width: 600px; margin: 0 auto; }
+
+.card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px 18px; margin-bottom: 16px; border: 1px solid var(--border); }
+.card-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--teal-deep); margin-bottom: 6px; font-weight: 700; }
+.card-sub { font-size: 0.83rem; color: var(--stone); margin-bottom: 18px; font-style: italic; }
+
+label { display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 8px; }
+input, select {
+  width: 100%; padding: 13px 14px; border: 1.5px solid var(--border); border-radius: 10px;
+  font-size: 1rem; font-family: 'Source Serif 4', serif; color: var(--ink);
+  background: var(--parchment); -webkit-appearance: none; appearance: none;
+  transition: border-color 0.2s;
+}
+input:focus, select:focus { outline: none; border-color: var(--teal); background: #fff; }
+
+.field { margin-bottom: 16px; }
+.field:last-child { margin-bottom: 0; }
+.field-hint { font-size: 0.78rem; color: var(--stone); margin-top: 4px; font-style: italic; }
+
+.btn {
+  display: block; width: 100%; padding: 15px 20px;
+  border: none; border-radius: 12px; font-size: 0.97rem;
+  font-family: 'Source Serif 4', serif; font-weight: 600;
+  cursor: pointer; text-align: center; transition: transform 0.15s;
+  margin-bottom: 10px;
+}
+.btn:active { transform: scale(0.98); }
+.btn:last-child { margin-bottom: 0; }
+.btn-primary { background: var(--teal); color: #fff; box-shadow: 0 4px 14px rgba(30,107,107,0.28); }
+.btn-gold { background: var(--gold); color: #fff; box-shadow: 0 4px 14px rgba(184,148,58,0.28); }
+.btn-outline { background: transparent; color: var(--teal); border: 1.5px solid var(--teal); }
+
+.alert { padding: 12px 14px; border-radius: 10px; font-size: 0.86rem; margin-bottom: 14px; line-height: 1.5; }
+.alert-success { background: var(--success-bg); border: 1px solid #86efac; color: var(--success); }
+.alert-error { background: var(--danger-bg); border: 1px solid #fca5a5; color: var(--danger); }
+.alert-info { background: #eff6ff; border: 1px solid #93c5fd; color: #1e40af; }
+
+.loading { display:inline-block; width:16px; height:16px; border:2px solid rgba(255,255,255,0.4); border-top-color:#fff; border-radius:50%; animation: spin 0.7s linear infinite; vertical-align:middle; margin-right:6px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.code-preview {
+  background: #f8f9fa;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  margin: 14px 0;
+  max-height: 200px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.code-line { font-family: 'Courier New', monospace; font-size: 0.82rem; padding: 3px 0; color: var(--ink); border-bottom: 1px solid #f0f0f0; }
+.code-line:last-child { border-bottom: none; }
+
+.divider { height: 1px; background: var(--border); margin: 18px 0; }
+
+.stat-row { display: flex; gap: 10px; margin-bottom: 14px; }
+.stat-box { flex: 1; background: var(--parchment); border: 1px solid var(--border); border-radius: 10px; padding: 14px 10px; text-align: center; }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--teal); font-weight: 700; }
+.stat-label { font-size: 0.72rem; color: var(--stone); margin-top: 2px; }
+
+.tabs { display: flex; gap: 0; margin-bottom: 16px; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; }
+.tab { flex: 1; padding: 12px 8px; text-align: center; font-size: 0.85rem; font-weight: 600; cursor: pointer; background: var(--parchment); color: var(--stone); border: none; font-family: 'Source Serif 4', serif; transition: all 0.2s; }
+.tab.active { background: var(--teal); color: #fff; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>⚖️ Access Code Manager</h1>
+  <p>Sonoma County Family Court Accountability Survey Survey</p>
+</div>
+
+<div class="main">
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('generate')">Generate</button>
+    <button class="tab" onclick="showTab('upload')">Upload</button>
+    <button class="tab" onclick="showTab('stats')">Stats</button>
+  </div>
+
+  <!-- GENERATE TAB -->
+  <div id="tab-generate">
+    <div class="card">
+      <div class="card-title">Generate Access Codes</div>
+      <div class="card-sub">Create a new batch of unique one-time codes to distribute to respondents.</div>
+
+      <div class="field">
+        <label for="batchLabel">Batch name / label</label>
+        <input type="text" id="batchLabel" placeholder="e.g. BATCH-01, Support Group March 2026">
+        <div class="field-hint">Use this to track which group received which codes</div>
+      </div>
+
+      <div class="field">
+        <label for="codeCount">Number of codes to generate</label>
+        <select id="codeCount">
+          <option value="25">25 codes</option>
+          <option value="50" selected>50 codes</option>
+          <option value="100">100 codes</option>
+          <option value="200">200 codes</option>
+          <option value="500">500 codes</option>
+        </select>
+      </div>
+
+      <div id="generateAlert"></div>
+
+      <button class="btn btn-primary" onclick="generateCodes()">Generate Codes</button>
+    </div>
+
+    <div class="card" id="previewCard" style="display:none;">
+      <div class="card-title">Generated Codes</div>
+      <div class="card-sub" id="previewSub"></div>
+      <div class="code-preview" id="codePreview"></div>
+      <div class="divider"></div>
+      <button class="btn btn-gold" onclick="downloadCSV()">Download as CSV</button>
+      <button class="btn btn-primary" onclick="uploadToSupabase()">Upload to Supabase</button>
+      <div id="uploadAlert" style="margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <!-- UPLOAD TAB -->
+  <div id="tab-upload" style="display:none;">
+    <div class="card">
+      <div class="card-title">Upload CSV to Supabase</div>
+      <div class="card-sub">If you downloaded codes earlier, upload them here to activate them.</div>
+
+      <div class="field">
+        <label for="csvFile">Select CSV file</label>
+        <input type="file" id="csvFile" accept=".csv" style="padding:10px;">
+      </div>
+
+      <div id="uploadFileAlert"></div>
+      <button class="btn btn-primary" onclick="uploadCSVFile()">Upload CSV</button>
+    </div>
+  </div>
+
+  <!-- STATS TAB -->
+  <div id="tab-stats" style="display:none;">
+    <div class="card">
+      <div class="card-title">Survey Statistics</div>
+      <div class="card-sub">Live data from your Supabase database.</div>
+
+      <div id="statsAlert"></div>
+      <div class="stat-row" id="statBoxes" style="display:none;">
+        <div class="stat-box">
+          <div class="stat-num" id="statTotal">—</div>
+          <div class="stat-label">Total Codes</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" id="statUsed">—</div>
+          <div class="stat-label">Used</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" id="statResponses">—</div>
+          <div class="stat-label">Responses</div>
+        </div>
+      </div>
+
+      <button class="btn btn-outline" onclick="loadStats()">Load Stats</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const SUPABASE_URL = 'https://gjzdpqgbfgzephsqowex.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqemRwcWdiZmd6ZXBoc3Fvd2V4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MjY5MDEsImV4cCI6MjA5MDMwMjkwMX0.Pn2PQBWkqrB7Ffz_Ovhaelegga-BjTI1XM9rtpGHE1g';
+
+let generatedCodes = [];
+
+function showTab(name) {
+  ['generate','upload','stats'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = t === name ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach((tab, i) => {
+    tab.classList.toggle('active', ['generate','upload','stats'][i] === name);
+  });
+}
+
+function generateCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 12; i++) {
+    if (i === 4 || i === 8) code += '-';
+    code += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return code;
+}
+
+function generateCodes() {
+  const batch = document.getElementById('batchLabel').value.trim() || 'BATCH-' + new Date().toISOString().slice(0,10);
+  const count = parseInt(document.getElementById('codeCount').value);
+  const alertEl = document.getElementById('generateAlert');
+
+  generatedCodes = [];
+  const existing = new Set();
+
+  for (let i = 0; i < count; i++) {
+    let code;
+    do { code = generateCode(); } while (existing.has(code));
+    existing.add(code);
+    generatedCodes.push({ code, batch_label: batch, is_used: false });
+  }
+
+  // Preview
+  const preview = document.getElementById('codePreview');
+  preview.innerHTML = generatedCodes.slice(0, 20).map(c =>
+    `<div class="code-line">${c.code} — ${c.batch_label}</div>`
+  ).join('');
+  if (count > 20) {
+    preview.innerHTML += `<div class="code-line" style="color:var(--stone); font-style:italic;">...and ${count - 20} more</div>`;
+  }
+
+  document.getElementById('previewSub').textContent = count + ' codes generated for batch: ' + batch;
+  document.getElementById('previewCard').style.display = 'block';
+  alertEl.innerHTML = `<div class="alert alert-success">✓ ${count} codes generated. Download or upload to Supabase below.</div>`;
+}
+
+function downloadCSV() {
+  if (!generatedCodes.length) return;
+  const header = 'code,batch_label,is_used\n';
+  const rows = generatedCodes.map(c => `${c.code},${c.batch_label},${c.is_used}`).join('\n');
+  const blob = new Blob([header + rows], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `access-codes-${generatedCodes[0].batch_label.replace(/\s+/g,'-')}-${Date.now()}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+async function uploadToSupabase() {
+  if (!generatedCodes.length) return;
+  const alertEl = document.getElementById('uploadAlert');
+  const btn = event.target;
+  btn.innerHTML = '<span class="loading"></span>Uploading...';
+  btn.disabled = true;
+
+  try {
+    // Upload in chunks of 100
+    const chunks = [];
+    for (let i = 0; i < generatedCodes.length; i += 100) {
+      chunks.push(generatedCodes.slice(i, i + 100));
+    }
+
+    for (const chunk of chunks) {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/access_codes`, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(chunk)
+      });
+      if (!res.ok) throw new Error('Upload failed: ' + await res.text());
+    }
+
+    alertEl.innerHTML = `<div class="alert alert-success">✓ ${generatedCodes.length} codes uploaded to Supabase successfully. They are now active.</div>`;
+    btn.innerHTML = 'Upload to Supabase';
+    btn.disabled = false;
+
+  } catch(err) {
+    alertEl.innerHTML = `<div class="alert alert-error">Upload failed: ${err.message}</div>`;
+    btn.innerHTML = 'Upload to Supabase';
+    btn.disabled = false;
+  }
+}
+
+async function uploadCSVFile() {
+  const file = document.getElementById('csvFile').files[0];
+  const alertEl = document.getElementById('uploadFileAlert');
+
+  if (!file) { alertEl.innerHTML = '<div class="alert alert-error">Please select a CSV file.</div>'; return; }
+
+  const text = await file.text();
+  const lines = text.trim().split('\n').slice(1); // skip header
+  const codes = lines.map(l => {
+    const parts = l.split(',');
+    return { code: parts[0]?.trim(), batch_label: parts[1]?.trim() || 'uploaded', is_used: false };
+  }).filter(c => c.code);
+
+  if (!codes.length) { alertEl.innerHTML = '<div class="alert alert-error">No valid codes found in file.</div>'; return; }
+
+  alertEl.innerHTML = `<div class="alert alert-info">Found ${codes.length} codes. Uploading...</div>`;
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/access_codes`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify(codes)
+    });
+    if (!res.ok) throw new Error(await res.text());
+    alertEl.innerHTML = `<div class="alert alert-success">✓ ${codes.length} codes uploaded successfully.</div>`;
+  } catch(err) {
+    alertEl.innerHTML = `<div class="alert alert-error">Upload failed: ${err.message}</div>`;
+  }
+}
+
+async function loadStats() {
+  const alertEl = document.getElementById('statsAlert');
+  alertEl.innerHTML = '<div class="alert alert-info">Loading...</div>';
+
+  try {
+    const [codesRes, responsesRes] = await Promise.all([
+      fetch(`${SUPABASE_URL}/rest/v1/access_codes?select=is_used`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'count=exact' }
+      }),
+      fetch(`${SUPABASE_URL}/rest/v1/survey_responses?select=id`, {
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'count=exact' }
+      })
+    ]);
+
+    const codes = await codesRes.json();
+    const responses = await responsesRes.json();
+
+    const total = codes.length;
+    const used = codes.filter(c => c.is_used === true).length;
+
+    document.getElementById('statTotal').textContent = total;
+    document.getElementById('statUsed').textContent = used;
+    document.getElementById('statResponses').textContent = responses.length;
+    document.getElementById('statBoxes').style.display = 'flex';
+    alertEl.innerHTML = '';
+
+  } catch(err) {
+    alertEl.innerHTML = `<div class="alert alert-error">Could not load stats: ${err.message}</div>`;
+  }
+}
+</script>
+</body>
+</html>

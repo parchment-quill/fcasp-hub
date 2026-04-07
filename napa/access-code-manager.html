@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Access Code Manager — Napa County — FCASP</title>
+<link rel="stylesheet" href="../styles/main.css">
+<link rel="stylesheet" href="../styles/napa.css">
+<style>
+.tabs { display: flex; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+.tab { flex: 1; padding: 12px 8px; text-align: center; font-size: 0.85rem; font-weight: 600; cursor: pointer; background: var(--bg); color: var(--stone); border: none; font-family: inherit; transition: all 0.2s; }
+.tab.active { background: var(--county); color: #fff; }
+.code-preview { background: #f8f9fa; border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin: 14px 0; max-height: 200px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.code-line { font-family: 'Courier New', monospace; font-size: 0.82rem; padding: 3px 0; color: var(--text); border-bottom: 1px solid #f0f0f0; }
+.code-line:last-child { border-bottom: none; }
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.stat-box { background: var(--county-dim); border: 1px solid var(--county-border); border-radius: 10px; padding: 14px; text-align: center; }
+.stat-num { font-size: 1.6rem; font-weight: 700; color: var(--county); line-height: 1.1; }
+.stat-label { font-size: 0.72rem; color: var(--stone); margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<div class="site-header" style="padding: 28px 20px 24px;">
+  <a href="/napa" class="back-link">← Napa Survey</a>
+  <div class="header-eyebrow">Admin — Family Court Accountability Survey Project</div>
+  <h1 style="font-size: clamp(1.1rem, 3vw, 1.5rem);">Access Code Manager</h1>
+  <div class="county-subtitle" style="font-size:0.88rem;">Napa County</div>
+</div>
+
+<div class="main" style="max-width:600px;">
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('generate')">Generate</button>
+    <button class="tab" onclick="showTab('upload')">Upload CSV</button>
+    <button class="tab" onclick="showTab('stats')">Stats</button>
+  </div>
+
+  <!-- GENERATE -->
+  <div id="tab-generate">
+    <div class="card">
+      <div class="card-title">Generate Access Codes</div>
+      <div class="card-subtitle">Create a batch of unique one-time codes to distribute to respondents.</div>
+
+      <div class="field">
+        <label for="batchLabel">Batch name / label</label>
+        <input type="text" id="batchLabel" placeholder="e.g. Support Group March 2026">
+        <div class="field-hint">Used to track which group received which codes</div>
+      </div>
+
+      <div class="field">
+        <label for="distributorLabel">Distributor <span class="label-optional">(optional)</span></label>
+        <input type="text" id="distributorLabel" placeholder="Person or organization distributing these codes">
+      </div>
+
+      <div class="field">
+        <label for="codeCount">Number of codes</label>
+        <select id="codeCount">
+          <option value="25">25 codes</option>
+          <option value="50" selected>50 codes</option>
+          <option value="100">100 codes</option>
+          <option value="200">200 codes</option>
+          <option value="500">500 codes</option>
+        </select>
+      </div>
+
+      <div id="generateAlert"></div>
+      <button class="btn btn-primary" onclick="generateCodes()">Generate Codes</button>
+    </div>
+
+    <div class="card" id="previewCard" style="display:none;">
+      <div class="card-title">Generated Codes</div>
+      <div class="card-subtitle" id="previewSub"></div>
+      <div class="code-preview" id="codePreview"></div>
+      <div class="divider"></div>
+      <button class="btn btn-secondary" onclick="downloadCSV()">Download as CSV</button>
+      <button class="btn btn-primary" style="margin-top:10px;" onclick="uploadToSupabase()">Upload to Supabase</button>
+      <div id="uploadAlert" style="margin-top:12px;"></div>
+    </div>
+  </div>
+
+  <!-- UPLOAD -->
+  <div id="tab-upload" style="display:none;">
+    <div class="card">
+      <div class="card-title">Upload CSV</div>
+      <div class="card-subtitle">Activate a previously downloaded batch by uploading the CSV file.</div>
+      <div class="field">
+        <label for="csvFile">Select CSV file</label>
+        <input type="file" id="csvFile" accept=".csv" style="padding:10px;">
+      </div>
+      <div id="uploadFileAlert"></div>
+      <button class="btn btn-primary" onclick="uploadCSVFile()">Upload</button>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div id="tab-stats" style="display:none;">
+    <div class="card">
+      <div class="card-title">Statistics</div>
+      <div class="card-subtitle">Live counts from Supabase.</div>
+      <div id="statsAlert"></div>
+      <div class="stat-grid" id="statGrid" style="display:none;">
+        <div class="stat-box"><div class="stat-num" id="statTotal">—</div><div class="stat-label">Total Codes</div></div>
+        <div class="stat-box"><div class="stat-num" id="statUsed">—</div><div class="stat-label">Used</div></div>
+        <div class="stat-box"><div class="stat-num" id="statResponses">—</div><div class="stat-label">Responses</div></div>
+      </div>
+      <button class="btn btn-secondary" onclick="loadStats()">Load Stats</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const SUPABASE_URL = 'https://gjzdpqgbfgzephsqowex.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqemRwcWdiZmd6ZXBoc3Fvd2V4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MjY5MDEsImV4cCI6MjA5MDMwMjkwMX0.Pn2PQBWkqrB7Ffz_Ovhaelegga-BjTI1XM9rtpGHE1g';
+
+let generatedCodes = [];
+
+function showTab(name) {
+  ['generate','upload','stats'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = t === name ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach((tab, i) => {
+    tab.classList.toggle('active', ['generate','upload','stats'][i] === name);
+  });
+}
+
+function generateCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 12; i++) {
+    if (i === 4 || i === 8) code += '-';
+    code += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return code;
+}
+
+function generateCodes() {
+  const batch = document.getElementById('batchLabel').value.trim() || 'BATCH-' + new Date().toISOString().slice(0,10);
+  const distributor = document.getElementById('distributorLabel').value.trim() || null;
+  const count = parseInt(document.getElementById('codeCount').value);
+
+  generatedCodes = [];
+  const existing = new Set();
+  for (let i = 0; i < count; i++) {
+    let code;
+    do { code = generateCode(); } while (existing.has(code));
+    existing.add(code);
+    generatedCodes.push({ code, batch_label: batch, distributor, used: false });
+  }
+
+  const preview = document.getElementById('codePreview');
+  preview.innerHTML = generatedCodes.slice(0, 20).map(c =>
+    `<div class="code-line">${c.code} — ${c.batch_label}</div>`
+  ).join('');
+  if (count > 20) preview.innerHTML += `<div class="code-line" style="font-style:italic;color:var(--stone);">…and ${count - 20} more</div>`;
+
+  document.getElementById('previewSub').textContent = `${count} codes — batch: ${batch}`;
+  document.getElementById('previewCard').style.display = 'block';
+  document.getElementById('generateAlert').innerHTML = `<div class="alert alert-success">✓ ${count} codes generated.</div>`;
+}
+
+function downloadCSV() {
+  if (!generatedCodes.length) return;
+  const header = 'code,batch_label,distributor,used\n';
+  const rows = generatedCodes.map(c => `${c.code},${c.batch_label},${c.distributor || ''},${c.used}`).join('\n');
+  const blob = new Blob([header + rows], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `napa-codes-${generatedCodes[0].batch_label.replace(/\s+/g,'-')}-${Date.now()}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+async function uploadToSupabase() {
+  if (!generatedCodes.length) return;
+  const alertEl = document.getElementById('uploadAlert');
+  const btn = event.target;
+  btn.innerHTML = '<span class="loading"></span>Uploading...';
+  btn.disabled = true;
+
+  try {
+    for (let i = 0; i < generatedCodes.length; i += 100) {
+      const chunk = generatedCodes.slice(i, i + 100);
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/napa_access_codes`, {
+        method: 'POST',
+        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify(chunk)
+      });
+      if (!res.ok) throw new Error(await res.text());
+    }
+    alertEl.innerHTML = `<div class="alert alert-success">✓ ${generatedCodes.length} codes uploaded and active.</div>`;
+  } catch(err) {
+    alertEl.innerHTML = `<div class="alert alert-error">Upload failed: ${err.message}</div>`;
+  }
+  btn.innerHTML = 'Upload to Supabase';
+  btn.disabled = false;
+}
+
+async function uploadCSVFile() {
+  const file = document.getElementById('csvFile').files[0];
+  const alertEl = document.getElementById('uploadFileAlert');
+  if (!file) { alertEl.innerHTML = '<div class="alert alert-error">Please select a CSV file.</div>'; return; }
+
+  const lines = (await file.text()).trim().split('\n').slice(1);
+  const codes = lines.map(l => {
+    const p = l.split(',');
+    return { code: p[0]?.trim(), batch_label: p[1]?.trim() || 'uploaded', distributor: p[2]?.trim() || null, used: false };
+  }).filter(c => c.code);
+
+  if (!codes.length) { alertEl.innerHTML = '<div class="alert alert-error">No valid codes found in file.</div>'; return; }
+  alertEl.innerHTML = `<div class="alert alert-info">Found ${codes.length} codes. Uploading…</div>`;
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/napa_access_codes`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify(codes)
+    });
+    if (!res.ok) throw new Error(await res.text());
+    alertEl.innerHTML = `<div class="alert alert-success">✓ ${codes.length} codes uploaded.</div>`;
+  } catch(err) {
+    alertEl.innerHTML = `<div class="alert alert-error">Upload failed: ${err.message}</div>`;
+  }
+}
+
+async function loadStats() {
+  const alertEl = document.getElementById('statsAlert');
+  alertEl.innerHTML = '<div class="alert alert-info">Loading…</div>';
+  try {
+    const [cRes, rRes] = await Promise.all([
+      fetch(`${SUPABASE_URL}/rest/v1/napa_access_codes?select=used`, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }),
+      fetch(`${SUPABASE_URL}/rest/v1/napa_survey_responses?select=id`, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } })
+    ]);
+    const codes = await cRes.json();
+    const responses = await rRes.json();
+    document.getElementById('statTotal').textContent = codes.length;
+    document.getElementById('statUsed').textContent = codes.filter(c => c.used).length;
+    document.getElementById('statResponses').textContent = responses.length;
+    document.getElementById('statGrid').style.display = 'grid';
+    alertEl.innerHTML = '';
+  } catch(err) {
+    alertEl.innerHTML = `<div class="alert alert-error">Could not load stats: ${err.message}</div>`;
+  }
+}
+</script>
+</body>
+</html>

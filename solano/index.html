@@ -16,18 +16,117 @@
   <div class="county-subtitle">Solano County</div>
 </div>
 
-<div class="coming-soon-wrap">
-  <div class="soon-card">
-    <span class="soon-icon">⚖️</span>
-    <h2>This county survey is coming soon.</h2>
-    <p>The Solano County survey is currently in development. Check back for updates as we expand the project to additional counties.</p>
+<div class="main-narrow">
+
+  <div class="privacy-banner">
+    <h2>You are safe here.</h2>
+    <p>This survey is completely anonymous. We will never ask for your name, case number, or anything that could identify you. Your access code is simply a key to keep the data clean — it has no connection to who you are.</p>
+    <p>Nothing you share here can be traced back to you, your children, or your case.</p>
+    <div class="privacy-note">When filling out open fields, you don't need to include specific dates, locations, or details that feel too identifying. Share what you're comfortable sharing. Every response — no matter how brief — adds to the picture we're building.</div>
   </div>
-  <a href="/" class="hub-link">← View all counties</a>
+
+  <div class="card">
+    <div class="card-title">Enter Your Access Code</div>
+    <div class="card-body">Each code is single-use. Your code is not connected to your identity in any way.</div>
+
+    <div class="field">
+      <label for="accessCode">Access Code</label>
+      <input type="text" id="accessCode" class="code-input" placeholder="XXXX-XXXX-XXXX" maxlength="14" autocomplete="off" autocorrect="off" spellcheck="false">
+      <div class="field-hint">Format: XXXX-XXXX-XXXX (provided by your contact)</div>
+    </div>
+
+    <div id="codeAlert"></div>
+
+    <button class="btn btn-primary" onclick="validateCode()" id="codeBtn">Verify Code &amp; Begin Survey</button>
+  </div>
+
+  <div class="about-link-wrap">
+    <a href="/" class="about-link">← View all counties</a>
+  </div>
+
 </div>
 
 <div class="site-footer">
-  Family Court Accountability Survey Project — 2026
+  Family Court Accountability Survey Project — Solano County — 2026
 </div>
 
+<script>
+const SUPABASE_URL = 'https://gjzdpqgbfgzephsqowex.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqemRwcWdiZmd6ZXBoc3Fvd2V4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MjY5MDEsImV4cCI6MjA5MDMwMjkwMX0.Pn2PQBWkqrB7Ffz_Ovhaelegga-BjTI1XM9rtpGHE1g';
+const MASTER_CODE = 'FCASP-MASTER-2026';
+
+document.getElementById('accessCode').addEventListener('input', function () {
+  let v = this.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+  if (v.length > 4) v = v.slice(0, 4) + '-' + v.slice(4);
+  if (v.length > 9) v = v.slice(0, 9) + '-' + v.slice(9);
+  if (v.length > 14) v = v.slice(0, 14);
+  this.value = v;
+});
+
+document.getElementById('accessCode').addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') validateCode();
+});
+
+async function validateCode() {
+  const code = document.getElementById('accessCode').value.trim().toUpperCase();
+  const alertEl = document.getElementById('codeAlert');
+  const btn = document.getElementById('codeBtn');
+
+  if (!code || code.length < 14) {
+    alertEl.innerHTML = '<div class="alert alert-error">Please enter a complete access code (format: XXXX-XXXX-XXXX)</div>';
+    return;
+  }
+
+  // Master code bypass — checked before any Supabase call
+  if (code === MASTER_CODE) {
+    sessionStorage.setItem('fcasp_validated_id', 'master');
+    sessionStorage.setItem('fcasp_validated_code', code);
+    window.location.href = '/solano/survey';
+    return;
+  }
+
+  btn.innerHTML = '<span class="loading"></span>Verifying...';
+  btn.disabled = true;
+  alertEl.innerHTML = '';
+
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/solano_access_codes?code=eq.${encodeURIComponent(code)}&select=id,code,used,batch_label`,
+      { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }
+    );
+    const data = await res.json();
+
+    if (!res.ok) {
+      alertEl.innerHTML = `<div class="alert alert-error">Server error (${res.status}): ${data.message || data.hint || JSON.stringify(data)}</div>`;
+      btn.innerHTML = 'Verify Code &amp; Begin Survey';
+      btn.disabled = false;
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      alertEl.innerHTML = '<div class="alert alert-error">This code was not found. Please check it and try again, or contact the person who gave you the code.</div>';
+      btn.innerHTML = 'Verify Code &amp; Begin Survey';
+      btn.disabled = false;
+      return;
+    }
+
+    if (data[0].used === true) {
+      alertEl.innerHTML = '<div class="alert alert-error">This code has already been used. Each code can only be used once. Please contact your gatekeeper for assistance.</div>';
+      btn.innerHTML = 'Verify Code &amp; Begin Survey';
+      btn.disabled = false;
+      return;
+    }
+
+    sessionStorage.setItem('fcasp_validated_id', data[0].id);
+    sessionStorage.setItem('fcasp_validated_code', data[0].code);
+    window.location.href = '/solano/survey';
+
+  } catch (err) {
+    alertEl.innerHTML = '<div class="alert alert-error">Connection error. Please check your internet and try again.</div>';
+    btn.innerHTML = 'Verify Code &amp; Begin Survey';
+    btn.disabled = false;
+  }
+}
+</script>
 </body>
 </html>

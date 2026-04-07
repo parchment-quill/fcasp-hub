@@ -1,0 +1,7 @@
+/* Marin County — Coastal Blue */
+:root {
+  --county:        #2E6EA6;
+  --county-light:  #3d87c4;
+  --county-dim:    rgba(46,110,166,0.08);
+  --county-border: rgba(46,110,166,0.32);
+}

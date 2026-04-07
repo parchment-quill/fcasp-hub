@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Response Viewer — Marin County — FCASP</title>
+<link rel="stylesheet" href="../styles/main.css">
+<link rel="stylesheet" href="../styles/marin.css">
+<style>
+.toolbar { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 12px 16px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; position: sticky; top: 0; z-index: 100; }
+.toolbar-count { font-size: 0.8rem; color: var(--stone); flex: 1; min-width: 80px; }
+.toolbar-count strong { color: var(--county); }
+.toolbar-btn { padding: 8px 14px; border-radius: 8px; font-size: 0.8rem; font-family: inherit; font-weight: 600; cursor: pointer; border: none; }
+.btn-county { background: var(--county); color: #fff; }
+.btn-county-outline { background: transparent; color: var(--county); border: 1.5px solid var(--county); }
+.btn-neutral { background: var(--bg); color: var(--stone); border: 1.5px solid var(--border); }
+.filters { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 12px 16px; display: none; }
+.filters.open { display: block; }
+.filter-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--stone); margin-bottom: 6px; }
+.filter-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+.filter-chip { padding: 5px 11px; border-radius: 20px; font-size: 0.77rem; font-family: inherit; cursor: pointer; border: 1.5px solid var(--border); background: var(--bg); color: var(--stone); white-space: nowrap; }
+.filter-chip.active { background: var(--county); color: #fff; border-color: var(--county); }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.stat-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 12px; text-align: center; }
+.stat-num { font-size: 1.8rem; font-weight: 700; color: var(--county); line-height: 1; }
+.stat-label { font-size: 0.7rem; color: var(--stone); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+.pattern-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 14px; margin-bottom: 14px; }
+.pattern-title { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+.bar-row { margin-bottom: 9px; }
+.bar-label { font-size: 0.77rem; color: var(--text); margin-bottom: 3px; display: flex; justify-content: space-between; }
+.bar-label span { color: var(--stone); font-size: 0.72rem; }
+.bar-track { height: 7px; background: var(--county-dim); border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; background: var(--county); border-radius: 4px; }
+.response-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; cursor: pointer; }
+.response-header { padding: 13px 15px; display: flex; align-items: flex-start; gap: 12px; }
+.response-num { background: var(--county); color: #fff; font-size: 0.82rem; font-weight: 700; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.response-meta { flex: 1; }
+.response-date { font-size: 0.74rem; color: var(--stone); margin-bottom: 3px; }
+.response-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+.tag { padding: 2px 7px; border-radius: 10px; font-size: 0.68rem; font-weight: 600; white-space: nowrap; }
+.tag-county { background: var(--county-dim); color: var(--county); }
+.tag-warn { background: #fef2f2; color: #dc2626; }
+.tag-gray { background: #f3f4f6; color: var(--stone); }
+.response-chev { color: var(--stone); font-size: 1rem; padding-top: 2px; }
+.detail-panel { border-top: 1px solid var(--border); max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
+.detail-panel.open { max-height: 3000px; }
+.detail-inner { padding: 16px; }
+.detail-section { margin-bottom: 16px; }
+.detail-section:last-child { margin-bottom: 0; }
+.detail-heading { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--county); margin-bottom: 7px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+.detail-row { display: flex; gap: 8px; margin-bottom: 5px; font-size: 0.81rem; }
+.detail-key { color: var(--stone); min-width: 130px; flex-shrink: 0; }
+.detail-val { color: var(--text); flex: 1; }
+.detail-text { background: var(--bg); border-radius: 8px; padding: 10px 12px; font-size: 0.81rem; line-height: 1.6; color: var(--text); font-style: italic; margin-top: 4px; }
+.tag-list { display: flex; flex-wrap: wrap; gap: 4px; }
+.empty-state { text-align: center; padding: 48px 20px; color: var(--stone); font-size: 0.9rem; }
+.spinner { width: 34px; height: 34px; border: 3px solid var(--border); border-top-color: var(--county); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 14px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: flex-end; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--card-bg); border-radius: 20px 20px 0 0; padding: 24px 20px 36px; width: 100%; max-height: 70vh; overflow-y: auto; }
+.modal-title { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 14px; }
+.modal-btn { display: block; width: 100%; padding: 13px; border: none; border-radius: 10px; font-size: 0.93rem; font-family: inherit; font-weight: 600; cursor: pointer; margin-bottom: 8px; text-align: center; }
+</style>
+</head>
+<body>
+
+<div class="site-header" style="padding: 24px 20px 20px;">
+  <a href="/marin" class="back-link">← Marin Survey</a>
+  <div class="header-eyebrow">Admin — Family Court Accountability Survey Project</div>
+  <h1 style="font-size: clamp(1.1rem, 3vw, 1.5rem);">Response Viewer</h1>
+  <div class="county-subtitle" style="font-size:0.88rem;">Marin County</div>
+</div>
+
+<div class="toolbar">
+  <div class="toolbar-count" id="toolbarCount"><strong>—</strong> responses</div>
+  <button class="toolbar-btn btn-neutral" onclick="toggleFilters()">Filter</button>
+  <button class="toolbar-btn btn-county-outline" onclick="showExportModal()">Export</button>
+  <button class="toolbar-btn btn-county" onclick="loadData()">↻</button>
+</div>
+
+<div class="filters" id="filtersPanel">
+  <div class="filter-label">Judge</div>
+  <div class="filter-row" id="judgeFilters"></div>
+  <div class="filter-label">Case Status</div>
+  <div class="filter-row">
+    <div class="filter-chip" onclick="toggleFilter(this,'status','ongoing')">Ongoing</div>
+    <div class="filter-chip" onclick="toggleFilter(this,'status','closed')">Closed</div>
+  </div>
+  <div class="filter-label">Outcome</div>
+  <div class="filter-row">
+    <div class="filter-chip" onclick="toggleFilter(this,'outcome','contradicted')">Contradicted Evidence</div>
+  </div>
+  <div style="margin-top:10px;">
+    <button class="toolbar-btn btn-neutral" onclick="clearFilters()">Clear All</button>
+  </div>
+</div>
+
+<div class="main" id="mainContent" style="padding-top:14px;">
+  <div style="text-align:center;padding:40px 20px;">
+    <div class="spinner"></div>
+    <p style="color:var(--stone);font-size:0.88rem;">Loading responses…</p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="exportModal" onclick="if(event.target===this)closeExportModal()">
+  <div class="modal">
+    <div class="modal-title">Export Data</div>
+    <button class="modal-btn btn-county" onclick="exportCSV()">Download Full CSV</button>
+    <button class="modal-btn btn-county-outline" onclick="exportSummary()">Download Summary Report</button>
+    <button class="modal-btn btn-neutral" onclick="closeExportModal()">Cancel</button>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://gjzdpqgbfgzephsqowex.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqemRwcWdiZmd6ZXBoc3Fvd2V4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MjY5MDEsImV4cCI6MjA5MDMwMjkwMX0.Pn2PQBWkqrB7Ffz_Ovhaelegga-BjTI1XM9rtpGHE1g';
+const COUNTY_NAME = 'Marin';
+const TABLE = 'marin_survey_responses';
+
+let allResponses = [], filteredResponses = [];
+let activeFilters = { judge: [], status: [], outcome: [] };
+let openCards = new Set();
+
+async function loadData() {
+  const main = document.getElementById('mainContent');
+  main.innerHTML = '<div style="text-align:center;padding:40px 20px;"><div class="spinner"></div><p style="color:var(--stone);font-size:0.88rem;">Loading…</p></div>';
+  document.getElementById('toolbarCount').innerHTML = '<strong>—</strong> responses';
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?select=*&order=submitted_at.desc`, { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } });
+    if (!res.ok) throw new Error('Status ' + res.status);
+    allResponses = await res.json();
+    filteredResponses = [...allResponses];
+    buildJudgeFilters();
+    render();
+  } catch(err) {
+    main.innerHTML = `<div class="alert alert-error" style="margin:16px;">Could not load responses: ${err.message}</div>`;
+  }
+}
+
+function buildJudgeFilters() {
+  const judgeSet = new Set();
+  allResponses.forEach(r => (r.judges||[]).forEach(j => judgeSet.add(j)));
+  const el = document.getElementById('judgeFilters');
+  el.innerHTML = [...judgeSet].sort().map(j => { const d = j.replace(/^Hon\.\s*/i,''); const e = j.replace(/'/g,"\\'"); return `<div class="filter-chip" onclick="toggleFilter(this,'judge','${e}')">${d}</div>`; }).join('') || '<span style="font-size:0.8rem;color:var(--stone);">No data yet</span>';
+}
+
+function render() {
+  const main = document.getElementById('mainContent');
+  const count = filteredResponses.length;
+  document.getElementById('toolbarCount').innerHTML = `<strong>${count}</strong> response${count!==1?'s':''}`;
+  if (!count) { main.innerHTML = `<div class="empty-state">${!allResponses.length?'No responses yet.':'No responses match your filters.'}</div>`; return; }
+  let html = renderStats() + renderPatterns();
+  filteredResponses.forEach((r,i) => { html += renderCard(r, filteredResponses.length-i); });
+  main.innerHTML = html;
+  openCards.forEach(id => { const p = document.getElementById('panel-'+id); if(p) p.classList.add('open'); });
+}
+
+function renderStats() {
+  const total = filteredResponses.length;
+  const ongoing = filteredResponses.filter(r=>r.case_status?.toLowerCase().includes('ongoing')).length;
+  const judicial = filteredResponses.filter(r=>r.judicial_conduct?.length>0).length;
+  const contradicted = filteredResponses.filter(r=>r.custody_evidence_alignment?.toLowerCase().includes('contradict')).length;
+  return `<div class="stats-grid"><div class="stat-card"><div class="stat-num">${total}</div><div class="stat-label">Total Responses</div></div><div class="stat-card"><div class="stat-num">${ongoing}</div><div class="stat-label">Ongoing Cases</div></div><div class="stat-card"><div class="stat-num">${judicial}</div><div class="stat-label">Judicial Conduct Issues</div></div><div class="stat-card"><div class="stat-num">${contradicted}</div><div class="stat-label">Outcome Contradicted Evidence</div></div></div>`;
+}
+
+function renderPatterns() {
+  const total = filteredResponses.length; if (!total) return '';
+  const jc={}, cc={};
+  filteredResponses.forEach(r => { (r.judges||[]).forEach(j=>{const n=j.replace(/^Hon\.\s*/i,'');jc[n]=(jc[n]||0)+1;}); (r.judicial_conduct||[]).forEach(v=>{cc[v]=(cc[v]||0)+1;}); });
+  const topJ=Object.entries(jc).sort((a,b)=>b[1]-a[1]).slice(0,5), topC=Object.entries(cc).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const mJ=topJ[0]?.[1]||1, mC=topC[0]?.[1]||1;
+  let h=`<div class="pattern-card"><div class="pattern-title">Judges — Cases Reported</div>`;
+  topJ.forEach(([n,c])=>{h+=`<div class="bar-row"><div class="bar-label">${n} <span>${c} (${Math.round(c/total*100)}%)</span></div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(c/mJ*100)}%"></div></div></div>`;});
+  if(!topJ.length)h+='<p style="color:var(--stone);font-size:0.82rem;">No judge data yet</p>';
+  h+=`</div><div class="pattern-card"><div class="pattern-title">Top Reported Judicial Conduct Issues</div>`;
+  topC.forEach(([n,c])=>{const l=n.length>50?n.slice(0,50)+'…':n;h+=`<div class="bar-row"><div class="bar-label">${l} <span>${c}</span></div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(c/mC*100)}%"></div></div></div>`;});
+  if(!topC.length)h+='<p style="color:var(--stone);font-size:0.82rem;">No conduct data yet</p>';
+  return h+`</div>`;
+}
+
+function renderCard(r,num) {
+  const date=new Date(r.submitted_at).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+  const judges=(r.judges||[]).map(j=>j.replace(/^Hon\.\s*/i,'')).join(', ');
+  const onT=r.case_status?.toLowerCase().includes('ongoing')?'<span class="tag tag-county">Ongoing</span>':'<span class="tag tag-gray">Closed</span>';
+  const conT=r.judicial_conduct?.length?`<span class="tag tag-warn">${r.judicial_conduct.length} conduct issue${r.judicial_conduct.length!==1?'s':''}</span>`:'';
+  const outT=r.custody_evidence_alignment?.toLowerCase().includes('contradict')?'<span class="tag tag-warn">Outcome contradicted evidence</span>':'';
+  return `<div class="response-card" onclick="toggleCard('${r.id}')"><div class="response-header"><div class="response-num">${num}</div><div class="response-meta"><div class="response-date">${date}${judges?' · '+judges:''}</div><div class="response-tags">${onT}${conT}${outT}</div></div><div class="response-chev" id="chev-${r.id}">›</div></div><div class="detail-panel" id="panel-${r.id}"><div class="detail-inner">${renderDetail(r)}</div></div></div>`;
+}
+
+function renderDetail(r) {
+  let h='';
+  h+=`<div class="detail-section"><div class="detail-heading">Your Case</div>`;
+  if(r.case_type)h+=dr('Type',r.case_type); if(r.year_filed)h+=dr('Year filed',r.year_filed); if(r.case_status)h+=dr('Status',r.case_status); if(r.rep_status)h+=dr('Representation',r.rep_status); if(r.children_involved)h+=dr('Minor children',r.children_involved);
+  h+=`</div><div class="detail-section"><div class="detail-heading">Professionals</div>`;
+  if(r.judges?.length)h+=dr('Judge(s)',r.judges.join(', ')); if(r.your_attorneys?.length)h+=dr('Your attorney(s)',r.your_attorneys.join(', ')); if(r.opposing_attorneys?.length)h+=dr('Opp. attorney(s)',r.opposing_attorneys.join(', '));
+  h+=`</div>`;
+  if(r.judicial_conduct?.length||r.judicial_notes){h+=`<div class="detail-section"><div class="detail-heading">Judicial Conduct</div>`;if(r.judicial_conduct?.length)h+=`<div class="tag-list" style="margin-bottom:8px;">${r.judicial_conduct.map(v=>`<span class="tag tag-county">${v}</span>`).join('')}</div>`;if(r.judicial_notes)h+=`<div class="detail-text">${esc(r.judicial_notes)}</div>`;h+=`</div>`;}
+  if(r.your_atty_conduct?.length||r.opp_atty_conduct?.length||r.attorney_notes){h+=`<div class="detail-section"><div class="detail-heading">Attorney Conduct</div>`;if(r.your_atty_conduct?.length)h+=`<div style="font-size:0.68rem;font-weight:700;text-transform:uppercase;color:var(--stone);margin-bottom:4px;">Your Attorney</div><div class="tag-list" style="margin-bottom:8px;">${r.your_atty_conduct.map(v=>`<span class="tag tag-county">${v}</span>`).join('')}</div>`;if(r.opp_atty_conduct?.length)h+=`<div style="font-size:0.68rem;font-weight:700;text-transform:uppercase;color:var(--stone);margin-bottom:4px;">Opposing Attorney</div><div class="tag-list" style="margin-bottom:8px;">${r.opp_atty_conduct.map(v=>`<span class="tag tag-county">${v}</span>`).join('')}</div>`;if(r.attorney_notes)h+=`<div class="detail-text">${esc(r.attorney_notes)}</div>`;h+=`</div>`;}
+  if(r.procedural_concerns?.length||r.procedural_notes||r.systemic_concerns?.length||r.systemic_notes){h+=`<div class="detail-section"><div class="detail-heading">Procedural &amp; Systemic Concerns</div>`;if(r.procedural_concerns?.length)h+=`<div class="tag-list" style="margin-bottom:6px;">${r.procedural_concerns.map(v=>`<span class="tag tag-gray">${v}</span>`).join('')}</div>`;if(r.procedural_notes)h+=`<div class="detail-text">${esc(r.procedural_notes)}</div>`;if(r.systemic_concerns?.length)h+=`<div class="tag-list" style="margin:6px 0;">${r.systemic_concerns.map(v=>`<span class="tag tag-gray">${v}</span>`).join('')}</div>`;if(r.systemic_notes)h+=`<div class="detail-text">${esc(r.systemic_notes)}</div>`;h+=`</div>`;}
+  h+=`<div class="detail-section"><div class="detail-heading">Outcomes</div>`;
+  if(r.custody_outcome)h+=dr('Custody arrangement',r.custody_outcome); if(r.custody_evidence_alignment)h+=dr('Outcome vs. evidence',r.custody_evidence_alignment); if(r.support_outcome)h+=dr('Support outcome',r.support_outcome); if(r.asset_outcome)h+=dr('Asset outcome',r.asset_outcome); if(r.outcome_observations?.length)h+=`<div class="detail-row"><div class="detail-key">Observations</div><div class="detail-val">${r.outcome_observations.join(', ')}</div></div>`; if(r.outcome_notes)h+=`<div class="detail-text">${esc(r.outcome_notes)}</div>`;
+  h+=`</div>`;
+  return h;
+}
+
+function dr(k,v){return `<div class="detail-row"><div class="detail-key">${k}</div><div class="detail-val">${v}</div></div>`;}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function toggleCard(id){const p=document.getElementById('panel-'+id),c=document.getElementById('chev-'+id);if(!p)return;const o=p.classList.contains('open');p.classList.toggle('open');c.textContent=o?'›':'⌄';if(o)openCards.delete(id);else openCards.add(id);}
+function toggleFilters(){document.getElementById('filtersPanel').classList.toggle('open');}
+function toggleFilter(el,type,value){el.classList.toggle('active');const arr=activeFilters[type];const idx=arr.indexOf(value);if(idx===-1)arr.push(value);else arr.splice(idx,1);applyFilters();}
+function clearFilters(){activeFilters={judge:[],status:[],outcome:[]};document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));applyFilters();}
+function applyFilters(){filteredResponses=allResponses.filter(r=>{if(activeFilters.judge.length&&!activeFilters.judge.some(j=>(r.judges||[]).includes(j)))return false;if(activeFilters.status.includes('ongoing')&&!r.case_status?.toLowerCase().includes('ongoing'))return false;if(activeFilters.status.includes('closed')&&r.case_status?.toLowerCase().includes('ongoing'))return false;if(activeFilters.outcome.includes('contradicted')&&!r.custody_evidence_alignment?.toLowerCase().includes('contradict'))return false;return true;});render();}
+function showExportModal(){document.getElementById('exportModal').classList.add('open');}
+function closeExportModal(){document.getElementById('exportModal').classList.remove('open');}
+function exportCSV(){const headers=['submitted_at','case_type','year_filed','case_status','rep_status','children_involved','judges','your_attorneys','opposing_attorneys','judicial_conduct','judicial_notes','your_atty_conduct','opp_atty_conduct','attorney_notes','procedural_concerns','procedural_notes','systemic_concerns','systemic_notes','custody_outcome','custody_evidence_alignment','support_outcome','asset_outcome','outcome_observations','outcome_notes'];const rows=filteredResponses.map(r=>headers.map(h=>{const v=r[h];if(Array.isArray(v))return`"${v.join('; ')}"`;if(typeof v==='string'&&(v.includes(',')||v.includes('"')||v.includes('\n')))return`"${v.replace(/"/g,'""')}"`;return v??'';}).join(','));downloadFile([headers.join(','),...rows].join('\n'),`marin-responses-${Date.now()}.csv`,'text/csv');closeExportModal();}
+function exportSummary(){const total=filteredResponses.length;if(!total){closeExportModal();return;}const ongoing=filteredResponses.filter(r=>r.case_status?.toLowerCase().includes('ongoing')).length;const jc={},cc={};filteredResponses.forEach(r=>{(r.judges||[]).forEach(j=>{jc[j]=(jc[j]||0)+1;});(r.judicial_conduct||[]).forEach(v=>{cc[v]=(cc[v]||0)+1;});});const jRows=Object.entries(jc).sort((a,b)=>b[1]-a[1]).map(([j,c])=>`${j}: ${c} (${Math.round(c/total*100)}%)`).join('\n');const cRows=Object.entries(cc).sort((a,b)=>b[1]-a[1]).slice(0,15).map(([v,c])=>`${v}: ${c}`).join('\n');downloadFile(`MARIN COUNTY FAMILY COURT ACCOUNTABILITY SURVEY\nSUMMARY REPORT — Generated: ${new Date().toLocaleDateString()}\n\nTotal responses: ${total}\nOngoing cases: ${ongoing} (${Math.round(ongoing/total*100)}%)\n\nJUDGES — CASES REPORTED\n${jRows||'No data'}\n\nTOP JUDICIAL CONDUCT ISSUES\n${cRows||'No data'}`,`marin-summary-${Date.now()}.txt`,'text/plain');closeExportModal();}
+function downloadFile(content,filename,type){const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;a.click();URL.revokeObjectURL(url);}
+
+loadData();
+</script>
+</body>
+</html>

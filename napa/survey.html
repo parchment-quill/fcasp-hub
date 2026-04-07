@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Survey — Family Court Accountability Survey Project — Napa County</title>
+<link rel="stylesheet" href="../styles/main.css">
+<link rel="stylesheet" href="../styles/napa.css">
+</head>
+<body>
+
+<div class="site-header" style="padding: 28px 20px 24px;">
+  <div class="header-eyebrow">Family Court Accountability Survey Project</div>
+  <h1 style="font-size: clamp(1.1rem, 3vw, 1.5rem);">Family Court Accountability Survey</h1>
+  <div class="county-subtitle" style="font-size:0.88rem;">Napa County</div>
+</div>
+
+<div class="progress-wrap" id="progressWrap">
+  <div class="progress-steps" id="progressSteps"></div>
+  <div class="progress-label" id="progressLabel"></div>
+</div>
+
+<div class="main">
+
+  <!-- STEP 1: YOUR CASE -->
+  <div class="step active" id="step-1">
+    <div class="card">
+      <div class="card-title">Section 1 — Your Case</div>
+      <div class="card-subtitle">Basic information about your family court matter. No identifying details needed.</div>
+
+      <div class="field">
+        <label>Type of case <span class="required-tag">Required</span></label>
+        <div class="check-group" id="caseTypeGroup">
+          <label class="check-item"><input type="checkbox" value="Custody/Visitation"><span class="check-label">Custody / Visitation</span></label>
+          <label class="check-item"><input type="checkbox" value="Divorce/Dissolution"><span class="check-label">Divorce / Dissolution</span></label>
+          <label class="check-item"><input type="checkbox" value="Domestic Violence Restraining Order"><span class="check-label">Domestic Violence Restraining Order</span></label>
+          <label class="check-item"><input type="checkbox" value="CPS/Dependency"><span class="check-label">CPS / Child Dependency</span></label>
+          <label class="check-item"><input type="checkbox" value="Child Support"><span class="check-label">Child Support</span></label>
+          <label class="check-item"><input type="checkbox" value="Guardianship"><span class="check-label">Guardianship</span></label>
+          <label class="check-item"><input type="checkbox" value="Paternity"><span class="check-label">Paternity</span></label>
+          <label class="check-item"><input type="checkbox" value="Other"><span class="check-label">Other</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="caseYear">Approximate year your case began</label>
+        <input type="number" id="caseYear" placeholder="e.g. 2019" min="1990" max="2026" inputmode="numeric">
+      </div>
+
+      <div class="field">
+        <label>Case status</label>
+        <div class="check-group" id="caseStatusGroup">
+          <label class="check-item"><input type="radio" name="caseStatus" value="Ongoing — active hearings"><span class="check-label">Ongoing — active hearings</span></label>
+          <label class="check-item"><input type="radio" name="caseStatus" value="Ongoing — waiting for hearings"><span class="check-label">Ongoing — waiting for hearings</span></label>
+          <label class="check-item"><input type="radio" name="caseStatus" value="Recently closed (within 2 years)"><span class="check-label">Recently closed (within 2 years)</span></label>
+          <label class="check-item"><input type="radio" name="caseStatus" value="Closed (more than 2 years ago)"><span class="check-label">Closed (more than 2 years ago)</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Your representation during this case</label>
+        <div class="check-group" id="repStatusGroup">
+          <label class="check-item"><input type="radio" name="repStatus" value="Self-represented throughout"><span class="check-label">Self-represented throughout</span></label>
+          <label class="check-item"><input type="radio" name="repStatus" value="Had an attorney at some point"><span class="check-label">Had an attorney at some point</span></label>
+          <label class="check-item"><input type="radio" name="repStatus" value="Represented throughout"><span class="check-label">Represented throughout</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Are minor children involved in your case?</label>
+        <div class="check-group" id="minorChildrenGroup">
+          <label class="check-item"><input type="radio" name="minorChildren" value="Yes"><span class="check-label">Yes</span></label>
+          <label class="check-item"><input type="radio" name="minorChildren" value="No"><span class="check-label">No</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>How many times has your case been continued or postponed?</label>
+        <div class="check-group" id="continuancesGroup">
+          <label class="check-item"><input type="radio" name="continuances" value="0"><span class="check-label">0</span></label>
+          <label class="check-item"><input type="radio" name="continuances" value="1–2"><span class="check-label">1–2</span></label>
+          <label class="check-item"><input type="radio" name="continuances" value="3–5"><span class="check-label">3–5</span></label>
+          <label class="check-item"><input type="radio" name="continuances" value="6–10"><span class="check-label">6–10</span></label>
+          <label class="check-item"><input type="radio" name="continuances" value="More than 10"><span class="check-label">More than 10</span></label>
+          <label class="check-item"><input type="radio" name="continuances" value="Unsure"><span class="check-label">Unsure</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Has your case taken significantly longer than you expected?</label>
+        <div class="check-group" id="caseDelayedGroup">
+          <label class="check-item"><input type="radio" name="caseDelayed" value="Yes" onclick="toggleDelays(true)"><span class="check-label">Yes</span></label>
+          <label class="check-item"><input type="radio" name="caseDelayed" value="No" onclick="toggleDelays(false)"><span class="check-label">No</span></label>
+          <label class="check-item"><input type="radio" name="caseDelayed" value="Unsure" onclick="toggleDelays(false)"><span class="check-label">Unsure</span></label>
+        </div>
+      </div>
+
+      <div id="delayCausesSection" style="display:none;">
+        <div class="field">
+          <label>What do you believe caused the delays? <span class="label-optional">(select all that apply)</span></label>
+          <div class="check-group" id="delayCausesGroup">
+            <label class="check-item"><input type="checkbox" value="Attorney requests for continuances"><span class="check-label">Attorney requests for continuances</span></label>
+            <label class="check-item"><input type="checkbox" value="Judge scheduling"><span class="check-label">Judge scheduling</span></label>
+            <label class="check-item"><input type="checkbox" value="Opposing party's motions"><span class="check-label">Opposing party's motions</span></label>
+            <label class="check-item"><input type="checkbox" value="Custody evaluator delays"><span class="check-label">Custody evaluator delays</span></label>
+            <label class="check-item"><input type="checkbox" value="Court backlog"><span class="check-label">Court backlog</span></label>
+            <label class="check-item"><input type="checkbox" value="No reason was given"><span class="check-label">No reason was given</span></label>
+            <label class="check-item"><input type="checkbox" value="Other"><span class="check-label">Other</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="nextStep(1)">Continue</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: PROFESSIONALS -->
+  <div class="step" id="step-2">
+    <div class="card">
+      <div class="card-title">Section 2 — Professionals Involved</div>
+      <div class="card-subtitle">Select all judges who presided over your case. Add attorney names if you are comfortable doing so.</div>
+
+      <div class="field">
+        <label>Judge(s) assigned to your case <span class="required-tag">Required</span></label>
+        <div class="judge-tags" id="judgeTags">
+          <div class="judge-tag" onclick="toggleJudge(this)" data-value="Hon. Robert Stamps">Stamps</div>
+          <div class="judge-tag" onclick="toggleJudge(this)" data-value="Hon. Douglas Skelton (Commissioner)">Skelton</div>
+          <div class="judge-tag" onclick="toggleJudge(this)" data-value="Hon. Cynthia P. Smith">Smith</div>
+          <div class="judge-tag" onclick="toggleJudge(this)" data-value="Hon. Joseph J. Solga">Solga</div>
+          <div class="judge-tag" onclick="toggleJudge(this)" data-value="Hon. Kecia Lind">Lind</div>
+          <div class="judge-tag" onclick="toggleJudge(this)" data-value="Hon. Scott R.L. Young">Young</div>
+          <div class="judge-tag" onclick="toggleJudge(this)" data-value="Hon. Mark Boessenecker">Boessenecker</div>
+          <div class="judge-tag" onclick="toggleJudge(this)" data-value="Hon. Elia Ortiz">Ortiz</div>
+          <div class="judge-tag" onclick="toggleJudge(this)" data-value="Hon. Victoria Wood (Ret.)">Wood (Ret.)</div>
+          <div class="judge-tag" onclick="toggleJudge(this)" data-value="Other/Unknown">Other</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="field">
+        <label>Your attorney <span class="label-optional">(optional — search or type below)</span></label>
+        <div class="atty-search-wrap">
+          <input type="text" class="atty-search-input" id="searchYourAtty" placeholder="Search by name…" autocomplete="off" autocorrect="off" spellcheck="false" oninput="attyFilter('your')" onfocus="attyOpen('your')" onblur="attyClose('your')">
+          <button class="atty-clear-btn" id="clearYourAtty" onclick="attyClear('your')">✕</button>
+        </div>
+        <div class="atty-dropdown" id="dropYourAtty"></div>
+        <div class="atty-selected-tags" id="tagsYourAtty"></div>
+        <div class="atty-free-label">Not on list or self-represented? Type here:</div>
+        <input type="text" class="atty-free-text" id="freeYourAtty" placeholder="e.g. Self-represented, or name not listed">
+      </div>
+
+      <div class="field">
+        <label>Opposing party's attorney <span class="label-optional">(optional)</span></label>
+        <div class="atty-search-wrap">
+          <input type="text" class="atty-search-input" id="searchOppAtty" placeholder="Search by name…" autocomplete="off" autocorrect="off" spellcheck="false" oninput="attyFilter('opp')" onfocus="attyOpen('opp')" onblur="attyClose('opp')">
+          <button class="atty-clear-btn" id="clearOppAtty" onclick="attyClear('opp')">✕</button>
+        </div>
+        <div class="atty-dropdown" id="dropOppAtty"></div>
+        <div class="atty-selected-tags" id="tagsOppAtty"></div>
+        <div class="atty-free-label">Not on list? Type here:</div>
+        <input type="text" class="atty-free-text" id="freeOppAtty" placeholder="Name if not listed above">
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="field">
+        <label>Was a minor's counsel / Guardian ad Litem (GAL) appointed?</label>
+        <div class="check-group" id="galInvolvedGroup">
+          <label class="check-item"><input type="radio" name="galInvolved" value="Yes" onclick="toggleGal(true)"><span class="check-label">Yes</span></label>
+          <label class="check-item"><input type="radio" name="galInvolved" value="No" onclick="toggleGal(false)"><span class="check-label">No</span></label>
+        </div>
+      </div>
+
+      <div id="galSection" style="display:none;">
+        <div class="field">
+          <label for="galName">Minor's counsel name <span class="label-optional">(optional)</span></label>
+          <input type="text" id="galName" placeholder="Name if known">
+        </div>
+
+        <div class="violation-section" style="margin-top:16px;">
+          <div class="violation-heading">Minor's Counsel / GAL Conduct</div>
+
+          <div class="field">
+            <label>Did the minor's counsel actually meet with your children in person?</label>
+            <div class="check-group">
+              <label class="check-item"><input type="radio" name="galMet" value="Yes"><span class="check-label">Yes</span></label>
+              <label class="check-item"><input type="radio" name="galMet" value="No"><span class="check-label">No</span></label>
+              <label class="check-item"><input type="radio" name="galMet" value="Unsure"><span class="check-label">Unsure</span></label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Did your children have time alone with the MC, without either parent present?</label>
+            <div class="check-group">
+              <label class="check-item"><input type="radio" name="galAlone" value="Yes"><span class="check-label">Yes</span></label>
+              <label class="check-item"><input type="radio" name="galAlone" value="No"><span class="check-label">No</span></label>
+              <label class="check-item"><input type="radio" name="galAlone" value="Unsure"><span class="check-label">Unsure</span></label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Did the MC appear to listen to what your children said?</label>
+            <div class="check-group">
+              <label class="check-item"><input type="radio" name="galListened" value="Yes"><span class="check-label">Yes</span></label>
+              <label class="check-item"><input type="radio" name="galListened" value="Appeared to dismiss what they said"><span class="check-label">Appeared to dismiss what they said</span></label>
+              <label class="check-item"><input type="radio" name="galListened" value="Unsure"><span class="check-label">Unsure</span></label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Did the MC's recommendation to the court reflect what your children expressed?</label>
+            <div class="check-group">
+              <label class="check-item"><input type="radio" name="galRecReflected" value="Yes"><span class="check-label">Yes</span></label>
+              <label class="check-item"><input type="radio" name="galRecReflected" value="No — it contradicted what they said"><span class="check-label">No — it contradicted what they said</span></label>
+              <label class="check-item"><input type="radio" name="galRecReflected" value="Unsure"><span class="check-label">Unsure</span></label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Did the MC appear to spend equal time with both parents?</label>
+            <div class="check-group">
+              <label class="check-item"><input type="radio" name="galEqualTime" value="Yes"><span class="check-label">Yes</span></label>
+              <label class="check-item"><input type="radio" name="galEqualTime" value="No — more time with the other parent"><span class="check-label">No — more time with the other parent</span></label>
+              <label class="check-item"><input type="radio" name="galEqualTime" value="Unsure"><span class="check-label">Unsure</span></label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Did the MC show bias toward one parent?</label>
+            <div class="check-group">
+              <label class="check-item"><input type="radio" name="galBias" value="Yes"><span class="check-label">Yes</span></label>
+              <label class="check-item"><input type="radio" name="galBias" value="No"><span class="check-label">No</span></label>
+              <label class="check-item"><input type="radio" name="galBias" value="Unsure"><span class="check-label">Unsure</span></label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Did the MC misrepresent what your children said in court or in written reports?</label>
+            <div class="check-group">
+              <label class="check-item"><input type="radio" name="galMisrep" value="Yes"><span class="check-label">Yes</span></label>
+              <label class="check-item"><input type="radio" name="galMisrep" value="No"><span class="check-label">No</span></label>
+              <label class="check-item"><input type="radio" name="galMisrep" value="Unsure"><span class="check-label">Unsure</span></label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Did the MC speak to your children in a way that was dismissive, unkind, or inappropriate?</label>
+            <div class="check-group">
+              <label class="check-item"><input type="radio" name="galInappropriate" value="Yes"><span class="check-label">Yes</span></label>
+              <label class="check-item"><input type="radio" name="galInappropriate" value="No"><span class="check-label">No</span></label>
+              <label class="check-item"><input type="radio" name="galInappropriate" value="Unsure"><span class="check-label">Unsure</span></label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Did your children express fear or discomfort about the minor's counsel?</label>
+            <div class="check-group">
+              <label class="check-item"><input type="radio" name="galFear" value="Yes"><span class="check-label">Yes</span></label>
+              <label class="check-item"><input type="radio" name="galFear" value="No"><span class="check-label">No</span></label>
+              <label class="check-item"><input type="radio" name="galFear" value="Unsure"><span class="check-label">Unsure</span></label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="galNotes">Anything else about the minor's counsel's conduct? <span class="label-optional">(optional)</span></label>
+            <textarea id="galNotes" placeholder="Additional notes about the GAL or minor's counsel." maxlength="1000" oninput="updateCharCount(this,'galNotesCount')" style="min-height:80px;"></textarea>
+            <div class="char-count" id="galNotesCount">0 / 1000</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="field">
+        <label>Was a custody evaluator (730 evaluator) appointed?</label>
+        <div class="check-group" id="evalAppointedGroup">
+          <label class="check-item"><input type="radio" name="evalAppointed" value="Yes" onclick="toggleEval(true)"><span class="check-label">Yes</span></label>
+          <label class="check-item"><input type="radio" name="evalAppointed" value="No" onclick="toggleEval(false)"><span class="check-label">No</span></label>
+        </div>
+      </div>
+
+      <div id="evalSection" style="display:none;">
+        <div class="field">
+          <label for="evalName">Who conducted the evaluation? <span class="label-optional">(optional)</span></label>
+          <input type="text" id="evalName" placeholder="Name or firm if known">
+        </div>
+
+        <div class="field">
+          <label>Did the evaluator meet with both parties equally?</label>
+          <div class="check-group">
+            <label class="check-item"><input type="radio" name="evalEqual" value="Yes"><span class="check-label">Yes</span></label>
+            <label class="check-item"><input type="radio" name="evalEqual" value="No"><span class="check-label">No</span></label>
+            <label class="check-item"><input type="radio" name="evalEqual" value="Unsure"><span class="check-label">Unsure</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Did the court adopt the evaluator's recommendations?</label>
+          <div class="check-group">
+            <label class="check-item"><input type="radio" name="evalAdopted" value="Yes, fully"><span class="check-label">Yes, fully</span></label>
+            <label class="check-item"><input type="radio" name="evalAdopted" value="Yes, partially"><span class="check-label">Yes, partially</span></label>
+            <label class="check-item"><input type="radio" name="evalAdopted" value="No"><span class="check-label">No</span></label>
+            <label class="check-item"><input type="radio" name="evalAdopted" value="Unsure"><span class="check-label">Unsure</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="otherProfs">Other appointed professionals <span class="label-optional">(optional)</span></label>
+        <input type="text" id="otherProfs" placeholder="e.g. mediator, DCSS, custody evaluator">
+        <div class="field-hint">List any other professionals involved in your case.</div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="nextStep(2)">Continue</button>
+      <button class="btn btn-secondary" onclick="prevStep(2)">Back</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: JUDICIAL CONDUCT -->
+  <div class="step" id="step-3">
+    <div class="card">
+      <div class="card-title">Section 3 — Judicial Conduct</div>
+      <div class="card-subtitle">The judge in my case… (select all that apply)</div>
+
+      <div class="check-group" id="judicialConductGroup">
+        <label class="check-item"><input type="checkbox" value="Dismissed or ignored evidence I presented"><span class="check-label">Dismissed or ignored evidence I presented</span></label>
+        <label class="check-item"><input type="checkbox" value="Had private contact with the other side's attorney outside of court (ex parte)"><span class="check-label">Had private contact with the other side's attorney outside of court</span></label>
+        <label class="check-item"><input type="checkbox" value="Dismissed or ignored evidence of domestic violence or abuse"><span class="check-label">Dismissed or ignored evidence of domestic violence or abuse</span></label>
+        <label class="check-item"><input type="checkbox" value="Refused to recuse despite a conflict of interest"><span class="check-label">Refused to step aside despite a conflict of interest</span></label>
+        <label class="check-item"><input type="checkbox" value="Penalized me for raising domestic violence or safety concerns"><span class="check-label">Punished or penalized me for raising domestic violence or safety concerns</span></label>
+        <label class="check-item"><input type="checkbox" value="Consistently sided with the other party without a clear legal reason"><span class="check-label">Consistently sided with the other party without a clear legal reason</span></label>
+        <label class="check-item"><input type="checkbox" value="Made rulings not supported by any evidence in the record"><span class="check-label">Made rulings not supported by any evidence in the record</span></label>
+        <label class="check-item"><input type="checkbox" value="Spoke to me in a threatening or demeaning way"><span class="check-label">Spoke to me in a threatening or demeaning way during hearings</span></label>
+        <label class="check-item"><input type="checkbox" value="Allowed court records or transcripts to be inaccurate or ignored"><span class="check-label">Allowed court records or transcripts to be inaccurate or ignored</span></label>
+        <label class="check-item"><input type="checkbox" value="Applied different rules or standards to me than to the other party"><span class="check-label">Applied different rules or standards to me than to the other party</span></label>
+        <label class="check-item"><input type="checkbox" value="Pressured me to settle in a situation that didn't feel safe"><span class="check-label">Pressured me to settle in a situation that did not feel safe</span></label>
+        <label class="check-item"><input type="checkbox" value="Allowed parental alienation claims without requiring evidence"><span class="check-label">Allowed 'parental alienation' claims against me without requiring any evidence</span></label>
+        <label class="check-item"><input type="checkbox" value="Made rulings that contradicted stated reasons or findings"><span class="check-label">Made rulings that contradicted the stated reasons or findings</span></label>
+        <label class="check-item"><input type="checkbox" value="Made decisions not in my children's best interest"><span class="check-label">Made decisions that did not appear to be in my children's best interest</span></label>
+        <label class="check-item"><input type="checkbox" value="None of the above"><span class="check-label">None of the above</span></label>
+        <label class="check-item"><input type="checkbox" value="Other judicial conduct concern"><span class="check-label">Other judicial conduct I want to describe</span></label>
+      </div>
+
+      <div class="field" style="margin-top:20px;">
+        <label for="judicialNotes">Describe what happened <span class="label-optional">(optional)</span></label>
+        <textarea id="judicialNotes" placeholder="Share what you are comfortable sharing. No identifying details required." maxlength="2000" oninput="updateCharCount(this,'judicialNotesCount')"></textarea>
+        <div class="char-count" id="judicialNotesCount">0 / 2000</div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="nextStep(3)">Continue</button>
+      <button class="btn btn-secondary" onclick="prevStep(3)">Back</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: ATTORNEY CONDUCT -->
+  <div class="step" id="step-4">
+    <div class="card">
+      <div class="card-title">Section 4 — Attorney Conduct</div>
+      <div class="card-subtitle">Check all concerns that apply. Skip any section that does not apply to your case.</div>
+
+      <div class="violation-section">
+        <div class="violation-heading">Your Attorney</div>
+        <div class="check-group" id="yourAttyConductGroup">
+          <label class="check-item"><input type="checkbox" value="Conflict of interest not disclosed"><span class="check-label">Conflict of interest not disclosed</span></label>
+          <label class="check-item"><input type="checkbox" value="Prior relationship with the judge or GAL not disclosed"><span class="check-label">Prior relationship with the judge or GAL not disclosed</span></label>
+          <label class="check-item"><input type="checkbox" value="Failed to present my evidence of domestic violence or abuse"><span class="check-label">Failed to present my evidence of domestic violence or abuse</span></label>
+          <label class="check-item"><input type="checkbox" value="Appeared to collude with opposing counsel"><span class="check-label">Appeared to collude with opposing counsel</span></label>
+          <label class="check-item"><input type="checkbox" value="Pressured me to accept an agreement that didn't feel safe"><span class="check-label">Pressured me to accept an agreement that did not feel safe</span></label>
+          <label class="check-item"><input type="checkbox" value="Excessive or unexplained billing"><span class="check-label">Excessive or unexplained billing</span></label>
+          <label class="check-item"><input type="checkbox" value="Failed to communicate or respond to me"><span class="check-label">Failed to communicate or respond to me</span></label>
+          <label class="check-item"><input type="checkbox" value="Withdrew without adequate notice"><span class="check-label">Withdrew from my case without adequate notice</span></label>
+          <label class="check-item"><input type="checkbox" value="Actively worked against my interests"><span class="check-label">Actively worked against my interests in ways I cannot fully explain</span></label>
+          <label class="check-item"><input type="checkbox" value="No concerns with my attorney / self-represented"><span class="check-label">No concerns — or I was self-represented</span></label>
+          <label class="check-item"><input type="checkbox" value="Other misconduct by my attorney"><span class="check-label">Other misconduct by my attorney</span></label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="violation-section">
+        <div class="violation-heading">Opposing Counsel</div>
+        <div class="check-group" id="oppAttyConductGroup">
+          <label class="check-item"><input type="checkbox" value="Filed false or misleading declarations"><span class="check-label">Filed false or misleading declarations</span></label>
+          <label class="check-item"><input type="checkbox" value="Used delay tactics to exhaust my financial resources"><span class="check-label">Used delay tactics to exhaust my financial resources</span></label>
+          <label class="check-item"><input type="checkbox" value="Used parental alienation framing against me"><span class="check-label">Used 'parental alienation' framing against me</span></label>
+          <label class="check-item"><input type="checkbox" value="Had an undisclosed prior relationship with the judge or GAL"><span class="check-label">Had an undisclosed prior relationship with the judge or GAL</span></label>
+          <label class="check-item"><input type="checkbox" value="No concerns with opposing counsel"><span class="check-label">No concerns with opposing counsel</span></label>
+          <label class="check-item"><input type="checkbox" value="Other misconduct by opposing counsel"><span class="check-label">Other misconduct by opposing counsel</span></label>
+        </div>
+      </div>
+
+      <div class="field" style="margin-top:20px;">
+        <label for="attorneyNotes">Describe what happened <span class="label-optional">(optional)</span></label>
+        <textarea id="attorneyNotes" placeholder="Share what you are comfortable sharing." maxlength="2000" oninput="updateCharCount(this,'attorneyNotesCount')"></textarea>
+        <div class="char-count" id="attorneyNotesCount">0 / 2000</div>
+      </div>
+
+      <div class="field">
+        <label for="complaintsText">Did you file any complaints? <span class="label-optional">(optional)</span></label>
+        <textarea id="complaintsText" placeholder="e.g. filed with State Bar, CJP, or other agency — and what happened" maxlength="500" oninput="updateCharCount(this,'compCount')" style="min-height:80px;"></textarea>
+        <div class="char-count" id="compCount">0 / 500</div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="nextStep(4)">Continue</button>
+      <button class="btn btn-secondary" onclick="prevStep(4)">Back</button>
+    </div>
+  </div>
+
+  <!-- STEP 5: PROCEDURAL VIOLATIONS -->
+  <div class="step" id="step-5">
+    <div class="card">
+      <div class="card-title">Section 5 — Procedural Violations</div>
+      <div class="card-subtitle">Court process concerns — select all that apply.</div>
+
+      <div class="check-group" id="proceduralGroup">
+        <label class="check-item"><input type="checkbox" value="Orders were issued without a hearing"><span class="check-label">Orders were issued without a hearing</span></label>
+        <label class="check-item"><input type="checkbox" value="Private contact between the court and the opposing party or their attorney"><span class="check-label">Private contact between the court and the opposing party or their attorney</span></label>
+        <label class="check-item"><input type="checkbox" value="My evidence was excluded without explanation"><span class="check-label">My evidence was excluded without explanation</span></label>
+        <label class="check-item"><input type="checkbox" value="The court record does not accurately reflect what was said or decided"><span class="check-label">Court record does not accurately reflect what was said or decided</span></label>
+        <label class="check-item"><input type="checkbox" value="Written findings or orders were not provided after hearings"><span class="check-label">Written findings or orders were not provided after hearings</span></label>
+        <label class="check-item"><input type="checkbox" value="Documents filed by the opposing party were not served on me"><span class="check-label">Documents filed by the opposing party were not served on me</span></label>
+        <label class="check-item"><input type="checkbox" value="No procedural concerns"><span class="check-label">No procedural concerns</span></label>
+        <label class="check-item"><input type="checkbox" value="Other procedural concern"><span class="check-label">Other procedural concern</span></label>
+      </div>
+
+      <div class="field" style="margin-top:20px;">
+        <label>Were you able to obtain transcripts of your hearings?</label>
+        <div class="check-group" id="transcriptGroup">
+          <label class="check-item"><input type="radio" name="transcriptAccess" value="Yes, without difficulty"><span class="check-label">Yes, without difficulty</span></label>
+          <label class="check-item"><input type="radio" name="transcriptAccess" value="Yes, but it was difficult or delayed"><span class="check-label">Yes, but it was difficult or delayed</span></label>
+          <label class="check-item"><input type="radio" name="transcriptAccess" value="No — too expensive"><span class="check-label">No — too expensive</span></label>
+          <label class="check-item"><input type="radio" name="transcriptAccess" value="No — I was denied access"><span class="check-label">No — I was denied access</span></label>
+          <label class="check-item"><input type="radio" name="transcriptAccess" value="I did not try"><span class="check-label">I did not try</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>When you reviewed your court records, were they accurate?</label>
+        <div class="check-group" id="recordsGroup">
+          <label class="check-item"><input type="radio" name="recordsAccurate" value="Yes" onclick="toggleRecordsDetail(false)"><span class="check-label">Yes</span></label>
+          <label class="check-item"><input type="radio" name="recordsAccurate" value="No — they contained errors" onclick="toggleRecordsDetail(true)"><span class="check-label">No — they contained errors</span></label>
+          <label class="check-item"><input type="radio" name="recordsAccurate" value="I was unable to access them" onclick="toggleRecordsDetail(false)"><span class="check-label">I was unable to access them</span></label>
+        </div>
+      </div>
+
+      <div id="recordsDetailSection" style="display:none;">
+        <div class="field">
+          <label>What was inaccurate? <span class="label-optional">(select all that apply)</span></label>
+          <div class="check-group" id="recordsDetailGroup">
+            <label class="check-item"><input type="checkbox" value="Missing testimony or statements"><span class="check-label">Missing testimony or statements</span></label>
+            <label class="check-item"><input type="checkbox" value="Wrong dates or rulings"><span class="check-label">Wrong dates or rulings</span></label>
+            <label class="check-item"><input type="checkbox" value="Orders don't reflect what was actually decided"><span class="check-label">Orders don't reflect what was actually decided</span></label>
+            <label class="check-item"><input type="checkbox" value="Other inaccuracy"><span class="check-label">Other</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="nextStep(5)">Continue</button>
+      <button class="btn btn-secondary" onclick="prevStep(5)">Back</button>
+    </div>
+  </div>
+
+  <!-- STEP 6: DV, ABUSE & LABELING -->
+  <div class="step" id="step-6">
+    <div class="card">
+      <div class="card-title">Section 6 — Domestic Violence, Abuse &amp; Labeling</div>
+      <div class="card-subtitle">This section is sensitive. Answer only what you are comfortable sharing. All responses are anonymous.</div>
+
+      <div class="field">
+        <label>Was domestic violence or child abuse alleged in your case?</label>
+        <div class="check-group" id="dvAllegedGroup">
+          <label class="check-item"><input type="radio" name="dvAlleged" value="Yes — I raised it"><span class="check-label">Yes — I raised it</span></label>
+          <label class="check-item"><input type="radio" name="dvAlleged" value="Yes — it was alleged against me"><span class="check-label">Yes — it was alleged against me</span></label>
+          <label class="check-item"><input type="radio" name="dvAlleged" value="Both"><span class="check-label">Both</span></label>
+          <label class="check-item"><input type="radio" name="dvAlleged" value="No"><span class="check-label">No</span></label>
+          <label class="check-item"><input type="radio" name="dvAlleged" value="Prefer not to say"><span class="check-label">Prefer not to say</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Was evidence of DV or abuse submitted to the court?</label>
+        <div class="check-group" id="dvEvidenceGroup">
+          <label class="check-item"><input type="radio" name="dvEvidence" value="Yes, and the court considered it"><span class="check-label">Yes, and the court considered it</span></label>
+          <label class="check-item"><input type="radio" name="dvEvidence" value="Yes, but the court ignored or dismissed it"><span class="check-label">Yes, but the court ignored or dismissed it</span></label>
+          <label class="check-item"><input type="radio" name="dvEvidence" value="No evidence was submitted"><span class="check-label">No evidence was submitted</span></label>
+          <label class="check-item"><input type="radio" name="dvEvidence" value="Not applicable"><span class="check-label">Not applicable</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Did the court minimize, dismiss, or penalize you for raising domestic violence?</label>
+        <div class="check-group" id="dvMinimizedGroup">
+          <label class="check-item"><input type="radio" name="dvMinimized" value="Yes"><span class="check-label">Yes</span></label>
+          <label class="check-item"><input type="radio" name="dvMinimized" value="No"><span class="check-label">No</span></label>
+          <label class="check-item"><input type="radio" name="dvMinimized" value="Unsure"><span class="check-label">Unsure</span></label>
+          <label class="check-item"><input type="radio" name="dvMinimized" value="Not applicable"><span class="check-label">Not applicable</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Was a protective order (restraining order) involved?</label>
+        <div class="check-group" id="protectiveOrderGroup">
+          <label class="check-item"><input type="radio" name="protectiveOrder" value="Yes, and it was enforced"><span class="check-label">Yes, and it was enforced</span></label>
+          <label class="check-item"><input type="radio" name="protectiveOrder" value="Yes, but it was not enforced"><span class="check-label">Yes, but it was not enforced</span></label>
+          <label class="check-item"><input type="radio" name="protectiveOrder" value="I requested one and it was denied"><span class="check-label">I requested one and it was denied</span></label>
+          <label class="check-item"><input type="radio" name="protectiveOrder" value="No protective order involved"><span class="check-label">No protective order involved</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Were you accused of parental alienation or similar framing?</label>
+        <div class="check-group" id="paGroup">
+          <label class="check-item"><input type="radio" name="paAccused" value="Yes — by the opposing party"><span class="check-label">Yes — by the opposing party</span></label>
+          <label class="check-item"><input type="radio" name="paAccused" value="Yes — by the court or evaluator"><span class="check-label">Yes — by the court or evaluator</span></label>
+          <label class="check-item"><input type="radio" name="paAccused" value="Both"><span class="check-label">Both</span></label>
+          <label class="check-item"><input type="radio" name="paAccused" value="No"><span class="check-label">No</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Was a mental health label applied to you by the court or evaluator?</label>
+        <div class="check-group" id="mhLabelGroup">
+          <label class="check-item"><input type="radio" name="mhLabel" value="Yes"><span class="check-label">Yes</span></label>
+          <label class="check-item"><input type="radio" name="mhLabel" value="No"><span class="check-label">No</span></label>
+          <label class="check-item"><input type="radio" name="mhLabel" value="Unsure"><span class="check-label">Unsure</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Did raising safety concerns result in you losing time with your children?</label>
+        <div class="check-group" id="safetyPenalizedGroup">
+          <label class="check-item"><input type="radio" name="safetyPenalized" value="Yes"><span class="check-label">Yes</span></label>
+          <label class="check-item"><input type="radio" name="safetyPenalized" value="No"><span class="check-label">No</span></label>
+          <label class="check-item"><input type="radio" name="safetyPenalized" value="Unsure"><span class="check-label">Unsure</span></label>
+          <label class="check-item"><input type="radio" name="safetyPenalized" value="Not applicable"><span class="check-label">Not applicable</span></label>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="nextStep(6)">Continue</button>
+      <button class="btn btn-secondary" onclick="prevStep(6)">Back</button>
+    </div>
+  </div>
+
+  <!-- STEP 7: OUTCOMES & CHILDREN'S BEST INTEREST -->
+  <div class="step" id="step-7">
+    <div class="card">
+      <div class="card-title">Section 7 — Outcomes &amp; Children's Best Interest</div>
+      <div class="card-subtitle">If your case is ongoing, answer based on what has happened so far. All fields are optional.</div>
+
+      <div class="field">
+        <label>Current custody or visitation arrangement <span class="label-optional">(select all that apply)</span></label>
+        <div class="check-group" id="custodyArrangementGroup">
+          <label class="check-item"><input type="checkbox" value="Sole physical custody with me"><span class="check-label">Sole physical custody with me</span></label>
+          <label class="check-item"><input type="checkbox" value="Sole physical custody with other party"><span class="check-label">Sole physical custody with other party</span></label>
+          <label class="check-item"><input type="checkbox" value="50/50 physical custody"><span class="check-label">50/50 physical custody</span></label>
+          <label class="check-item"><input type="checkbox" value="Supervised visitation ordered for me"><span class="check-label">Supervised visitation ordered for me</span></label>
+          <label class="check-item"><input type="checkbox" value="Supervised visitation ordered for other party"><span class="check-label">Supervised visitation ordered for other party</span></label>
+          <label class="check-item"><input type="checkbox" value="No order yet"><span class="check-label">No order yet</span></label>
+          <label class="check-item"><input type="checkbox" value="Case still pending"><span class="check-label">Case still pending</span></label>
+          <label class="check-item"><input type="checkbox" value="Other arrangement"><span class="check-label">Other arrangement</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Did custody or visitation change over the course of your case?</label>
+        <div class="check-group" id="custodyChangedGroup">
+          <label class="check-item"><input type="radio" name="custodyChanged" value="Yes — in my favor"><span class="check-label">Yes — in my favor</span></label>
+          <label class="check-item"><input type="radio" name="custodyChanged" value="Yes — against me"><span class="check-label">Yes — against me</span></label>
+          <label class="check-item"><input type="radio" name="custodyChanged" value="No significant change"><span class="check-label">No significant change</span></label>
+          <label class="check-item"><input type="radio" name="custodyChanged" value="Case still pending"><span class="check-label">Case still pending</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Do you believe the outcome was influenced by misconduct?</label>
+        <div class="check-group" id="outcomeInfluencedGroup">
+          <label class="check-item"><input type="radio" name="outcomeInfluenced" value="Yes, strongly"><span class="check-label">Yes, strongly</span></label>
+          <label class="check-item"><input type="radio" name="outcomeInfluenced" value="Yes, likely"><span class="check-label">Yes, likely</span></label>
+          <label class="check-item"><input type="radio" name="outcomeInfluenced" value="Unsure"><span class="check-label">Unsure</span></label>
+          <label class="check-item"><input type="radio" name="outcomeInfluenced" value="No"><span class="check-label">No</span></label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="violation-heading" style="margin-bottom:16px;">Children's Experience</div>
+      <div class="field-hint" style="margin-bottom:16px;">Courts are required to make decisions based on the best interest of the child. These questions document whether that standard was applied.</div>
+
+      <div class="field">
+        <label>Were your children ever given an opportunity to express their feelings or preferences to the court or an appointed professional?</label>
+        <div class="check-group" id="childrenVoiceGroup">
+          <label class="check-item"><input type="radio" name="childrenVoice" value="Yes" onclick="toggleChildrenVoice(true)"><span class="check-label">Yes</span></label>
+          <label class="check-item"><input type="radio" name="childrenVoice" value="No" onclick="toggleChildrenVoice(false)"><span class="check-label">No</span></label>
+          <label class="check-item"><input type="radio" name="childrenVoice" value="Unsure" onclick="toggleChildrenVoice(false)"><span class="check-label">Unsure</span></label>
+        </div>
+      </div>
+
+      <div id="childrenVoiceSection" style="display:none;">
+        <div class="field">
+          <label>Do you believe their voices influenced the outcome?</label>
+          <div class="check-group">
+            <label class="check-item"><input type="radio" name="childrenVoiceInfluenced" value="Yes"><span class="check-label">Yes</span></label>
+            <label class="check-item"><input type="radio" name="childrenVoiceInfluenced" value="No"><span class="check-label">No</span></label>
+            <label class="check-item"><input type="radio" name="childrenVoiceInfluenced" value="Unsure"><span class="check-label">Unsure</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Are your children currently in contact with someone they expressed fear of?</label>
+        <div class="check-group" id="childrenFearGroup">
+          <label class="check-item"><input type="radio" name="childrenFear" value="Yes"><span class="check-label">Yes</span></label>
+          <label class="check-item"><input type="radio" name="childrenFear" value="No"><span class="check-label">No</span></label>
+          <label class="check-item"><input type="radio" name="childrenFear" value="Unsure"><span class="check-label">Unsure</span></label>
+          <label class="check-item"><input type="radio" name="childrenFear" value="Prefer not to say"><span class="check-label">Prefer not to say</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Do you believe the court's decisions were made in your children's best interest?</label>
+        <div class="check-group" id="courtBestInterestGroup">
+          <label class="check-item"><input type="radio" name="courtBestInterest" value="Yes" onclick="toggleCourtPriority(false)"><span class="check-label">Yes</span></label>
+          <label class="check-item"><input type="radio" name="courtBestInterest" value="No" onclick="toggleCourtPriority(true)"><span class="check-label">No</span></label>
+          <label class="check-item"><input type="radio" name="courtBestInterest" value="Unsure" onclick="toggleCourtPriority(false)"><span class="check-label">Unsure</span></label>
+        </div>
+      </div>
+
+      <div id="courtPrioritySection" style="display:none;">
+        <div class="field">
+          <label>What do you believe the court prioritized instead? <span class="label-optional">(select all that apply)</span></label>
+          <div class="check-group" id="courtPriorityGroup">
+            <label class="check-item"><input type="checkbox" value="The other party's preferences"><span class="check-label">The other party's preferences</span></label>
+            <label class="check-item"><input type="checkbox" value="Prolonging the case"><span class="check-label">Prolonging the case</span></label>
+            <label class="check-item"><input type="checkbox" value="Minimizing court workload"><span class="check-label">Minimizing court workload</span></label>
+            <label class="check-item"><input type="checkbox" value="Professional relationships within the system"><span class="check-label">Professional relationships within the system</span></label>
+            <label class="check-item"><input type="checkbox" value="Financial pressure on me"><span class="check-label">Financial pressure on me</span></label>
+            <label class="check-item"><input type="checkbox" value="Other priority"><span class="check-label">Other</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Compared to the start of your case, how would you describe your children's wellbeing?</label>
+        <div class="check-group" id="childrenWellbeingGroup">
+          <label class="check-item"><input type="radio" name="childrenWellbeing" value="Better"><span class="check-label">Better</span></label>
+          <label class="check-item"><input type="radio" name="childrenWellbeing" value="Worse"><span class="check-label">Worse</span></label>
+          <label class="check-item"><input type="radio" name="childrenWellbeing" value="About the same"><span class="check-label">About the same</span></label>
+          <label class="check-item"><input type="radio" name="childrenWellbeing" value="Too soon to say"><span class="check-label">Too soon to say</span></label>
+          <label class="check-item"><input type="radio" name="childrenWellbeing" value="Prefer not to say"><span class="check-label">Prefer not to say</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="childrenNotes">Anything else about what your children experienced? <span class="label-optional">(optional)</span></label>
+        <textarea id="childrenNotes" placeholder="Share what you are comfortable sharing." maxlength="1000" oninput="updateCharCount(this,'childrenNotesCount')" style="min-height:80px;"></textarea>
+        <div class="char-count" id="childrenNotesCount">0 / 1000</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="field">
+        <label>Financial harm experienced <span class="label-optional">(select all that apply)</span></label>
+        <div class="check-group" id="financialHarmGroup">
+          <label class="check-item"><input type="checkbox" value="Excessive legal fees"><span class="check-label">Excessive legal fees</span></label>
+          <label class="check-item"><input type="checkbox" value="Lost housing"><span class="check-label">Lost housing</span></label>
+          <label class="check-item"><input type="checkbox" value="Lost job or income"><span class="check-label">Lost job or income</span></label>
+          <label class="check-item"><input type="checkbox" value="Forced to sell assets"><span class="check-label">Forced to sell assets</span></label>
+          <label class="check-item"><input type="checkbox" value="Drained savings or retirement"><span class="check-label">Drained savings or retirement</span></label>
+          <label class="check-item"><input type="checkbox" value="Ongoing financial control by abuser"><span class="check-label">Ongoing financial control by abuser</span></label>
+          <label class="check-item"><input type="checkbox" value="No significant financial harm"><span class="check-label">No significant financial harm</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Do you have ongoing safety concerns for yourself or your children?</label>
+        <div class="check-group" id="safetyConcernsGroup">
+          <label class="check-item"><input type="radio" name="safetyConcerns" value="Yes"><span class="check-label">Yes</span></label>
+          <label class="check-item"><input type="radio" name="safetyConcerns" value="No"><span class="check-label">No</span></label>
+          <label class="check-item"><input type="radio" name="safetyConcerns" value="Prefer not to say"><span class="check-label">Prefer not to say</span></label>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="nextStep(7)">Continue</button>
+      <button class="btn btn-secondary" onclick="prevStep(7)">Back</button>
+    </div>
+  </div>
+
+  <!-- STEP 8: CONTACT & CONSENT -->
+  <div class="step" id="step-8">
+    <div class="card">
+      <div class="card-title">Section 8 — Contact &amp; Consent <span class="label-optional" style="font-size:0.83rem;">(Entirely optional)</span></div>
+      <div class="card-subtitle">You do not need to provide any contact information. This section will not affect how your response is counted.</div>
+
+      <div class="field">
+        <label>May we contact you for follow-up?</label>
+        <div class="check-group" id="contactConsentGroup">
+          <label class="check-item"><input type="radio" name="contactConsent" value="Yes" onclick="toggleContactInfo(true)"><span class="check-label">Yes, you may contact me</span></label>
+          <label class="check-item"><input type="radio" name="contactConsent" value="No" onclick="toggleContactInfo(false)"><span class="check-label">No, I prefer to remain anonymous</span></label>
+        </div>
+      </div>
+
+      <div class="field" id="contactInfoField" style="display:none;">
+        <label for="contactInfo">Contact information <span class="label-optional">(optional)</span></label>
+        <textarea id="contactInfo" placeholder="Email, phone, or however you prefer to be reached" maxlength="300" style="min-height:80px;"></textarea>
+        <div class="field-hint">This is stored separately and never associated with your survey answers in any report or public data.</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="field">
+        <label>Do you consent to your anonymized responses being used in public reporting and advocacy?</label>
+        <div class="check-group" id="dataUseGroup">
+          <label class="check-item"><input type="radio" name="dataUse" value="Yes"><span class="check-label">Yes — my anonymized data may be used in public reports, media, legislative advocacy, and legal proceedings</span></label>
+          <label class="check-item"><input type="radio" name="dataUse" value="No"><span class="check-label">No — I want my response counted internally only</span></label>
+        </div>
+      </div>
+    </div>
+
+    <div id="submitAlert"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="submitSurvey()" id="submitBtn">Submit My Response</button>
+      <button class="btn btn-secondary" onclick="prevStep(8)">Back</button>
+    </div>
+  </div>
+
+  <!-- COMPLETION -->
+  <div class="step" id="step-complete">
+    <div class="completion-card">
+      <span class="completion-icon">✊</span>
+      <h2>Your response has been recorded.</h2>
+      <p>Thank you for your courage in sharing your experience. Your response is now part of the record we are building together.</p>
+      <br>
+      <p>This data exists to create accountability — not just for the future, but for cases happening right now, including yours.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ---- CONFIG ---- */
+const SUPABASE_URL = 'https://gjzdpqgbfgzephsqowex.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqemRwcWdiZmd6ZXBoc3Fvd2V4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MjY5MDEsImV4cCI6MjA5MDMwMjkwMX0.Pn2PQBWkqrB7Ffz_Ovhaelegga-BjTI1XM9rtpGHE1g';
+
+/* ---- SESSION GUARD ---- */
+const validatedId   = sessionStorage.getItem('fcasp_validated_id');
+const validatedCode = sessionStorage.getItem('fcasp_validated_code');
+if (!validatedId) { window.location.href = '/napa'; }
+const isMasterCode = (validatedId === 'master');
+
+/* ---- STATE ---- */
+const TOTAL_STEPS  = 8;
+let currentStep    = 1;
+let selectedJudges = [];
+
+/* ---- PROGRESS ---- */
+const STEP_LABELS = ['', 'Your Case', 'Professionals', 'Judicial Conduct', 'Attorney Conduct', 'Procedural', 'DV & Labeling', 'Outcomes', 'Contact'];
+
+function renderProgress(step) {
+  const wrap = document.getElementById('progressSteps');
+  wrap.innerHTML = '';
+  for (let i = 1; i <= TOTAL_STEPS; i++) {
+    const d = document.createElement('div');
+    d.className = 'prog-dot' + (i < step ? ' done' : i === step ? ' active' : '');
+    wrap.appendChild(d);
+  }
+  document.getElementById('progressLabel').textContent =
+    STEP_LABELS[step] + ' — Step ' + step + ' of ' + TOTAL_STEPS;
+}
+
+function showStep(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById('step-' + (n === 'complete' ? 'complete' : n));
+  if (el) el.classList.add('active');
+  if (n !== 'complete') renderProgress(n);
+  window.scrollTo(0, 0);
+}
+
+function nextStep(from) {
+  if (!validateStep(from)) return;
+  currentStep = from + 1;
+  showStep(currentStep);
+}
+
+function prevStep(from) {
+  currentStep = from - 1;
+  showStep(currentStep);
+}
+
+/* ---- VALIDATION ---- */
+function validateStep(step) {
+  if (step === 1) {
+    if (document.querySelectorAll('#caseTypeGroup input:checked').length === 0) {
+      alert('Please select at least one case type.');
+      return false;
+    }
+  }
+  if (step === 2) {
+    if (selectedJudges.length === 0) {
+      alert('Please select at least one judge (or "Other" if unknown).');
+      return false;
+    }
+  }
+  return true;
+}
+
+/* ---- JUDGE TAGS ---- */
+function toggleJudge(el) {
+  el.classList.toggle('selected');
+  const val = el.dataset.value;
+  if (el.classList.contains('selected')) {
+    if (!selectedJudges.includes(val)) selectedJudges.push(val);
+  } else {
+    selectedJudges = selectedJudges.filter(j => j !== val);
+  }
+}
+
+/* ---- CHECK-ITEM STYLING ---- */
+document.addEventListener('change', function (e) {
+  if (e.target.type !== 'checkbox' && e.target.type !== 'radio') return;
+  const item = e.target.closest('.check-item');
+  if (!item) return;
+  if (e.target.type === 'radio') {
+    document.querySelectorAll(`input[name="${e.target.name}"]`).forEach(r => {
+      r.closest('.check-item').classList.remove('selected');
+    });
+  }
+  if (e.target.checked) item.classList.add('selected');
+  else item.classList.remove('selected');
+});
+
+/* ---- CONDITIONAL TOGGLES ---- */
+function toggleDelays(show)        { document.getElementById('delayCausesSection').style.display  = show ? 'block' : 'none'; }
+function toggleGal(show)           { document.getElementById('galSection').style.display          = show ? 'block' : 'none'; }
+function toggleEval(show)          { document.getElementById('evalSection').style.display         = show ? 'block' : 'none'; }
+function toggleRecordsDetail(show) { document.getElementById('recordsDetailSection').style.display = show ? 'block' : 'none'; }
+function toggleChildrenVoice(show) { document.getElementById('childrenVoiceSection').style.display = show ? 'block' : 'none'; }
+function toggleCourtPriority(show) { document.getElementById('courtPrioritySection').style.display = show ? 'block' : 'none'; }
+function toggleContactInfo(show)   { document.getElementById('contactInfoField').style.display    = show ? 'block' : 'none'; }
+
+/* ---- CHAR COUNT ---- */
+function updateCharCount(el, countId) {
+  document.getElementById(countId).textContent = el.value.length + ' / ' + el.maxLength;
+}
+
+/* ---- ATTORNEY SELECTOR ---- */
+const ATTORNEYS = [
+  'Pro Per / Self-Represented',
+  'I don\'t know',
+  'Brandon Blevans',
+  'Caryn Hreha',
+  'Gorsha M. Sur',
+  'Jessica C. Mangold',
+  'Juliana E. Pisani',
+  'Karin Poiré',
+  'Leslie F. Juris',
+  'Mary L. Needham',
+  'Rebecca A. Yost',
+  'Roger J. Lewis',
+  'Trevor G. Jackson',
+  'Vanessa K. Wills',
+  'Victoria Wood',
+  'Vincent E. Nelson',
+  'William H. Paynter'
+];
+
+const attyState = { your: [], opp: [] };
+let attyTimers  = {};
+
+function attyFieldId(field) { return field === 'your' ? 'YourAtty' : 'OppAtty'; }
+
+function attyFilter(field) {
+  const input    = document.getElementById('search' + attyFieldId(field));
+  const q        = input.value.trim().toLowerCase();
+  const clearBtn = document.getElementById('clear' + attyFieldId(field));
+  clearBtn.style.display = q ? 'flex' : 'none';
+  attyRenderDropdown(field, q);
+}
+function attyOpen(field) {
+  if (attyTimers[field]) clearTimeout(attyTimers[field]);
+  const q = document.getElementById('search' + attyFieldId(field)).value.trim().toLowerCase();
+  attyRenderDropdown(field, q);
+}
+function attyClose(field) {
+  attyTimers[field] = setTimeout(() => {
+    document.getElementById('drop' + attyFieldId(field)).classList.remove('open');
+  }, 200);
+}
+function attyRenderDropdown(field, q) {
+  const dd       = document.getElementById('drop' + attyFieldId(field));
+  const selected = attyState[field];
+  const filtered = ATTORNEYS.filter(a => !selected.includes(a) && (!q || a.toLowerCase().includes(q)));
+  if (filtered.length === 0) {
+    dd.innerHTML = '<div class="atty-dropdown-empty">No match — use the field below to enter the name</div>';
+  } else {
+    dd.innerHTML = filtered.map(a => {
+      const esc     = a.replace(/'/g, "\\'");
+      const display = q
+        ? a.replace(new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi'), '<mark>$1</mark>')
+        : a;
+      return `<div class="atty-dropdown-item" onmousedown="attySelect('${field}','${esc}')">${display}</div>`;
+    }).join('');
+  }
+  dd.classList.add('open');
+}
+function attySelect(field, name) {
+  if (!attyState[field].includes(name)) attyState[field].push(name);
+  document.getElementById('search' + attyFieldId(field)).value = '';
+  document.getElementById('clear'  + attyFieldId(field)).style.display = 'none';
+  document.getElementById('drop'   + attyFieldId(field)).classList.remove('open');
+  attyRenderTags(field);
+}
+function attyRemove(field, name) {
+  attyState[field] = attyState[field].filter(a => a !== name);
+  attyRenderTags(field);
+}
+function attyRenderTags(field) {
+  const tags = document.getElementById('tags' + attyFieldId(field));
+  tags.innerHTML = attyState[field].map(a => {
+    const esc = a.replace(/'/g, "\\'");
+    return `<div class="atty-tag">${a}<button class="atty-tag-remove" onmousedown="attyRemove('${field}','${esc}')">✕</button></div>`;
+  }).join('');
+}
+function attyClear(field) {
+  document.getElementById('search' + attyFieldId(field)).value = '';
+  document.getElementById('clear'  + attyFieldId(field)).style.display = 'none';
+  document.getElementById('drop'   + attyFieldId(field)).classList.remove('open');
+}
+function attyGetArray(field) {
+  const selected = [...attyState[field]];
+  const free     = document.getElementById('free' + attyFieldId(field)).value.trim();
+  if (free) selected.push(free);
+  return selected.length ? selected : null;
+}
+
+/* ---- DATA COLLECTION ---- */
+function getChecked(groupId) {
+  return Array.from(document.querySelectorAll(`#${groupId} input:checked`)).map(i => i.value);
+}
+function getRadio(name) {
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  return el ? el.value : null;
+}
+
+function collectData() {
+  const caseTypes         = getChecked('caseTypeGroup');
+  const judicialConduct   = getChecked('judicialConductGroup');
+  const yourAttyConduct   = getChecked('yourAttyConductGroup');
+  const oppAttyConduct    = getChecked('oppAttyConductGroup');
+  const procedural        = getChecked('proceduralGroup');
+  const custodyArr        = getChecked('custodyArrangementGroup');
+  const courtPriority     = getChecked('courtPriorityGroup');
+  const financialHarm     = getChecked('financialHarmGroup');
+  const recordsInaccurate = getChecked('recordsDetailGroup');
+  const delayCauses       = getChecked('delayCausesGroup');
+
+  const core = {
+    case_type:                 caseTypes.join(', ') || null,
+    year_filed:                document.getElementById('caseYear').value.trim() || null,
+    case_status:               getRadio('caseStatus'),
+    rep_status:                getRadio('repStatus'),
+    children_involved:         getRadio('minorChildren'),
+    judges:                    selectedJudges.length ? selectedJudges : null,
+    your_attorneys:            attyGetArray('your'),
+    opposing_attorneys:        attyGetArray('opp'),
+    judicial_conduct:          judicialConduct.length ? judicialConduct : null,
+    judicial_notes:            document.getElementById('judicialNotes').value.trim() || null,
+    your_atty_conduct:         yourAttyConduct.length ? yourAttyConduct : null,
+    opp_atty_conduct:          oppAttyConduct.length ? oppAttyConduct : null,
+    attorney_notes:            document.getElementById('attorneyNotes').value.trim() || null,
+    procedural_concerns:       procedural.length ? procedural : null,
+    custody_outcome:           custodyArr.join(', ') || null,
+    custody_evidence_alignment: getRadio('outcomeInfluenced'),
+    outcome_notes:             document.getElementById('childrenNotes').value.trim() || null
+  };
+
+  const survey_data = {
+    continuances:              getRadio('continuances'),
+    case_delayed:              getRadio('caseDelayed'),
+    delay_causes:              delayCauses.length ? delayCauses : null,
+    gal_involved:              getRadio('galInvolved'),
+    gal_name:                  document.getElementById('galName').value.trim() || null,
+    gal_met_children:          getRadio('galMet'),
+    gal_children_alone:        getRadio('galAlone'),
+    gal_listened:              getRadio('galListened'),
+    gal_rec_reflected:         getRadio('galRecReflected'),
+    gal_equal_time:            getRadio('galEqualTime'),
+    gal_bias:                  getRadio('galBias'),
+    gal_misrepresented:        getRadio('galMisrep'),
+    gal_inappropriate:         getRadio('galInappropriate'),
+    gal_fear:                  getRadio('galFear'),
+    gal_notes:                 document.getElementById('galNotes').value.trim() || null,
+    evaluator_appointed:       getRadio('evalAppointed'),
+    evaluator_name:            document.getElementById('evalName').value.trim() || null,
+    evaluator_equal:           getRadio('evalEqual'),
+    evaluator_adopted:         getRadio('evalAdopted'),
+    other_professionals:       document.getElementById('otherProfs').value.trim() || null,
+    complaints_filed:          document.getElementById('complaintsText').value.trim() || null,
+    transcript_access:         getRadio('transcriptAccess'),
+    records_accurate:          getRadio('recordsAccurate'),
+    records_inaccurate:        recordsInaccurate.length ? recordsInaccurate : null,
+    dv_alleged:                getRadio('dvAlleged'),
+    dv_evidence:               getRadio('dvEvidence'),
+    dv_minimized:              getRadio('dvMinimized'),
+    protective_order:          getRadio('protectiveOrder'),
+    parental_alienation:       getRadio('paAccused'),
+    mental_health_label:       getRadio('mhLabel'),
+    safety_penalized:          getRadio('safetyPenalized'),
+    custody_changed:           getRadio('custodyChanged'),
+    outcome_influenced:        getRadio('outcomeInfluenced'),
+    children_voice:            getRadio('childrenVoice'),
+    children_voice_influenced: getRadio('childrenVoiceInfluenced'),
+    children_fear_contact:     getRadio('childrenFear'),
+    court_best_interest:       getRadio('courtBestInterest'),
+    court_prioritized:         courtPriority.length ? courtPriority : null,
+    children_wellbeing:        getRadio('childrenWellbeing'),
+    financial_harm:            financialHarm.length ? financialHarm : null,
+    safety_concerns:           getRadio('safetyConcerns'),
+    contact_consent:           getRadio('contactConsent'),
+    contact_info:              document.getElementById('contactInfo').value.trim() || null,
+    data_use_consent:          getRadio('dataUse')
+  };
+
+  return { ...core, survey_data };
+}
+
+/* ---- SUBMIT ---- */
+async function submitSurvey() {
+  const alertEl = document.getElementById('submitAlert');
+  const btn     = document.getElementById('submitBtn');
+
+  btn.innerHTML = '<span class="loading"></span>Submitting…';
+  btn.disabled  = true;
+  alertEl.innerHTML = '';
+
+  try {
+    const payload = collectData();
+
+    const resInsert = await fetch(`${SUPABASE_URL}/rest/v1/napa_survey_responses`, {
+      method: 'POST',
+      headers: {
+        apikey:         SUPABASE_KEY,
+        Authorization:  `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        Prefer:         'return=minimal'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!resInsert.ok) {
+      const errBody = await resInsert.json().catch(() => ({}));
+      throw new Error(`Insert failed (${resInsert.status}): ${errBody.message || errBody.hint || JSON.stringify(errBody)}`);
+    }
+
+    if (!isMasterCode) {
+      await fetch(`${SUPABASE_URL}/rest/v1/napa_access_codes?id=eq.${validatedId}`, {
+        method: 'PATCH',
+        headers: {
+          apikey:         SUPABASE_KEY,
+          Authorization:  `Bearer ${SUPABASE_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ used: true, used_at: new Date().toISOString() })
+      });
+    }
+
+    sessionStorage.removeItem('fcasp_validated_id');
+    sessionStorage.removeItem('fcasp_validated_code');
+    showStep('complete');
+
+  } catch (err) {
+    alertEl.innerHTML = `<div class="alert alert-error">Something went wrong: ${err.message}. Please try again — your answers have not been lost.</div>`;
+    btn.innerHTML = 'Submit My Response';
+    btn.disabled  = false;
+  }
+}
+
+/* ---- INIT ---- */
+renderProgress(1);
+</script>
+</body>
+</html>

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Response Viewer — SCFCA Survey</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal: #1e6b6b;
+  --teal-deep: #134545;
+  --teal-light: #2a8f8f;
+  --gold: #b8943a;
+  --gold-light: #d4af60;
+  --ink: #1a1a2e;
+  --parchment: #faf7f0;
+  --border: #d4c9b0;
+  --white: #fff;
+  --stone: #6b7280;
+  --stone-light: #9ca3af;
+  --success: #166534;
+  --success-bg: #f0fdf4;
+  --danger: #991b1b;
+  --danger-bg: #fef2f2;
+  --radius: 12px;
+  --shadow: 0 2px 16px rgba(26,26,46,0.10);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'Source Serif 4', Georgia, serif; background: var(--parchment); color: var(--ink); min-height: 100vh; font-size: 15px; }
+
+/* HEADER */
+.header {
+  background: var(--teal-deep);
+  padding: 24px 20px 20px;
+  position: relative;
+}
+.header::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
+.header h1 { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: #fff; font-weight: 700; }
+.header p { font-size: 0.8rem; color: rgba(255,255,255,0.55); margin-top: 4px; }
+
+/* TOOLBAR */
+.toolbar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 16px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.toolbar-count {
+  font-size: 0.8rem;
+  color: var(--stone);
+  flex: 1;
+  min-width: 80px;
+}
+.toolbar-count strong { color: var(--teal); }
+.toolbar-btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-family: 'Source Serif 4', serif;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.2s;
+}
+.toolbar-btn:active { opacity: 0.8; }
+.btn-teal { background: var(--teal); color: #fff; }
+.btn-gold { background: var(--gold); color: #fff; }
+.btn-outline { background: transparent; color: var(--teal); border: 1.5px solid var(--teal); }
+
+/* FILTERS */
+.filters {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 16px;
+  display: none;
+}
+.filters.open { display: block; }
+.filter-row { display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.filter-row:last-child { margin-bottom: 0; }
+.filter-chip {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-family: 'Source Serif 4', serif;
+  cursor: pointer;
+  border: 1.5px solid var(--border);
+  background: var(--parchment);
+  color: var(--stone);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.filter-chip.active { background: var(--teal); color: #fff; border-color: var(--teal); }
+.filter-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--stone); margin-bottom: 6px; }
+
+/* MAIN */
+.main { padding: 14px 14px 80px; max-width: 700px; margin: 0 auto; }
+
+/* STAT CARDS */
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.stat-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 12px; text-align: center; box-shadow: var(--shadow); }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--teal); font-weight: 700; line-height: 1; }
+.stat-label { font-size: 0.7rem; color: var(--stone); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* TOP VIOLATIONS */
+.pattern-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 14px; margin-bottom: 14px; box-shadow: var(--shadow); }
+.pattern-title { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--teal-deep); font-weight: 700; margin-bottom: 12px; }
+.bar-row { margin-bottom: 10px; }
+.bar-label { font-size: 0.78rem; color: var(--ink); margin-bottom: 4px; display: flex; justify-content: space-between; }
+.bar-label span { color: var(--stone); font-size: 0.72rem; }
+.bar-track { height: 8px; background: var(--parchment); border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; background: var(--teal); border-radius: 4px; transition: width 0.6s ease; }
+.bar-fill.gold { background: var(--gold); }
+
+/* RESPONSE CARDS */
+.response-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  cursor: pointer;
+}
+.response-header {
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.response-num {
+  background: var(--teal-deep);
+  color: #fff;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.response-meta { flex: 1; }
+.response-date { font-size: 0.75rem; color: var(--stone); margin-bottom: 4px; }
+.response-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.tag {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.tag-teal { background: rgba(30,107,107,0.1); color: var(--teal); }
+.tag-gold { background: rgba(184,148,58,0.12); color: var(--gold); }
+.tag-red { background: #fef2f2; color: #dc2626; }
+.tag-gray { background: #f3f4f6; color: var(--stone); }
+.response-chevron { color: var(--stone-light); font-size: 1rem; padding-top: 2px; }
+
+/* DETAIL PANEL */
+.detail-panel { border-top: 1px solid var(--border); padding: 0; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s; }
+.detail-panel.open { max-height: 2000px; padding: 16px; }
+.detail-section { margin-bottom: 16px; }
+.detail-section:last-child { margin-bottom: 0; }
+.detail-heading {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+.detail-row { display: flex; gap: 8px; margin-bottom: 6px; font-size: 0.82rem; }
+.detail-key { color: var(--stone); min-width: 110px; flex-shrink: 0; }
+.detail-val { color: var(--ink); flex: 1; }
+.detail-text {
+  background: var(--parchment);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--ink);
+  font-style: italic;
+  margin-top: 4px;
+}
+.violation-list { display: flex; flex-wrap: wrap; gap: 5px; }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 48px 20px; color: var(--stone); }
+.empty-icon { font-size: 2.5rem; margin-bottom: 12px; }
+.empty-state p { font-size: 0.9rem; line-height: 1.6; }
+
+/* LOADING */
+.loading-wrap { text-align: center; padding: 40px 20px; }
+.spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--teal); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 14px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-wrap p { color: var(--stone); font-size: 0.88rem; }
+
+/* ALERT */
+.alert { padding: 12px 14px; border-radius: 10px; font-size: 0.85rem; margin-bottom: 14px; line-height: 1.5; }
+.alert-error { background: var(--danger-bg); border: 1px solid #fca5a5; color: var(--danger); }
+.alert-success { background: var(--success-bg); border: 1px solid #86efac; color: var(--success); }
+
+/* MODAL */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; align-items: flex-end; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--white); border-radius: 20px 20px 0 0; padding: 24px 20px 36px; width: 100%; max-height: 70vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.modal-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--teal-deep); margin-bottom: 16px; font-weight: 700; }
+.modal-btn { display: block; width: 100%; padding: 14px; border: none; border-radius: 10px; font-size: 0.95rem; font-family: 'Source Serif 4', serif; font-weight: 600; cursor: pointer; margin-bottom: 10px; text-align: center; }
+.modal-btn:last-child { margin-bottom: 0; }
+.modal-close { background: var(--parchment); color: var(--stone); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>⚖️ Response Viewer</h1>
+  <p>Sonoma County Family Court Accountability Survey Survey</p>
+</div>
+
+<div class="toolbar">
+  <div class="toolbar-count" id="toolbarCount"><strong>—</strong> responses</div>
+  <button class="toolbar-btn btn-outline" onclick="toggleFilters()">Filter</button>
+  <button class="toolbar-btn btn-gold" onclick="showExportModal()">Export</button>
+  <button class="toolbar-btn btn-teal" onclick="loadData()">↻</button>
+</div>
+
+<div class="filters" id="filtersPanel">
+  <div class="filter-label">Judge</div>
+  <div class="filter-row" id="judgeFilters">
+    <div class="filter-chip" onclick="toggleFilter(this,'judge','Hon. Robert LaForge')">LaForge</div>
+    <div class="filter-chip" onclick="toggleFilter(this,'judge','Hon. Kinna Patel Crocker')">Crocker</div>
+    <div class="filter-chip" onclick="toggleFilter(this,'judge','Hon. Paul Lozada')">Lozada</div>
+    <div class="filter-chip" onclick="toggleFilter(this,'judge','Hon. Shelly Averill')">Averill</div>
+    <div class="filter-chip" onclick="toggleFilter(this,'judge','Hon. Troye Shaffer')">Shaffer</div>
+    <div class="filter-chip" onclick="toggleFilter(this,'judge','Hon. Lawrence Ornell')">Ornell</div>
+    <div class="filter-chip" onclick="toggleFilter(this,'judge','Hon. Megan Amaral')">Amaral</div>
+    <div class="filter-chip" onclick="toggleFilter(this,'judge','Hon. James Bertoli')">Bertoli</div>
+  </div>
+  <div class="filter-label" style="margin-top:10px;">Case Status</div>
+  <div class="filter-row">
+    <div class="filter-chip" onclick="toggleFilter(this,'status','ongoing')">Ongoing</div>
+    <div class="filter-chip" onclick="toggleFilter(this,'status','closed')">Closed</div>
+  </div>
+  <div class="filter-label" style="margin-top:10px;">DV Involved</div>
+  <div class="filter-row">
+    <div class="filter-chip" onclick="toggleFilter(this,'dv','yes')">DV Alleged</div>
+    <div class="filter-chip" onclick="toggleFilter(this,'dv','dismissed')">DV Dismissed</div>
+    <div class="filter-chip" onclick="toggleFilter(this,'dv','safety')">Safety Concerns</div>
+  </div>
+  <div style="margin-top:12px;">
+    <button class="toolbar-btn btn-outline" style="display:inline-block;width:auto;" onclick="clearFilters()">Clear All Filters</button>
+  </div>
+</div>
+
+<div class="main" id="mainContent">
+  <div class="loading-wrap" id="loadingState">
+    <div class="spinner"></div>
+    <p>Loading responses...</p>
+  </div>
+</div>
+
+<!-- EXPORT MODAL -->
+<div class="modal-overlay" id="exportModal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-title">Export Data</div>
+    <button class="modal-btn btn-teal" onclick="exportCSV()">Download Full CSV</button>
+    <button class="modal-btn btn-gold" onclick="exportSummary()">Download Summary Report</button>
+    <button class="modal-btn btn-outline" onclick="exportViolations()">Download Violation Counts</button>
+    <button class="modal-btn modal-close" onclick="closeExportModal()">Cancel</button>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://gjzdpqgbfgzephsqowex.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqemRwcWdiZmd6ZXBoc3Fvd2V4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MjY5MDEsImV4cCI6MjA5MDMwMjkwMX0.Pn2PQBWkqrB7Ffz_Ovhaelegga-BjTI1XM9rtpGHE1g';
+
+let allResponses = [];
+let filteredResponses = [];
+let activeFilters = { judge: [], status: [], dv: [] };
+let openCards = new Set();
+
+// ---- LOAD DATA ----
+async function loadData() {
+  const main = document.getElementById('mainContent');
+  main.innerHTML = '<div class="loading-wrap"><div class="spinner"></div><p>Loading responses...</p></div>';
+  document.getElementById('toolbarCount').innerHTML = '<strong>—</strong> responses';
+
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/survey_responses?select=*&order=submitted_at.desc`, {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`
+      }
+    });
+
+    if (!res.ok) throw new Error('Failed to fetch: ' + res.status);
+    allResponses = await res.json();
+    filteredResponses = [...allResponses];
+    render();
+
+  } catch(err) {
+    main.innerHTML = `<div class="alert alert-error">Could not load responses: ${err.message}<br><br>Make sure your Supabase project is active and the anon key has read access to survey_responses.</div>`;
+  }
+}
+
+// ---- RENDER ----
+function render() {
+  const main = document.getElementById('mainContent');
+  const count = filteredResponses.length;
+  document.getElementById('toolbarCount').innerHTML = `<strong>${count}</strong> response${count !== 1 ? 's' : ''}`;
+
+  if (count === 0) {
+    main.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><p>${allResponses.length === 0 ? 'No responses yet. Share your survey and come back when responses start coming in.' : 'No responses match your current filters.'}</p></div>`;
+    return;
+  }
+
+  let html = '';
+
+  // Stats
+  html += renderStats();
+
+  // Pattern bars
+  html += renderPatterns();
+
+  // Response list
+  filteredResponses.forEach((r, i) => {
+    html += renderCard(r, i);
+  });
+
+  main.innerHTML = html;
+
+  // Restore open cards
+  openCards.forEach(id => {
+    const panel = document.getElementById('panel-' + id);
+    if (panel) panel.classList.add('open');
+  });
+}
+
+function renderStats() {
+  const total = filteredResponses.length;
+  const ongoing = filteredResponses.filter(r => r.case_status && r.case_status.includes('Ongoing')).length;
+  const dvAlleged = filteredResponses.filter(r => r.dv_alleged && r.dv_alleged !== 'no' && r.dv_alleged !== 'na').length;
+  const dvDismissed = filteredResponses.filter(r => r.dv_minimized === true).length;
+  const safetyFlag = filteredResponses.filter(r => r.safety_concerns === true).length;
+  const outcomeCorrupt = filteredResponses.filter(r => r.outcome_influenced && r.outcome_influenced.includes('yes')).length;
+
+  return `
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-num">${total}</div><div class="stat-label">Total Responses</div></div>
+    <div class="stat-card"><div class="stat-num">${ongoing}</div><div class="stat-label">Ongoing Cases</div></div>
+    <div class="stat-card"><div class="stat-num">${dvAlleged}</div><div class="stat-label">DV Alleged</div></div>
+    <div class="stat-card"><div class="stat-num">${dvDismissed}</div><div class="stat-label">DV Dismissed</div></div>
+    <div class="stat-card"><div class="stat-num">${safetyFlag}</div><div class="stat-label">Safety Concerns</div></div>
+    <div class="stat-card"><div class="stat-num">${outcomeCorrupt}</div><div class="stat-label">Outcome Influenced</div></div>
+  </div>`;
+}
+
+function renderPatterns() {
+  const total = filteredResponses.length;
+  if (total === 0) return '';
+
+  // Judge counts
+  const judgeCounts = {};
+  filteredResponses.forEach(r => {
+    (r.judges || []).forEach(j => {
+      const name = j.replace('Hon. ','');
+      judgeCounts[name] = (judgeCounts[name] || 0) + 1;
+    });
+  });
+
+  // Violation counts
+  const violationCounts = {};
+  filteredResponses.forEach(r => {
+    [...(r.judicial_violations || []), ...(r.attorney_violations || [])].forEach(v => {
+      violationCounts[v] = (violationCounts[v] || 0) + 1;
+    });
+  });
+
+  const topJudges = Object.entries(judgeCounts).sort((a,b) => b[1]-a[1]).slice(0, 5);
+  const topViolations = Object.entries(violationCounts).sort((a,b) => b[1]-a[1]).slice(0, 5);
+  const maxJ = topJudges[0]?.[1] || 1;
+  const maxV = topViolations[0]?.[1] || 1;
+
+  let html = `<div class="pattern-card"><div class="pattern-title">Judges — Cases Reported</div>`;
+  topJudges.forEach(([name, count]) => {
+    const pct = Math.round((count/maxJ)*100);
+    html += `<div class="bar-row"><div class="bar-label">${name} <span>${count} (${Math.round(count/total*100)}%)</span></div><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div></div>`;
+  });
+  if (topJudges.length === 0) html += '<p style="color:var(--stone);font-size:0.82rem;">No judge data yet</p>';
+  html += `</div>`;
+
+  html += `<div class="pattern-card"><div class="pattern-title">Top Reported Violations</div>`;
+  topViolations.forEach(([name, count]) => {
+    const pct = Math.round((count/maxV)*100);
+    html += `<div class="bar-row"><div class="bar-label">${name.length > 45 ? name.slice(0,45)+'…' : name} <span>${count}</span></div><div class="bar-track"><div class="bar-fill gold" style="width:${pct}%"></div></div></div>`;
+  });
+  if (topViolations.length === 0) html += '<p style="color:var(--stone);font-size:0.82rem;">No violation data yet</p>';
+  html += `</div>`;
+
+  return html;
+}
+
+function renderCard(r, index) {
+  const num = filteredResponses.length - index;
+  const date = new Date(r.submitted_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+  const judges = (r.judges || []).map(j => j.replace('Hon.','')).join(', ');
+  const dvFlag = r.dv_alleged && r.dv_alleged !== 'no';
+  const safetyFlag = r.safety_concerns;
+  const outcomeFlag = r.outcome_influenced && r.outcome_influenced.includes('yes');
+  const violationCount = (r.judicial_violations?.length || 0) + (r.attorney_violations?.length || 0);
+
+  const statusTag = r.case_status ? (r.case_status.includes('Ongoing') ? `<span class="tag tag-teal">Ongoing</span>` : `<span class="tag tag-gray">Closed</span>`) : '';
+  const dvTag = dvFlag ? `<span class="tag tag-red">DV</span>` : '';
+  const safetyTag = safetyFlag ? `<span class="tag tag-red">⚠ Safety</span>` : '';
+  const violTag = violationCount > 0 ? `<span class="tag tag-gold">${violationCount} violation${violationCount!==1?'s':''}</span>` : '';
+
+  return `
+  <div class="response-card" onclick="toggleCard('${r.id}')">
+    <div class="response-header">
+      <div class="response-num">${num}</div>
+      <div class="response-meta">
+        <div class="response-date">${date} ${judges ? '· ' + judges : ''}</div>
+        <div class="response-tags">${statusTag}${dvTag}${safetyTag}${violTag}</div>
+      </div>
+      <div class="response-chevron" id="chev-${r.id}">›</div>
+    </div>
+    <div class="detail-panel" id="panel-${r.id}">
+      ${renderDetail(r)}
+    </div>
+  </div>`;
+}
+
+function renderDetail(r) {
+  let html = '';
+
+  // Case info
+  html += `<div class="detail-section"><div class="detail-heading">Case</div>`;
+  if (r.case_type?.length) html += `<div class="detail-row"><div class="detail-key">Type</div><div class="detail-val">${r.case_type.join(', ')}</div></div>`;
+  if (r.case_start_year) html += `<div class="detail-row"><div class="detail-key">Started</div><div class="detail-val">${r.case_start_year}</div></div>`;
+  if (r.case_status) html += `<div class="detail-row"><div class="detail-key">Status</div><div class="detail-val">${r.case_status}</div></div>`;
+  html += `<div class="detail-row"><div class="detail-key">Minor children</div><div class="detail-val">${r.minor_children ? 'Yes' : 'No'}</div></div>`;
+  html += `</div>`;
+
+  // Professionals
+  html += `<div class="detail-section"><div class="detail-heading">Professionals</div>`;
+  if (r.judges?.length) html += `<div class="detail-row"><div class="detail-key">Judge(s)</div><div class="detail-val">${r.judges.join(', ')}</div></div>`;
+  if (r.petitioner_attorney) html += `<div class="detail-row"><div class="detail-key">Their attorney</div><div class="detail-val">${r.petitioner_attorney}</div></div>`;
+  if (r.respondent_attorney) html += `<div class="detail-row"><div class="detail-key">Opp. attorney</div><div class="detail-val">${r.respondent_attorney}</div></div>`;
+  if (r.gal_counsel) html += `<div class="detail-row"><div class="detail-key">Minor's counsel</div><div class="detail-val">${r.gal_counsel}</div></div>`;
+  if (r.other_professionals) html += `<div class="detail-row"><div class="detail-key">Other</div><div class="detail-val">${r.other_professionals}</div></div>`;
+  html += `</div>`;
+
+  // Violations
+  const allViolations = [...(r.judicial_violations || []), ...(r.attorney_violations || [])];
+  if (allViolations.length) {
+    html += `<div class="detail-section"><div class="detail-heading">Reported Violations (${allViolations.length})</div>`;
+    if (r.judicial_violations?.length) {
+      html += `<div style="font-size:0.72rem;color:var(--teal);font-weight:700;margin-bottom:5px;">JUDICIAL</div>`;
+      html += `<div class="violation-list">` + r.judicial_violations.map(v => `<span class="tag tag-teal">${v}</span>`).join('') + `</div>`;
+    }
+    if (r.attorney_violations?.length) {
+      html += `<div style="font-size:0.72rem;color:var(--gold);font-weight:700;margin:8px 0 5px;">ATTORNEY</div>`;
+      html += `<div class="violation-list">` + r.attorney_violations.map(v => `<span class="tag tag-gold">${v}</span>`).join('') + `</div>`;
+    }
+    html += `</div>`;
+  }
+
+  // Their words
+  if (r.experience_description) {
+    html += `<div class="detail-section"><div class="detail-heading">In Their Words</div><div class="detail-text">${escHtml(r.experience_description)}</div></div>`;
+  }
+  if (r.complaints_filed) {
+    html += `<div class="detail-section"><div class="detail-heading">Complaints Filed</div><div class="detail-text">${escHtml(r.complaints_filed)}</div></div>`;
+  }
+
+  // DV
+  html += `<div class="detail-section"><div class="detail-heading">DV & Safety</div>`;
+  if (r.dv_alleged) html += `<div class="detail-row"><div class="detail-key">DV alleged</div><div class="detail-val">${r.dv_alleged}</div></div>`;
+  html += `<div class="detail-row"><div class="detail-key">Evidence considered</div><div class="detail-val">${r.dv_evidence_considered ? 'Yes' : 'No'}</div></div>`;
+  html += `<div class="detail-row"><div class="detail-key">DV minimized</div><div class="detail-val">${r.dv_minimized ? '⚠ Yes' : 'No'}</div></div>`;
+  html += `<div class="detail-row"><div class="detail-key">Safety concerns</div><div class="detail-val">${r.safety_concerns ? '⚠ Yes' : 'No'}</div></div>`;
+  html += `</div>`;
+
+  // Outcomes
+  html += `<div class="detail-section"><div class="detail-heading">Outcome</div>`;
+  if (r.custody_outcome) html += `<div class="detail-row"><div class="detail-key">Arrangement</div><div class="detail-val">${r.custody_outcome}</div></div>`;
+  if (r.outcome_influenced) html += `<div class="detail-row"><div class="detail-key">Misconduct influenced</div><div class="detail-val">${r.outcome_influenced}</div></div>`;
+  if (r.financial_harm?.length) html += `<div class="detail-row"><div class="detail-key">Financial harm</div><div class="detail-val">${r.financial_harm.join(', ')}</div></div>`;
+  html += `</div>`;
+
+  // Consent
+  html += `<div class="detail-section"><div class="detail-heading">Consent</div>`;
+  html += `<div class="detail-row"><div class="detail-key">Public reporting</div><div class="detail-val">${r.data_use_consent ? '✓ Consented' : 'Internal only'}</div></div>`;
+  html += `<div class="detail-row"><div class="detail-key">Follow-up</div><div class="detail-val">${r.contact_consent ? '✓ Yes' : 'No'}</div></div>`;
+  html += `</div>`;
+
+  return html;
+}
+
+// ---- TOGGLE CARD ----
+function toggleCard(id) {
+  const panel = document.getElementById('panel-' + id);
+  const chev = document.getElementById('chev-' + id);
+  if (!panel) return;
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open');
+  chev.textContent = isOpen ? '›' : '⌄';
+  if (isOpen) openCards.delete(id); else openCards.add(id);
+}
+
+// ---- FILTERS ----
+function toggleFilters() {
+  document.getElementById('filtersPanel').classList.toggle('open');
+}
+
+function toggleFilter(el, type, value) {
+  el.classList.toggle('active');
+  const arr = activeFilters[type];
+  const idx = arr.indexOf(value);
+  if (idx === -1) arr.push(value); else arr.splice(idx, 1);
+  applyFilters();
+}
+
+function clearFilters() {
+  activeFilters = { judge: [], status: [], dv: [] };
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  applyFilters();
+}
+
+function applyFilters() {
+  filteredResponses = allResponses.filter(r => {
+    if (activeFilters.judge.length) {
+      const hasJudge = activeFilters.judge.some(j => (r.judges || []).includes(j));
+      if (!hasJudge) return false;
+    }
+    if (activeFilters.status.includes('ongoing') && !r.case_status?.includes('Ongoing')) return false;
+    if (activeFilters.status.includes('closed') && r.case_status?.includes('Ongoing')) return false;
+    if (activeFilters.dv.includes('yes') && (r.dv_alleged === 'no' || !r.dv_alleged)) return false;
+    if (activeFilters.dv.includes('dismissed') && !r.dv_minimized) return false;
+    if (activeFilters.dv.includes('safety') && !r.safety_concerns) return false;
+    return true;
+  });
+  render();
+}
+
+// ---- EXPORT ----
+function showExportModal() { document.getElementById('exportModal').classList.add('open'); }
+function closeExportModal() { document.getElementById('exportModal').classList.remove('open'); }
+function closeModal(e) { if (e.target.id === 'exportModal') closeExportModal(); }
+
+function exportCSV() {
+  const headers = ['submitted_at','case_type','case_start_year','case_status','minor_children','judges','petitioner_attorney','respondent_attorney','gal_counsel','other_professionals','judicial_violations','attorney_violations','experience_description','complaints_filed','dv_alleged','dv_evidence_considered','dv_minimized','protective_order','protective_order_enforced','custody_outcome','outcome_influenced','financial_harm','safety_concerns','data_use_consent'];
+
+  const rows = filteredResponses.map(r =>
+    headers.map(h => {
+      const v = r[h];
+      if (Array.isArray(v)) return `"${v.join('; ')}"`;
+      if (typeof v === 'string' && (v.includes(',') || v.includes('"') || v.includes('\n'))) return `"${v.replace(/"/g,'""')}"`;
+      return v ?? '';
+    }).join(',')
+  );
+
+  const csv = [headers.join(','), ...rows].join('\n');
+  downloadFile(csv, `scfca-survey-responses-${Date.now()}.csv`, 'text/csv');
+  closeExportModal();
+}
+
+function exportSummary() {
+  const total = filteredResponses.length;
+  const ongoing = filteredResponses.filter(r => r.case_status?.includes('Ongoing')).length;
+  const dvCount = filteredResponses.filter(r => r.dv_alleged && r.dv_alleged !== 'no').length;
+  const dvDismissed = filteredResponses.filter(r => r.dv_minimized).length;
+  const safety = filteredResponses.filter(r => r.safety_concerns).length;
+  const outcomeCorrupt = filteredResponses.filter(r => r.outcome_influenced?.includes('yes')).length;
+  const publicConsent = filteredResponses.filter(r => r.data_use_consent).length;
+
+  const judgeCounts = {};
+  filteredResponses.forEach(r => (r.judges||[]).forEach(j => { judgeCounts[j] = (judgeCounts[j]||0)+1; }));
+  const violCounts = {};
+  filteredResponses.forEach(r => [...(r.judicial_violations||[]),...(r.attorney_violations||[])].forEach(v => { violCounts[v] = (violCounts[v]||0)+1; }));
+
+  const judgeRows = Object.entries(judgeCounts).sort((a,b)=>b[1]-a[1]).map(([j,c])=>`${j}: ${c} (${Math.round(c/total*100)}%)`).join('\n');
+  const violRows = Object.entries(violCounts).sort((a,b)=>b[1]-a[1]).slice(0,15).map(([v,c])=>`${v}: ${c}`).join('\n');
+
+  const summary = `SONOMA COUNTY FAMILY COURT AWARENESS
+SURVEY DATA SUMMARY REPORT
+Generated: ${new Date().toLocaleDateString()}
+Filtered: ${total} of ${allResponses.length} total responses
+
+═══════════════════════════════════
+OVERVIEW
+═══════════════════════════════════
+Total responses: ${total}
+Ongoing cases: ${ongoing} (${Math.round(ongoing/total*100)}%)
+Closed cases: ${total-ongoing} (${Math.round((total-ongoing)/total*100)}%)
+Consented to public reporting: ${publicConsent} (${Math.round(publicConsent/total*100)}%)
+
+═══════════════════════════════════
+DOMESTIC VIOLENCE
+═══════════════════════════════════
+DV alleged: ${dvCount} (${Math.round(dvCount/total*100)}%)
+DV minimized/dismissed by court: ${dvDismissed} (${Math.round(dvDismissed/total*100)}%)
+Active safety concerns: ${safety} (${Math.round(safety/total*100)}%)
+
+═══════════════════════════════════
+JUDICIAL OUTCOMES
+═══════════════════════════════════
+Outcome influenced by misconduct: ${outcomeCorrupt} (${Math.round(outcomeCorrupt/total*100)}%)
+
+═══════════════════════════════════
+JUDGES — CASES REPORTED
+═══════════════════════════════════
+${judgeRows || 'No data'}
+
+═══════════════════════════════════
+TOP REPORTED VIOLATIONS
+═══════════════════════════════════
+${violRows || 'No data'}
+`;
+
+  downloadFile(summary, `scfca-summary-${Date.now()}.txt`, 'text/plain');
+  closeExportModal();
+}
+
+function exportViolations() {
+  const violCounts = {};
+  const judCounts = {};
+  const atyCounts = {};
+
+  filteredResponses.forEach(r => {
+    (r.judicial_violations||[]).forEach(v => { violCounts[v]=(violCounts[v]||0)+1; judCounts[v]=(judCounts[v]||0)+1; });
+    (r.attorney_violations||[]).forEach(v => { violCounts[v]=(violCounts[v]||0)+1; atyCounts[v]=(atyCounts[v]||0)+1; });
+  });
+
+  const rows = [['violation','type','count','pct_of_responses']];
+  Object.entries(judCounts).sort((a,b)=>b[1]-a[1]).forEach(([v,c]) => rows.push([`"${v}"`, 'judicial', c, Math.round(c/filteredResponses.length*100)+'%']));
+  Object.entries(atyCounts).sort((a,b)=>b[1]-a[1]).forEach(([v,c]) => rows.push([`"${v}"`, 'attorney', c, Math.round(c/filteredResponses.length*100)+'%']));
+
+  downloadFile(rows.map(r=>r.join(',')).join('\n'), `scfca-violations-${Date.now()}.csv`, 'text/csv');
+  closeExportModal();
+}
+
+function downloadFile(content, filename, type) {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Auto-load on open
+loadData();
+</script>
+</body>
+</html>

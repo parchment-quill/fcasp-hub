@@ -230,6 +230,17 @@ body.hub .site-header h1 span {
 }
 .county-btn.napa .county-name { color: #a07a1a; }
 
+.county-btn.marin {
+  background: rgba(46,110,166,0.06);
+  border-color: rgba(46,110,166,0.28);
+}
+.county-btn.marin:hover {
+  background: rgba(46,110,166,0.12);
+  border-color: rgba(46,110,166,0.52);
+  transform: translateY(-2px);
+}
+.county-btn.marin .county-name { color: #2E6EA6; }
+
 .county-btn.mendocino {
   background: rgba(59,94,69,0.06);
   border-color: rgba(59,94,69,0.28);
