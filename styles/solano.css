@@ -1,0 +1,7 @@
+/* Solano County — Slate Blue */
+:root {
+  --county:        #4A5E72;
+  --county-light:  #5e7590;
+  --county-dim:    rgba(74,94,114,0.20);
+  --county-border: rgba(74,94,114,0.50);
+}

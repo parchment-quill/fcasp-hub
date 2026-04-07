@@ -4,248 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>About This Project — Family Court Accountability Survey Project — Sonoma County</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg: #2E2926;
-  --text: #F5F0E8;
-  --accent: #8C7B6B;
-  --accent-light: #a89585;
-  --county: #722F37;
-  --county-light: #9a4350;
-  --county-dim: rgba(114,47,55,0.12);
-  --county-border: rgba(114,47,55,0.4);
-  --border: rgba(140,123,107,0.25);
-  --card-bg: rgba(245,240,232,0.04);
-  --stone: rgba(245,240,232,0.45);
-  --radius: 12px;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'Source Serif 4', Georgia, serif;
-  background: var(--bg);
-  color: var(--text);
-  font-size: 16px;
-  line-height: 1.75;
-}
-
-/* HEADER */
-.header {
-  padding: 44px 24px 36px;
-  text-align: center;
-  border-bottom: 1px solid var(--border);
-  position: relative;
-}
-.header::after {
-  content: '';
-  position: absolute;
-  bottom: -1px; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--county), transparent);
-}
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--accent-light);
-  font-size: 0.78rem;
-  text-decoration: none;
-  letter-spacing: 0.04em;
-  margin-bottom: 26px;
-  opacity: 0.8;
-}
-.back-link:hover { opacity: 1; }
-.header-eyebrow {
-  font-size: 0.65rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 14px;
-  font-weight: 600;
-}
-.header h1 {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(1.4rem, 4vw, 2rem);
-  color: var(--text);
-  line-height: 1.2;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-.header-county {
-  font-size: 0.88rem;
-  color: var(--county-light);
-  font-style: italic;
-}
-
-/* MAIN */
-.main {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 36px 20px 80px;
-}
-
-/* SECTIONS */
-.section {
-  background: var(--card-bg);
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  padding: 28px 24px;
-  margin-bottom: 18px;
-}
-.section-label {
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--county-light);
-  margin-bottom: 10px;
-}
-.section h2 {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 1.2rem;
-  color: var(--text);
-  font-weight: 700;
-  margin-bottom: 16px;
-  line-height: 1.3;
-}
-.section p {
-  font-size: 0.93rem;
-  color: rgba(245,240,232,0.78);
-  margin-bottom: 14px;
-  line-height: 1.78;
-}
-.section p:last-child { margin-bottom: 0; }
-.section strong { color: var(--text); font-weight: 600; }
-
-/* CALLOUT */
-.callout {
-  background: var(--county-dim);
-  border: 1px solid var(--county-border);
-  border-radius: var(--radius);
-  padding: 24px;
-  margin-bottom: 18px;
-}
-.callout h2 {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 1.15rem;
-  color: var(--text);
-  margin-bottom: 14px;
-  font-weight: 700;
-}
-.callout p {
-  font-size: 0.9rem;
-  color: rgba(245,240,232,0.82);
-  line-height: 1.75;
-  margin-bottom: 12px;
-}
-.callout p:last-child { margin-bottom: 0; }
-
-/* JUDGE GRID */
-.judge-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
-.judge-row {
-  background: rgba(245,240,232,0.03);
-  border: 1px solid rgba(140,123,107,0.2);
-  border-radius: 10px;
-  padding: 14px 16px;
-}
-.judge-name {
-  font-weight: 700;
-  font-size: 0.93rem;
-  color: var(--text);
-  margin-bottom: 4px;
-}
-.judge-detail {
-  font-size: 0.8rem;
-  color: var(--stone);
-  line-height: 1.5;
-}
-.judge-flag {
-  display: inline-block;
-  background: rgba(198,146,42,0.15);
-  color: #d4a844;
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 10px;
-  margin-top: 6px;
-}
-.judge-flag.red {
-  background: rgba(192,57,43,0.15);
-  color: #e07a72;
-}
-
-/* DIVIDER */
-.divider { height: 1px; background: rgba(140,123,107,0.15); margin: 8px 0 16px; }
-
-/* HIGHLIGHT */
-.highlight {
-  border-left: 2px solid var(--county);
-  background: rgba(114,47,55,0.08);
-  padding: 13px 16px;
-  border-radius: 0 10px 10px 0;
-  margin: 16px 0;
-  font-size: 0.88rem;
-  font-style: italic;
-  color: rgba(245,240,232,0.82);
-  line-height: 1.7;
-}
-
-/* CTA */
-.cta-section {
-  background: var(--county-dim);
-  border: 1px solid var(--county-border);
-  border-radius: var(--radius);
-  padding: 28px 24px;
-  text-align: center;
-  margin-top: 24px;
-}
-.cta-section h2 {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 1.25rem;
-  color: var(--text);
-  margin-bottom: 12px;
-}
-.cta-section p {
-  font-size: 0.88rem;
-  color: rgba(245,240,232,0.72);
-  margin-bottom: 20px;
-  line-height: 1.7;
-}
-.cta-btn {
-  display: inline-block;
-  background: var(--county);
-  color: #fff;
-  padding: 14px 32px;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 700;
-  font-family: 'Source Serif 4', serif;
-  text-decoration: none;
-  box-shadow: 0 4px 16px rgba(114,47,55,0.35);
-}
-.cta-btn:hover { background: var(--county-light); }
-
-/* FOOTNOTE */
-.footnote {
-  font-size: 0.75rem;
-  color: rgba(245,240,232,0.28);
-  text-align: center;
-  margin-top: 32px;
-  line-height: 1.6;
-  font-style: italic;
-}
-</style>
+<link rel="stylesheet" href="../styles/main.css">
+<link rel="stylesheet" href="../styles/sonoma.css">
 </head>
 <body>
 
-<div class="header">
+<div class="site-header">
   <a href="/sonoma" class="back-link">← Back to Survey</a>
   <div class="header-eyebrow">Family Court Accountability Survey Project</div>
   <h1>About This Project</h1>
-  <div class="header-county">Sonoma County — Understanding the system and why documenting it matters</div>
+  <div class="county-subtitle">Sonoma County — Understanding the system and why documenting it matters</div>
 </div>
 
-<div class="main">
+<div class="main-wide">
 
   <div class="callout">
     <h2>This is not one family's story.</h2>
@@ -254,11 +25,10 @@ body {
     <p>Individual complaints can be dismissed. Documented patterns cannot.</p>
   </div>
 
-  <div class="section">
-    <div class="section-label">The Bench</div>
+  <div class="about-section">
+    <div class="about-label">The Bench</div>
     <h2>Who Presides Over Your Case</h2>
     <p>The judges handling family law and juvenile matters in Sonoma County share a striking background: most spent their careers as prosecutors in the Sonoma County District Attorney's Office before taking the bench.</p>
-
     <div class="judge-grid">
       <div class="judge-row">
         <div class="judge-name">Hon. Robert LaForge — Presiding Juvenile Judge</div>
@@ -297,63 +67,48 @@ body {
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-label">The Inner Circle</div>
+  <div class="about-section">
+    <div class="about-label">The Inner Circle</div>
     <h2>A Closed Professional Network</h2>
     <p>Family court in Sonoma County does not operate in isolation. The judges, attorneys, and mental health professionals who work in this system meet monthly through the <strong>Family Law Steering Committee</strong> — a forum run by the Sonoma County Bar Association. Its current members include judges Averill, Crocker, and Lozada alongside the same attorneys who appear before them in court every week.</p>
-
     <div class="highlight">The minutes of these meetings are distributed only to Bar Association members. The public never sees them.</div>
-
     <p>These same judges and attorneys also run the annual <strong>Minor's Counsel training program</strong> — meaning the attorneys appointed to represent your children in court are trained by the very judges who appoint them and rule on their cases. This is a closed loop with no outside oversight.</p>
-
     <p>Judge Crocker, before becoming a judge, was president of the Bar Association — the organization that represents all local attorneys. She now presides over cases involving those same attorneys, without ever having been required to publicly address this conflict.</p>
   </div>
 
-  <div class="section">
-    <div class="section-label">The Process</div>
+  <div class="about-section">
+    <div class="about-label">The Process</div>
     <h2>What Families Actually Experience</h2>
     <p>When parents separate and cannot agree on custody, they are required to attend <strong>Family Court Services (FCS)</strong> — a court-connected program where a counselor meets with both parents and makes a custody recommendation. The court's own materials describe FCS as designed to promote contact with both parents — a framework that research shows can place domestic violence survivors at increased risk by treating protective actions as obstruction.</p>
-
     <p>When cases involve serious allegations, judges may order a <strong>custody evaluation (called a "730 evaluation")</strong> — conducted by a private psychologist, taking months to complete, and routinely costing between $10,000 and $30,000 or more. Families are often ordered to split the cost. The evaluator's report carries enormous weight with judges, even when the evaluator was selected from a pool familiar to local attorneys, or when the report omits documented abuse evidence.</p>
-
     <p><strong>Minor's counsel</strong> — the attorney appointed to represent your child — is supposed to be independent. But in Sonoma County, minor's counsel are trained by the same judges who appoint them, drawn from a small local pool, and paid by the parties to the case. Respondents in this county have reported minor's counsel who appeared to favor one parent, failed to meet privately with the child, or ignored the child's stated safety concerns.</p>
   </div>
 
-  <div class="section">
-    <div class="section-label">The Tactics</div>
+  <div class="about-section">
+    <div class="about-label">The Tactics</div>
     <h2>Labels Used to Silence Safety Concerns</h2>
     <p>One of the most documented patterns in Sonoma County — and across California family courts — is the use of labels like <strong>"parental alienator," "high-conflict parent,"</strong> and <strong>"enmeshed parent"</strong> to discredit the party raising safety concerns.</p>
-
     <p>Parental Alienation Syndrome was created by a single psychiatrist in the 1980s and has been formally rejected as junk science by mainstream mental health organizations. It does not appear in any clinical diagnostic manual. Nevertheless, it is routinely applied in family court — by attorneys, custody evaluators, and minor's counsel — to reframe a parent's legitimate safety concerns as manipulation or mental illness.</p>
-
     <div class="highlight">Research published in peer-reviewed journals documents that parental alienation claims are disproportionately used against mothers raising domestic violence allegations — and that labeling cases "high conflict" can obscure underlying abuse, leading to outcomes that increase children's exposure to the harmful party.</div>
-
     <p>Courts following AFCC guidelines — an organization to which several Sonoma County judges belong — default to a "both parents" framework that research has shown can be harmful in cases involving coercive control and domestic violence.</p>
   </div>
 
-  <div class="section">
-    <div class="section-label">Accountability Gap</div>
+  <div class="about-section">
+    <div class="about-label">Accountability Gap</div>
     <h2>No Record, No Recourse</h2>
     <p>In Sonoma County family court, having an official record of what was said at your hearing requires hiring a private court reporter — at your own expense. If you cannot afford one, there may be no verifiable record of what orders were made verbally, what the judge said, or what happened.</p>
-
     <p>Without a transcript, appealing a decision is nearly impossible. Without an appeal, there is no accountability. This creates a two-tier system: those who can afford documentation, and those who cannot.</p>
-
     <p>Critical decisions are also sometimes made in <strong>"in-chambers" conferences</strong> — private meetings between the judge and attorneys where parties may not be present and no court reporter is required. These meetings produce no public record whatsoever.</p>
-
     <p>The Family Law Steering Committee — where judges and attorneys meet monthly to discuss court matters — also keeps no public record. Their minutes go only to Bar Association members.</p>
   </div>
 
-  <div class="section">
-    <div class="section-label">Why This Matters</div>
+  <div class="about-section">
+    <div class="about-label">Why This Matters</div>
     <h2>What the Data Can Do That Individual Complaints Cannot</h2>
     <p>One parent's account can be dismissed as a difficult divorce. One Bar complaint can sit uninvestigated for years. One judicial complaint can be closed without action.</p>
-
     <p>But when 50, 80, or 100 people document the same patterns — the same labels applied without clinical diagnosis, the same evidence omitted from evaluator reports, the same hearings postponed until resources run out, the same outcomes for parents who raised safety concerns — that is no longer a complaint.</p>
-
     <p><strong>That is a documented systemic failure.</strong></p>
-
     <p>This survey data will be used for public reporting, media investigations, legislative advocacy, regulatory complaints to the California Commission on Judicial Performance and the State Bar, and as supporting documentation in legal proceedings.</p>
-
     <p>Every response matters. Your experience — even described briefly — adds to a record that cannot be dismissed.</p>
   </div>
 

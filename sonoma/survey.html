@@ -4,474 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Survey — Family Court Accountability Survey Project — Sonoma County</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg: #2E2926;
-  --text: #F5F0E8;
-  --accent: #8C7B6B;
-  --accent-light: #a89585;
-  --county: #722F37;
-  --county-light: #9a4350;
-  --county-dim: rgba(114,47,55,0.15);
-  --county-border: rgba(114,47,55,0.4);
-  --border: rgba(140,123,107,0.25);
-  --card-bg: rgba(245,240,232,0.04);
-  --card-bg-alt: rgba(245,240,232,0.06);
-  --stone: rgba(245,240,232,0.45);
-  --danger: #c0392b;
-  --success: #2a6b4a;
-  --radius: 12px;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-input, button, select, textarea { font-family: inherit; }
-body {
-  font-family: 'Source Serif 4', Georgia, serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-/* HEADER */
-.header {
-  background: rgba(0,0,0,0.2);
-  padding: 28px 20px 24px;
-  text-align: center;
-  border-bottom: 1px solid var(--border);
-  position: relative;
-}
-.header::after {
-  content: '';
-  position: absolute;
-  bottom: -1px; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--county), transparent);
-}
-.header-eyebrow {
-  font-size: 0.62rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 6px;
-  font-weight: 600;
-}
-.header h1 {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(1.1rem, 3vw, 1.5rem);
-  color: var(--text);
-  font-weight: 700;
-  line-height: 1.2;
-}
-.header-county {
-  font-size: 0.85rem;
-  color: var(--county-light);
-  font-style: italic;
-  margin-top: 4px;
-}
-
-/* PROGRESS */
-.progress-wrap {
-  background: rgba(0,0,0,0.15);
-  padding: 10px 20px 14px;
-  border-bottom: 1px solid var(--border);
-}
-.progress-steps { display: flex; gap: 5px; margin-bottom: 5px; }
-.prog-dot {
-  height: 3px; flex: 1; border-radius: 2px;
-  background: rgba(245,240,232,0.1);
-  transition: background 0.3s;
-}
-.prog-dot.done { background: var(--county); }
-.prog-dot.active { background: var(--county-light); }
-.progress-label {
-  font-size: 0.68rem;
-  color: var(--stone);
-  letter-spacing: 0.06em;
-  text-align: center;
-}
-
-/* MAIN */
-.main { padding: 20px 16px 60px; max-width: 600px; margin: 0 auto; }
-
-/* CARDS */
-.card {
-  background: var(--card-bg);
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  padding: 24px 20px;
-  margin-bottom: 16px;
-}
-.card-title {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 1.1rem;
-  color: var(--text);
-  margin-bottom: 5px;
-  font-weight: 700;
-}
-.card-subtitle {
-  font-size: 0.83rem;
-  color: var(--stone);
-  margin-bottom: 20px;
-  font-style: italic;
-  line-height: 1.5;
-}
-
-/* PRIVACY CARD */
-.privacy-card {
-  background: var(--county-dim);
-  border: 1px solid var(--county-border);
-  border-radius: var(--radius);
-  padding: 22px 20px;
-  margin-bottom: 16px;
-}
-.privacy-card h2 {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 1.1rem;
-  color: var(--text);
-  margin-bottom: 10px;
-  font-weight: 700;
-}
-.privacy-card p {
-  font-size: 0.88rem;
-  color: rgba(245,240,232,0.78);
-  line-height: 1.7;
-  margin-bottom: 10px;
-}
-.privacy-card p:last-child { margin-bottom: 0; }
-.privacy-note {
-  background: rgba(245,240,232,0.05);
-  border-left: 2px solid var(--county);
-  padding: 10px 14px;
-  border-radius: 0 8px 8px 0;
-  margin-top: 12px;
-  font-size: 0.8rem;
-  color: rgba(245,240,232,0.6);
-  font-style: italic;
-}
-
-/* FORM ELEMENTS */
-.field { margin-bottom: 20px; }
-.field:last-child { margin-bottom: 0; }
-
-label {
-  display: block;
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: rgba(245,240,232,0.88);
-  margin-bottom: 8px;
-  line-height: 1.4;
-}
-.label-optional {
-  font-weight: 400;
-  color: var(--stone);
-  font-size: 0.78rem;
-  font-style: italic;
-}
-
-input[type="text"],
-input[type="number"],
-select,
-textarea {
-  width: 100%;
-  padding: 13px 15px;
-  border: 1.5px solid rgba(140,123,107,0.35);
-  border-radius: 10px;
-  font-size: 0.97rem;
-  font-family: 'Source Serif 4', Georgia, serif;
-  color: var(--text);
-  background: rgba(245,240,232,0.05);
-  -webkit-appearance: none;
-  appearance: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  line-height: 1.5;
-}
-input[type="text"]:focus,
-input[type="number"]:focus,
-select:focus,
-textarea:focus {
-  outline: none;
-  border-color: var(--county-light);
-  box-shadow: 0 0 0 3px rgba(114,47,55,0.18);
-  background: rgba(245,240,232,0.08);
-}
-input[type="text"]::placeholder,
-input[type="number"]::placeholder,
-textarea::placeholder { color: rgba(245,240,232,0.22); }
-textarea { min-height: 120px; resize: vertical; }
-
-/* ACCESS CODE */
-.code-input {
-  font-family: 'Courier New', monospace !important;
-  font-size: 1.05rem !important;
-  letter-spacing: 0.12em;
-  text-align: center;
-  text-transform: uppercase;
-}
-
-/* CHECKBOXES & RADIO */
-.check-group { display: flex; flex-direction: column; gap: 9px; }
-.check-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 11px 14px;
-  border: 1.5px solid rgba(140,123,107,0.25);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: border-color 0.2s, background 0.2s;
-  background: rgba(245,240,232,0.03);
-}
-.check-item input[type="checkbox"],
-.check-item input[type="radio"] {
-  width: 20px; height: 20px; min-width: 20px;
-  margin-top: 1px;
-  cursor: pointer;
-  accent-color: var(--county);
-  padding: 0; border: none; background: none;
-}
-.check-item.selected {
-  border-color: var(--county-border);
-  background: var(--county-dim);
-}
-.check-label { font-size: 0.9rem; line-height: 1.4; padding-top: 1px; color: var(--text); }
-
-/* VIOLATION GROUPS */
-.violation-section { margin-bottom: 18px; }
-.violation-heading {
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--county-light);
-  margin-bottom: 10px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid rgba(114,47,55,0.25);
-}
-
-/* BUTTONS */
-.btn {
-  display: block;
-  width: 100%;
-  padding: 15px 24px;
-  border: none;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-family: 'Source Serif 4', Georgia, serif;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s;
-  text-align: center;
-  letter-spacing: 0.03em;
-}
-.btn:active { transform: scale(0.98); }
-.btn-primary {
-  background: var(--county);
-  color: #fff;
-  box-shadow: 0 4px 16px rgba(114,47,55,0.3);
-}
-.btn-primary:hover { background: var(--county-light); }
-.btn-secondary {
-  background: transparent;
-  color: var(--accent-light);
-  border: 1.5px solid rgba(140,123,107,0.4);
-  margin-top: 10px;
-}
-.btn-submit {
-  background: var(--county);
-  color: #fff;
-  box-shadow: 0 4px 16px rgba(114,47,55,0.35);
-}
-.btn-submit:hover { background: var(--county-light); }
-.btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
-.btn-row { display: flex; flex-direction: column; gap: 0; margin-top: 24px; }
-
-/* STEP SECTIONS */
-.step { display: none; }
-.step.active { display: block; }
-
-/* ALERTS */
-.alert {
-  padding: 12px 15px;
-  border-radius: 10px;
-  font-size: 0.86rem;
-  margin-bottom: 14px;
-  line-height: 1.5;
-}
-.alert-error { background: rgba(192,57,43,0.15); border: 1px solid rgba(192,57,43,0.35); color: #f5a39a; }
-.alert-success { background: rgba(42,107,74,0.15); border: 1px solid rgba(42,107,74,0.35); color: #7dd3a8; }
-.alert-warning { background: rgba(198,146,42,0.15); border: 1px solid rgba(198,146,42,0.35); color: #e0c070; }
-
-/* LOADING */
-.loading {
-  display: inline-block;
-  width: 16px; height: 16px;
-  border: 2px solid rgba(255,255,255,0.35);
-  border-top-color: #fff;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-  vertical-align: middle;
-  margin-right: 8px;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* COMPLETION */
-.completion-card {
-  background: var(--county-dim);
-  border: 1px solid var(--county-border);
-  border-radius: var(--radius);
-  padding: 36px 24px;
-  text-align: center;
-}
-.completion-icon { font-size: 2.8rem; display: block; margin-bottom: 16px; }
-.completion-card h2 {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 1.35rem;
-  color: var(--text);
-  margin-bottom: 12px;
-}
-.completion-card p {
-  font-size: 0.9rem;
-  color: rgba(245,240,232,0.78);
-  line-height: 1.75;
-  margin-bottom: 10px;
-}
-
-/* DIVIDER */
-.divider { height: 1px; background: rgba(140,123,107,0.2); margin: 20px 0; }
-
-/* REQUIRED TAG */
-.required-tag {
-  display: inline-block;
-  background: var(--county);
-  color: #fff;
-  font-size: 0.6rem;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  vertical-align: middle;
-  margin-left: 6px;
-  font-style: normal;
-}
-
-/* JUDGE TAGS */
-.judge-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-.judge-tag {
-  padding: 8px 14px;
-  border: 1.5px solid rgba(140,123,107,0.3);
-  border-radius: 20px;
-  font-size: 0.82rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  background: rgba(245,240,232,0.04);
-  color: var(--text);
-  font-family: 'Source Serif 4', Georgia, serif;
-}
-.judge-tag.selected {
-  background: var(--county);
-  color: #fff;
-  border-color: var(--county);
-}
-
-/* SCALE */
-.scale-wrap { display: flex; gap: 7px; margin-top: 4px; }
-.scale-btn {
-  flex: 1;
-  padding: 11px 4px;
-  border: 1.5px solid rgba(140,123,107,0.3);
-  border-radius: 8px;
-  text-align: center;
-  font-size: 0.85rem;
-  cursor: pointer;
-  background: rgba(245,240,232,0.04);
-  color: var(--text);
-  transition: all 0.2s;
-  font-family: 'Source Serif 4', Georgia, serif;
-}
-.scale-btn.selected { background: var(--county); color: #fff; border-color: var(--county); }
-.scale-labels { display: flex; justify-content: space-between; margin-top: 4px; }
-.scale-labels span { font-size: 0.68rem; color: var(--stone); }
-
-/* CHAR COUNT */
-.char-count { font-size: 0.73rem; color: var(--stone); text-align: right; margin-top: 4px; }
-
-/* HINT */
-.field-hint { font-size: 0.78rem; color: var(--stone); margin-top: 5px; font-style: italic; }
-
-/* ATTORNEY SELECTOR */
-.atty-search-wrap { position: relative; }
-.atty-search-input {
-  width: 100%; padding: 13px 38px 13px 15px;
-  border: 1.5px solid rgba(140,123,107,0.35); border-radius: 10px;
-  font-size: 0.97rem; font-family: 'Source Serif 4', Georgia, serif;
-  color: var(--text); background: rgba(245,240,232,0.05);
-  -webkit-appearance: none; transition: border-color 0.2s;
-}
-.atty-search-input::placeholder { color: rgba(245,240,232,0.22); }
-.atty-search-input:focus {
-  outline: none; border-color: var(--county-light);
-  box-shadow: 0 0 0 3px rgba(114,47,55,0.18); background: rgba(245,240,232,0.08);
-}
-.atty-clear-btn {
-  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-  background: none; border: none; color: var(--stone);
-  font-size: 0.95rem; cursor: pointer; padding: 4px; display: none;
-}
-.atty-dropdown {
-  background: #3a3028; border: 1.5px solid rgba(140,123,107,0.35);
-  border-top: none; border-radius: 0 0 10px 10px;
-  max-height: 220px; overflow-y: auto; -webkit-overflow-scrolling: touch;
-  display: none; box-shadow: 0 8px 24px rgba(0,0,0,0.35);
-  position: relative; z-index: 50;
-}
-.atty-dropdown.open { display: block; }
-.atty-dropdown-item {
-  padding: 11px 14px; font-size: 0.87rem; cursor: pointer;
-  border-bottom: 1px solid rgba(140,123,107,0.12); color: var(--text);
-  font-family: 'Source Serif 4', Georgia, serif;
-}
-.atty-dropdown-item:last-child { border-bottom: none; }
-.atty-dropdown-item:hover { background: rgba(114,47,55,0.15); }
-.atty-dropdown-item mark { background: rgba(198,146,42,0.3); color: var(--text); border-radius: 2px; padding: 0 1px; }
-.atty-dropdown-empty { padding: 11px 14px; font-size: 0.8rem; color: var(--stone); font-style: italic; text-align: center; }
-.atty-selected-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px; }
-.atty-tag {
-  display: flex; align-items: center; gap: 6px;
-  background: var(--county); color: #fff;
-  padding: 6px 10px 6px 12px; border-radius: 20px;
-  font-size: 0.76rem; font-family: 'Source Serif 4', Georgia, serif; font-weight: 600;
-}
-.atty-tag-remove {
-  background: rgba(255,255,255,0.2); border: none; color: #fff;
-  width: 17px; height: 17px; border-radius: 50%; cursor: pointer;
-  font-size: 0.7rem; display: flex; align-items: center;
-  justify-content: center; padding: 0; flex-shrink: 0;
-}
-.atty-free-text {
-  width: 100%; margin-top: 8px; padding: 10px 14px;
-  border: 1.5px solid rgba(140,123,107,0.3); border-radius: 10px;
-  font-size: 0.9rem; font-family: 'Source Serif 4', Georgia, serif;
-  color: var(--text); background: rgba(245,240,232,0.04);
-  -webkit-appearance: none;
-}
-.atty-free-text::placeholder { color: rgba(245,240,232,0.22); }
-.atty-free-text:focus { outline: none; border-color: var(--county-light); background: rgba(245,240,232,0.07); }
-.atty-free-label { font-size: 0.76rem; color: var(--stone); margin: 8px 0 4px; font-style: italic; }
-</style>
+<link rel="stylesheet" href="../styles/main.css">
+<link rel="stylesheet" href="../styles/sonoma.css">
 </head>
 <body>
 
-<div class="header">
+<div class="site-header" style="padding: 28px 20px 24px;">
   <div class="header-eyebrow">Family Court Accountability Survey Project</div>
-  <h1>Family Court Accountability Survey</h1>
-  <div class="header-county">Sonoma County</div>
+  <h1 style="font-size: clamp(1.1rem, 3vw, 1.5rem);">Family Court Accountability Survey</h1>
+  <div class="county-subtitle" style="font-size:0.88rem;">Sonoma County</div>
 </div>
 
 <div class="progress-wrap" id="progressWrap">
   <div class="progress-steps" id="progressSteps"></div>
-  <div class="progress-label" id="progressLabel">Step 1 of 6</div>
+  <div class="progress-label" id="progressLabel"></div>
 </div>
 
 <div class="main">
@@ -519,7 +65,6 @@ textarea { min-height: 120px; resize: vertical; }
         </div>
       </div>
     </div>
-
     <div class="btn-row">
       <button class="btn btn-primary" onclick="nextStep(1)">Continue</button>
     </div>
@@ -590,7 +135,6 @@ textarea { min-height: 120px; resize: vertical; }
         <div class="field-hint">List any other professionals involved in your case</div>
       </div>
     </div>
-
     <div class="btn-row">
       <button class="btn btn-primary" onclick="nextStep(2)">Continue</button>
       <button class="btn btn-secondary" onclick="prevStep(2)">Back</button>
@@ -642,17 +186,16 @@ textarea { min-height: 120px; resize: vertical; }
 
       <div class="field">
         <label for="experienceText">Describe what happened <span class="label-optional">(optional)</span></label>
-        <textarea id="experienceText" placeholder="Share what you feel comfortable sharing. You don't need to include identifying details." maxlength="2000" oninput="updateCharCount(this, 'expCount')"></textarea>
+        <textarea id="experienceText" placeholder="Share what you feel comfortable sharing. You don't need to include identifying details." maxlength="2000" oninput="updateCharCount(this,'expCount')"></textarea>
         <div class="char-count" id="expCount">0 / 2000</div>
       </div>
 
       <div class="field">
         <label for="complaintsText">Did you file any complaints? <span class="label-optional">(optional)</span></label>
-        <textarea id="complaintsText" placeholder="e.g. filed with State Bar, CJP, or other agency — and what happened" maxlength="500" oninput="updateCharCount(this, 'compCount')" style="min-height:80px;"></textarea>
+        <textarea id="complaintsText" placeholder="e.g. filed with State Bar, CJP, or other agency — and what happened" maxlength="500" oninput="updateCharCount(this,'compCount')" style="min-height:80px;"></textarea>
         <div class="char-count" id="compCount">0 / 500</div>
       </div>
     </div>
-
     <div class="btn-row">
       <button class="btn btn-primary" onclick="nextStep(3)">Continue</button>
       <button class="btn btn-secondary" onclick="prevStep(3)">Back</button>
@@ -706,7 +249,6 @@ textarea { min-height: 120px; resize: vertical; }
         </div>
       </div>
     </div>
-
     <div class="btn-row">
       <button class="btn btn-primary" onclick="nextStep(4)">Continue</button>
       <button class="btn btn-secondary" onclick="prevStep(4)">Back</button>
@@ -721,7 +263,7 @@ textarea { min-height: 120px; resize: vertical; }
 
       <div class="field">
         <label for="custodyOutcome">Current custody or visitation arrangement <span class="label-optional">(optional)</span></label>
-        <textarea id="custodyOutcome" placeholder="Describe the arrangement — e.g. sole physical with supervised visitation, 50/50, etc." maxlength="500" oninput="updateCharCount(this, 'custodyCount')" style="min-height:80px;"></textarea>
+        <textarea id="custodyOutcome" placeholder="Describe the arrangement — e.g. sole physical with supervised visitation, 50/50, etc." maxlength="500" oninput="updateCharCount(this,'custodyCount')" style="min-height:80px;"></textarea>
         <div class="char-count" id="custodyCount">0 / 500</div>
       </div>
 
@@ -757,7 +299,6 @@ textarea { min-height: 120px; resize: vertical; }
         </div>
       </div>
     </div>
-
     <div class="btn-row">
       <button class="btn btn-primary" onclick="nextStep(5)">Continue</button>
       <button class="btn btn-secondary" onclick="prevStep(5)">Back</button>
@@ -768,7 +309,7 @@ textarea { min-height: 120px; resize: vertical; }
   <div class="step" id="step-6">
     <div class="card">
       <div class="card-title">Section 6 — Contact <span class="label-optional" style="font-size:0.83rem;">(Entirely optional)</span></div>
-      <div class="card-subtitle">You do not need to provide any contact information. This section will not affect how your response is counted. Only complete this if you choose to.</div>
+      <div class="card-subtitle">You do not need to provide any contact information. This section will not affect how your response is counted.</div>
 
       <div class="field">
         <label>May we contact you for follow-up?</label>
@@ -798,7 +339,7 @@ textarea { min-height: 120px; resize: vertical; }
     <div id="submitAlert"></div>
 
     <div class="btn-row">
-      <button class="btn btn-submit" onclick="submitSurvey()" id="submitBtn">Submit My Response</button>
+      <button class="btn btn-primary" onclick="submitSurvey()" id="submitBtn">Submit My Response</button>
       <button class="btn btn-secondary" onclick="prevStep(6)">Back</button>
     </div>
   </div>
@@ -814,301 +355,12 @@ textarea { min-height: 120px; resize: vertical; }
     </div>
   </div>
 
-</div><!-- /main -->
+</div>
 
 <script>
-// Guard: must arrive with validated session
-const validatedCode = sessionStorage.getItem('fcasp_validated_id');
-const validatedCodeStr = sessionStorage.getItem('fcasp_validated_code');
-if (!validatedCode) {
-  window.location.href = '/sonoma';
-}
-
 const SUPABASE_URL = 'https://gjzdpqgbfgzephsqowex.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqemRwcWdiZmd6ZXBoc3Fvd2V4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MjY5MDEsImV4cCI6MjA5MDMwMjkwMX0.Pn2PQBWkqrB7Ffz_Ovhaelegga-BjTI1XM9rtpGHE1g';
-
-const TOTAL_STEPS = 6;
-let currentStep = 1;
-let selectedJudges = [];
-
-// ---- PROGRESS ----
-function renderProgress(step) {
-  const wrap = document.getElementById('progressSteps');
-  wrap.innerHTML = '';
-  for (let i = 1; i <= TOTAL_STEPS; i++) {
-    const d = document.createElement('div');
-    d.className = 'prog-dot' + (i < step ? ' done' : i === step ? ' active' : '');
-    wrap.appendChild(d);
-  }
-  const labels = ['','Your Case','Professionals','Misconduct','DV Context','Outcomes','Contact'];
-  document.getElementById('progressLabel').textContent = labels[step] + ' — Step ' + step + ' of ' + TOTAL_STEPS;
-}
-
-function showStep(n) {
-  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-  const el = document.getElementById('step-' + (n === 'complete' ? 'complete' : n));
-  if (el) el.classList.add('active');
-  if (n !== 'complete') renderProgress(n);
-  window.scrollTo(0,0);
-}
-
-function nextStep(from) {
-  if (!validateStep(from)) return;
-  currentStep = from + 1;
-  showStep(currentStep);
-}
-
-function prevStep(from) {
-  currentStep = from - 1;
-  showStep(currentStep);
-}
-
-// ---- VALIDATION ----
-function validateStep(step) {
-  if (step === 1) {
-    const checked = document.querySelectorAll('#caseTypeGroup input:checked');
-    if (checked.length === 0) { alert('Please select at least one case type.'); return false; }
-  }
-  if (step === 2) {
-    if (selectedJudges.length === 0) { alert('Please select at least one judge (or "Other" if unknown).'); return false; }
-  }
-  return true;
-}
-
-// ---- JUDGE TAGS ----
-function toggleJudge(el) {
-  el.classList.toggle('selected');
-  const val = el.dataset.value;
-  if (el.classList.contains('selected')) {
-    if (!selectedJudges.includes(val)) selectedJudges.push(val);
-  } else {
-    selectedJudges = selectedJudges.filter(j => j !== val);
-  }
-}
-
-// ---- CHECK ITEMS STYLING ----
-document.addEventListener('change', function(e) {
-  if (e.target.type === 'checkbox' || e.target.type === 'radio') {
-    const item = e.target.closest('.check-item');
-    if (!item) return;
-    if (e.target.type === 'radio') {
-      const name = e.target.name;
-      document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
-        r.closest('.check-item').classList.remove('selected');
-      });
-    }
-    if (e.target.checked) item.classList.add('selected');
-    else item.classList.remove('selected');
-
-    if (e.target.name === 'contactConsent') {
-      document.getElementById('contactInfoField').style.display =
-        e.target.value === 'yes' ? 'block' : 'none';
-    }
-  }
-});
-
-// ---- CHAR COUNT ----
-function updateCharCount(el, countId) {
-  document.getElementById(countId).textContent = el.value.length + ' / ' + el.maxLength;
-}
-
-// ---- COLLECT DATA ----
-function getCheckedValues(groupId) {
-  return Array.from(document.querySelectorAll(`#${groupId} input:checked`)).map(i => i.value);
-}
-function getRadioValue(name) {
-  const el = document.querySelector(`input[name="${name}"]:checked`);
-  return el ? el.value : null;
-}
-function collectData() {
-  return {
-    case_type: getCheckedValues('caseTypeGroup'),
-    case_start_year: parseInt(document.getElementById('caseYear').value) || null,
-    case_status: getRadioValue('caseStatus'),
-    minor_children: getRadioValue('minorChildren') === 'yes',
-    judges: selectedJudges,
-    petitioner_attorney: attyGetValue('your'),
-    respondent_attorney: attyGetValue('opp'),
-    gal_counsel: attyGetValue('gal'),
-    other_professionals: document.getElementById('otherProfs').value.trim() || null,
-    judicial_violations: getCheckedValues('judicialViolations'),
-    attorney_violations: getCheckedValues('attorneyViolations'),
-    experience_description: document.getElementById('experienceText').value.trim() || null,
-    complaints_filed: document.getElementById('complaintsText').value.trim() || null,
-    dv_alleged: getRadioValue('dvAlleged'),
-    dv_evidence_submitted: getRadioValue('dvEvidence') !== 'no' && getRadioValue('dvEvidence') !== 'na',
-    dv_evidence_considered: getRadioValue('dvEvidence') === 'yes_considered',
-    dv_minimized: getRadioValue('dvMinimized') === 'yes',
-    protective_order: getRadioValue('protectiveOrder') !== 'no',
-    protective_order_enforced: getRadioValue('protectiveOrder') === 'yes_enforced',
-    custody_outcome: document.getElementById('custodyOutcome').value.trim() || null,
-    outcome_influenced: getRadioValue('outcomeInfluenced'),
-    financial_harm: getCheckedValues('financialHarmGroup'),
-    safety_concerns: getRadioValue('safetyConcerns') === 'yes',
-    contact_consent: getRadioValue('contactConsent') === 'yes',
-    data_use_consent: getRadioValue('dataUse') === 'yes',
-    contact_info: document.getElementById('contactInfo').value.trim() || null
-  };
-}
-
-// ---- SUBMIT ----
-async function submitSurvey() {
-  const alertEl = document.getElementById('submitAlert');
-  const btn = document.getElementById('submitBtn');
-
-  if (!getRadioValue('dataUse')) {
-    alertEl.innerHTML = '<div class="alert alert-warning">Please indicate your consent preference before submitting.</div>';
-    return;
-  }
-
-  btn.innerHTML = '<span class="loading"></span>Submitting...';
-  btn.disabled = true;
-  alertEl.innerHTML = '';
-
-  try {
-    const surveyData = collectData();
-    const payload = {
-      survey_data: surveyData,
-      attorney_name: surveyData.petitioner_attorney || surveyData.respondent_attorney || null,
-      judge_name: Array.isArray(surveyData.judges) ? surveyData.judges.join(', ') : (surveyData.judges || null),
-      access_code_used: validatedCodeStr
-    };
-
-    const resInsert = await fetch(`${SUPABASE_URL}/rest/v1/survey_responses`, {
-      method: 'POST',
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify(payload)
-    });
-
-    if (!resInsert.ok) {
-      const errBody = await resInsert.json().catch(() => ({}));
-      throw new Error(`Insert failed (${resInsert.status}): ${errBody.message || errBody.hint || JSON.stringify(errBody)}`);
-    }
-
-    await fetch(`${SUPABASE_URL}/rest/v1/access_codes?id=eq.${validatedCode}`, {
-      method: 'PATCH',
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ is_used: true })
-    });
-
-    sessionStorage.removeItem('fcasp_validated_id');
-    sessionStorage.removeItem('fcasp_validated_code');
-    showStep('complete');
-
-  } catch(err) {
-    alertEl.innerHTML = `<div class="alert alert-error">Something went wrong: ${err.message}. Please try again. Your answers have not been lost.</div>`;
-    btn.innerHTML = 'Submit My Response';
-    btn.disabled = false;
-  }
-}
-
-// ---- ATTORNEY SELECTOR ----
-const ATTORNEYS = [
-  "A. Trombetta Jr","Aaron Light","Alisha Sikes","Alison Ronald","Amanda Waters","Andrew Conway",
-  "Andrew Stadler","Angelle Wertz","Ann Larson","Anne Tamar-Mattis","Bartholome Kemp","Brandon Blevans",
-  "Bret Campoy","Brian Lanz","Carla Boyd","Carla Hernandez Castillo","Carla Roden","Carolyn McBeath",
-  "Carolyn Vandyk","Catherine Thompson","Celeste Johansson","Charlotte Creaghan","Charlotte Huggins",
-  "Chelsea Condiotti","Christine Gregson","Christopher Lomanto","Christopher Malloy","Christopher Vivian",
-  "Claudia Heyde","Constance Burtnett","Cynthia Acevedo","Danelle Jacobs","Daniel Cantrell","Daniel Chester",
-  "Daniel Riviera","Danielle Petersen","Danielle Restieaux-Louis","David Gonzalez","Debora Loughner",
-  "Deborah Bull","Debra Bel","Deirdre Kingsbury","Destinee Tartuffe","Diane Nguyen","Dominic Rosales",
-  "Douglas Provencher","Edward Collins","Elissa Urlik","Elizabeth Gowdy","Elizabeth Strasen","Ellen Levy",
-  "Erin Farley","Fiona Murphy","Francisco Martinez","George Castagnola Jr","Gina Fortino Dickson",
-  "Harold Sewall","Heather Stone","Jackie Martens","Jacob Faircloth","James Barnes","James Carroll",
-  "James Castranova","Janessa McCune","Jarin Beck","Jason Hight","Jeanne Browne","Jeffrey Adams",
-  "Jenna Coffey","Jennifer Alexander","Jennifer Applegate","Jennifer Knops","Jennifer Obergfell","Jill White",
-  "JoAnn Bertram","Johanna Kleppe","John Johnson","Jon VonderHaar","Julie Kurt","Kara Herren","Karen Webb",
-  "Kathleen Henderson","Kathleen Smith","Kelsey O'Rourke","Laura Dunst","Lauren Camarda Costlow",
-  "Lawrence Moskowitz","Leo Bartolotta","Linda Penzotti","Lindsay Torgerson","Lisa Gygax","Lorilee Zimmer",
-  "Lorraine Cleff","Margaret England","Marianne Skipper","Marla Keenan-Rivero","MaryAnna Machi",
-  "Michael Dietrick","Michael Fish","Michael Liotta","Michael Samuels","Michael Shambrook","Michael Watters",
-  "Morgan Vendrick","Morna Challoner","Nathan Siedman","Nicole Smith","Nicole Umemoto-Snyder",
-  "Patricia Schuermann","Patrick Grattan","Paula Hall","Peter Balogh","Rachael Erickson","Rachael McFarren",
-  "Rachel Clift","Rebecca Berrey-May","Rebecca Hickox","Richard Paris","Richard Sax","Robert Blevans",
-  "Robert Montgomery","Robin Estes","Rod Moore","Russell Townsend","Samantha Vance","Sandra Acevedo",
-  "Sarah Kaplan","Shannon Kiser","Shawn Bunyard","Sheila Craig","Sheri Chlebowski","Stephanie Ransom",
-  "Stephen Zollman","Susan Barrett","Susannah Edwards","Tasha Bollinger","Thomas Wright","Traci Carrillo",
-  "Travis Ransom","Tricia Seifert","Wallace Francis","William Doty","William Paynter","Yatindra Pandya"
-];
-
-const attyState = { your: [], opp: [], gal: [] };
-let attyTimers = {};
-
-function attyFilter(field) {
-  const input = document.getElementById('search' + attyFieldId(field));
-  const q = input.value.trim().toLowerCase();
-  const clearBtn = document.getElementById('clear' + attyFieldId(field));
-  clearBtn.style.display = q ? 'flex' : 'none';
-  attyRenderDropdown(field, q);
-}
-function attyOpen(field) {
-  if (attyTimers[field]) clearTimeout(attyTimers[field]);
-  const q = document.getElementById('search' + attyFieldId(field)).value.trim().toLowerCase();
-  attyRenderDropdown(field, q);
-}
-function attyClose(field) {
-  attyTimers[field] = setTimeout(() => {
-    document.getElementById('drop' + attyFieldId(field)).classList.remove('open');
-  }, 200);
-}
-function attyRenderDropdown(field, q) {
-  const dd = document.getElementById('drop' + attyFieldId(field));
-  const selected = attyState[field];
-  const filtered = ATTORNEYS.filter(a => !selected.includes(a) && (!q || a.toLowerCase().includes(q)));
-  if (filtered.length === 0) {
-    dd.innerHTML = '<div class="atty-dropdown-empty">No match — use the field below to enter the name</div>';
-  } else {
-    dd.innerHTML = filtered.slice(0, 40).map(a => {
-      const display = q ? a.replace(new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi'), '<mark>$1</mark>') : a;
-      return '<div class="atty-dropdown-item" onmousedown="attySelect(\'' + field + '\', \'' + a.replace(/'/g, "\\'") + '\')">' + display + '</div>';
-    }).join('');
-    if (filtered.length > 40) dd.innerHTML += '<div class="atty-dropdown-empty">Keep typing to narrow results</div>';
-  }
-  dd.classList.add('open');
-}
-function attySelect(field, name) {
-  if (!attyState[field].includes(name)) attyState[field].push(name);
-  document.getElementById('search' + attyFieldId(field)).value = '';
-  document.getElementById('clear' + attyFieldId(field)).style.display = 'none';
-  document.getElementById('drop' + attyFieldId(field)).classList.remove('open');
-  attyRenderTags(field);
-}
-function attyRemove(field, name) {
-  attyState[field] = attyState[field].filter(a => a !== name);
-  attyRenderTags(field);
-}
-function attyRenderTags(field) {
-  const tags = document.getElementById('tags' + attyFieldId(field));
-  tags.innerHTML = attyState[field].map(a =>
-    '<div class="atty-tag">' + a + '<button class="atty-tag-remove" onmousedown="attyRemove(\'' + field + '\', \'' + a.replace(/'/g, "\\'") + '\')">✕</button></div>'
-  ).join('');
-}
-function attyClear(field) {
-  document.getElementById('search' + attyFieldId(field)).value = '';
-  document.getElementById('clear' + attyFieldId(field)).style.display = 'none';
-  document.getElementById('drop' + attyFieldId(field)).classList.remove('open');
-}
-function attyFieldId(field) {
-  return field === 'your' ? 'YourAtty' : field === 'opp' ? 'OppAtty' : 'GalAtty';
-}
-function attyGetValue(field) {
-  const selected = attyState[field];
-  const free = document.getElementById('free' + attyFieldId(field)).value.trim();
-  const all = [...selected, ...(free ? [free] : [])];
-  return all.length ? all.join('; ') : null;
-}
-
-// Init
-renderProgress(1);
 </script>
+<script src="../scripts/survey.js"></script>
 </body>
 </html>

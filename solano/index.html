@@ -4,131 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Solano County — Family Court Accountability Survey Project</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg: #2E2926;
-  --text: #F5F0E8;
-  --accent: #8C7B6B;
-  --accent-light: #a89585;
-  --county: #4A5E72;
-  --county-light: #5e7590;
-  --county-dim: rgba(74,94,114,0.13);
-  --county-border: rgba(74,94,114,0.38);
-  --border: rgba(140,123,107,0.25);
-  --radius: 12px;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'Source Serif 4', Georgia, serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  font-size: 16px;
-  line-height: 1.7;
-}
-.header {
-  padding: 44px 24px 36px;
-  text-align: center;
-  border-bottom: 1px solid var(--border);
-  position: relative;
-}
-.header::after {
-  content: '';
-  position: absolute;
-  bottom: -1px; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--county), transparent);
-}
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  color: var(--accent-light);
-  font-size: 0.78rem;
-  text-decoration: none;
-  letter-spacing: 0.04em;
-  margin-bottom: 26px;
-  opacity: 0.8;
-}
-.back-link:hover { opacity: 1; }
-.header-eyebrow {
-  font-size: 0.65rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 14px;
-  font-weight: 600;
-}
-.header h1 {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(1.5rem, 4vw, 2.2rem);
-  color: var(--text);
-  line-height: 1.2;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-.county-subtitle {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(1rem, 2.5vw, 1.35rem);
-  color: var(--county-light);
-  font-weight: 600;
-  font-style: italic;
-}
-.main {
-  max-width: 560px;
-  margin: 0 auto;
-  padding: 48px 20px 80px;
-  text-align: center;
-}
-.soon-card {
-  background: var(--county-dim);
-  border: 1px solid var(--county-border);
-  border-radius: var(--radius);
-  padding: 36px 28px;
-  margin-bottom: 24px;
-}
-.soon-icon { font-size: 2.2rem; margin-bottom: 18px; display: block; }
-.soon-card h2 {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 1.3rem;
-  color: var(--text);
-  font-weight: 700;
-  margin-bottom: 14px;
-}
-.soon-card p {
-  font-size: 0.92rem;
-  color: rgba(245,240,232,0.7);
-  line-height: 1.75;
-}
-.hub-link {
-  display: inline-block;
-  margin-top: 28px;
-  color: var(--accent-light);
-  font-size: 0.82rem;
-  text-decoration: none;
-  border-bottom: 1px solid rgba(140,123,107,0.3);
-  padding-bottom: 1px;
-}
-.hub-link:hover { border-color: var(--accent-light); }
-.footer {
-  border-top: 1px solid var(--border);
-  padding: 24px;
-  text-align: center;
-  font-size: 0.72rem;
-  color: rgba(245,240,232,0.28);
-  font-style: italic;
-}
-</style>
+<link rel="stylesheet" href="../styles/main.css">
+<link rel="stylesheet" href="../styles/solano.css">
 </head>
 <body>
-<div class="header">
+
+<div class="site-header">
   <a href="/" class="back-link">← All Counties</a>
   <div class="header-eyebrow">Family Court Accountability Survey Project</div>
   <h1>Family Court Accountability Survey</h1>
   <div class="county-subtitle">Solano County</div>
 </div>
-<div class="main">
+
+<div class="coming-soon-wrap">
   <div class="soon-card">
     <span class="soon-icon">⚖️</span>
     <h2>This county survey is coming soon.</h2>
@@ -136,8 +24,10 @@ body {
   </div>
   <a href="/" class="hub-link">← View all counties</a>
 </div>
-<div class="footer">
+
+<div class="site-footer">
   Family Court Accountability Survey Project — 2026
 </div>
+
 </body>
 </html>

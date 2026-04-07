@@ -1,0 +1,7 @@
+/* Mendocino County — Forest Green */
+:root {
+  --county:        #3B5E45;
+  --county-light:  #4e7a5c;
+  --county-dim:    rgba(59,94,69,0.20);
+  --county-border: rgba(59,94,69,0.50);
+}

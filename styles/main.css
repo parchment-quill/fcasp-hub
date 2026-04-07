@@ -1,0 +1,885 @@
+/* =====================================================
+   FCASP Hub — Shared Design System
+   ===================================================== */
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&display=swap');
+
+/* RESET */
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+input, button, select, textarea { font-family: inherit; }
+
+/* ---- DARK THEME (county pages default) ---- */
+:root {
+  --bg: #2E2926;
+  --text: #F5F0E8;
+  --accent: #8C7B6B;
+  --accent-light: #a89585;
+  --county: #8C7B6B;
+  --county-light: #a89585;
+  --county-dim: rgba(140,123,107,0.18);
+  --county-border: rgba(140,123,107,0.45);
+  --border: rgba(140,123,107,0.28);
+  --card-bg: rgba(245,240,232,0.05);
+  --card-bg-warm: rgba(245,240,232,0.08);
+  --stone: rgba(245,240,232,0.48);
+  --danger: #c0392b;
+  --radius: 12px;
+}
+
+/* ---- HUB THEME (light, root page only) ---- */
+body.hub {
+  --bg: #F5F0E8;
+  --text: #2E2926;
+  --accent: #8C7B6B;
+  --accent-light: #6b5a4e;
+  --county: #8C7B6B;
+  --county-light: #6b5a4e;
+  --county-dim: rgba(140,123,107,0.08);
+  --county-border: rgba(140,123,107,0.3);
+  --border: rgba(140,123,107,0.28);
+  --card-bg: rgba(255,255,255,0.7);
+  --stone: #7a6a5e;
+}
+
+/* BASE */
+body {
+  font-family: 'Source Serif 4', Georgia, serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+.site-header {
+  padding: 44px 24px 36px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.site-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--county), transparent);
+}
+.header-eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+.site-header h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  color: var(--text);
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.county-subtitle {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+  color: var(--county-light);
+  font-weight: 600;
+  font-style: italic;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent-light);
+  font-size: 0.78rem;
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  margin-bottom: 26px;
+  opacity: 0.8;
+}
+.back-link:hover { opacity: 1; }
+
+/* Hub header variant */
+body.hub .site-header {
+  padding: 56px 24px 48px;
+  border-bottom-color: rgba(140,123,107,0.2);
+}
+body.hub .site-header::after {
+  background: linear-gradient(90deg, transparent, rgba(140,123,107,0.45), transparent);
+}
+body.hub .site-header h1 {
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  letter-spacing: -0.01em;
+  margin-bottom: 0;
+}
+body.hub .site-header h1 span {
+  display: block;
+  font-size: 0.55em;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  font-family: 'Source Serif 4', serif;
+}
+.header-community-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+/* =====================================================
+   MISSION SECTION (hub only)
+   ===================================================== */
+.mission {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 48px 24px 0;
+  text-align: center;
+}
+.mission p {
+  font-size: 1.05rem;
+  color: rgba(46,41,38,0.72);
+  line-height: 1.8;
+  font-style: italic;
+}
+.mission-divider {
+  width: 48px;
+  height: 1px;
+  background: var(--accent);
+  margin: 32px auto;
+  opacity: 0.5;
+}
+
+/* =====================================================
+   COUNTY GRID (hub only)
+   ===================================================== */
+.counties-section {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+.section-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+  text-align: center;
+  font-weight: 600;
+}
+.county-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+@media (min-width: 500px) {
+  .county-grid { grid-template-columns: 1fr 1fr; }
+  .county-btn.featured { grid-column: 1 / -1; }
+}
+.county-btn {
+  display: block;
+  text-decoration: none;
+  padding: 22px 24px;
+  border-radius: var(--radius);
+  border: 1.5px solid transparent;
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.2s, background 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+.county-btn:active { transform: scale(0.98); }
+.county-name {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.county-sub {
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+.county-arrow {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  opacity: 0.5;
+}
+
+/* Hub light-theme county buttons */
+body.hub .county-sub { color: rgba(46,41,38,0.55); }
+body.hub .county-arrow { color: var(--accent); }
+
+body.hub .county-btn.sonoma {
+  background: rgba(114,47,55,0.07);
+  border-color: rgba(114,47,55,0.35);
+}
+body.hub .county-btn.sonoma:hover {
+  background: rgba(114,47,55,0.13);
+  border-color: rgba(114,47,55,0.6);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(114,47,55,0.15);
+}
+body.hub .county-btn.sonoma .county-name { color: #722F37; }
+
+body.hub .county-btn.napa {
+  background: rgba(198,146,42,0.07);
+  border-color: rgba(198,146,42,0.3);
+}
+body.hub .county-btn.napa:hover {
+  background: rgba(198,146,42,0.13);
+  border-color: rgba(198,146,42,0.55);
+  transform: translateY(-2px);
+}
+body.hub .county-btn.napa .county-name { color: #a07a1a; }
+
+body.hub .county-btn.mendocino {
+  background: rgba(59,94,69,0.07);
+  border-color: rgba(59,94,69,0.3);
+}
+body.hub .county-btn.mendocino:hover {
+  background: rgba(59,94,69,0.13);
+  border-color: rgba(59,94,69,0.55);
+  transform: translateY(-2px);
+}
+body.hub .county-btn.mendocino .county-name { color: #3B5E45; }
+
+body.hub .county-btn.solano {
+  background: rgba(74,94,114,0.07);
+  border-color: rgba(74,94,114,0.3);
+}
+body.hub .county-btn.solano:hover {
+  background: rgba(74,94,114,0.13);
+  border-color: rgba(74,94,114,0.55);
+  transform: translateY(-2px);
+}
+body.hub .county-btn.solano .county-name { color: #4A5E72; }
+
+body.hub .county-btn.lake {
+  background: rgba(42,107,107,0.07);
+  border-color: rgba(42,107,107,0.3);
+}
+body.hub .county-btn.lake:hover {
+  background: rgba(42,107,107,0.13);
+  border-color: rgba(42,107,107,0.55);
+  transform: translateY(-2px);
+}
+body.hub .county-btn.lake .county-name { color: #2A6B6B; }
+
+/* Badges */
+.live-badge {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: #722F37;
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+.soon-badge {
+  display: inline-block;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: rgba(140,123,107,0.15);
+  color: var(--accent);
+  border: 1px solid rgba(140,123,107,0.3);
+  padding: 3px 8px;
+  border-radius: 10px;
+}
+body.hub .soon-badge {
+  background: rgba(140,123,107,0.12);
+  color: var(--accent);
+}
+
+/* =====================================================
+   CARDS
+   ===================================================== */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 24px 20px;
+  margin-bottom: 16px;
+}
+.card-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.1rem;
+  color: var(--text);
+  margin-bottom: 5px;
+  font-weight: 700;
+}
+.card-body,
+.card-subtitle {
+  font-size: 0.83rem;
+  color: var(--stone);
+  margin-bottom: 20px;
+  font-style: italic;
+  line-height: 1.55;
+}
+
+/* PRIVACY BANNER */
+.privacy-banner {
+  background: var(--county-dim);
+  border: 1px solid var(--county-border);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  margin-bottom: 16px;
+}
+.privacy-banner h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.05rem;
+  color: var(--text);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.privacy-banner p {
+  font-size: 0.88rem;
+  color: rgba(245,240,232,0.78);
+  line-height: 1.72;
+  margin-bottom: 8px;
+}
+.privacy-banner p:last-child { margin-bottom: 0; }
+.privacy-note {
+  background: rgba(245,240,232,0.06);
+  border-left: 2px solid var(--county);
+  padding: 10px 14px;
+  border-radius: 0 8px 8px 0;
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: rgba(245,240,232,0.65);
+  font-style: italic;
+}
+
+/* =====================================================
+   FORM ELEMENTS
+   ===================================================== */
+.field { margin-bottom: 20px; }
+.field:last-child { margin-bottom: 0; }
+
+label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: rgba(245,240,232,0.9);
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+.label-optional {
+  font-weight: 400;
+  color: var(--stone);
+  font-size: 0.78rem;
+  font-style: italic;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;
+  padding: 13px 15px;
+  border: 1.5px solid rgba(140,123,107,0.38);
+  border-radius: 10px;
+  font-size: 0.97rem;
+  font-family: 'Source Serif 4', Georgia, serif;
+  color: var(--text);
+  background: rgba(245,240,232,0.05);
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  line-height: 1.5;
+}
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--county-light);
+  box-shadow: 0 0 0 3px var(--county-dim);
+  background: rgba(245,240,232,0.09);
+}
+input[type="text"]::placeholder,
+input[type="number"]::placeholder,
+textarea::placeholder { color: rgba(245,240,232,0.24); }
+textarea { min-height: 120px; resize: vertical; }
+
+.code-input {
+  font-family: 'Courier New', monospace !important;
+  font-size: 1.05rem !important;
+  letter-spacing: 0.12em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* =====================================================
+   CHECKBOXES & RADIO
+   ===================================================== */
+.check-group { display: flex; flex-direction: column; gap: 9px; }
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 11px 14px;
+  border: 1.5px solid rgba(140,123,107,0.28);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  background: rgba(245,240,232,0.03);
+}
+.check-item input[type="checkbox"],
+.check-item input[type="radio"] {
+  width: 20px; height: 20px; min-width: 20px;
+  margin-top: 1px;
+  cursor: pointer;
+  accent-color: var(--county);
+  padding: 0; border: none; background: none;
+}
+.check-item.selected {
+  border-color: var(--county-border);
+  background: var(--county-dim);
+}
+.check-label { font-size: 0.9rem; line-height: 1.4; padding-top: 1px; color: var(--text); }
+
+/* =====================================================
+   BUTTONS
+   ===================================================== */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 15px 24px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
+  text-align: center;
+  letter-spacing: 0.03em;
+}
+.btn:active { transform: scale(0.98); }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+.btn-primary {
+  background: var(--county);
+  color: #fff;
+  box-shadow: 0 4px 16px var(--county-dim);
+}
+.btn-primary:hover { background: var(--county-light); }
+.btn-secondary {
+  background: transparent;
+  color: var(--accent-light);
+  border: 1.5px solid rgba(140,123,107,0.42);
+  margin-top: 10px;
+}
+.btn-secondary:hover { border-color: rgba(140,123,107,0.65); }
+.btn-row { display: flex; flex-direction: column; gap: 0; margin-top: 24px; }
+
+/* =====================================================
+   ALERTS
+   ===================================================== */
+.alert {
+  padding: 12px 15px;
+  border-radius: 10px;
+  font-size: 0.86rem;
+  margin-top: 14px;
+  line-height: 1.5;
+}
+.alert-error  { background: rgba(192,57,43,0.16); border: 1px solid rgba(192,57,43,0.38); color: #f5a39a; }
+.alert-success{ background: rgba(42,107,74,0.16); border: 1px solid rgba(42,107,74,0.38);  color: #7dd3a8; }
+.alert-warning{ background: rgba(198,146,42,0.16); border: 1px solid rgba(198,146,42,0.38); color: #e0c070; }
+
+/* =====================================================
+   LOADING SPINNER
+   ===================================================== */
+.loading {
+  display: inline-block;
+  width: 16px; height: 16px;
+  border: 2px solid rgba(255,255,255,0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* =====================================================
+   PROGRESS BAR (survey)
+   ===================================================== */
+.progress-wrap {
+  background: rgba(0,0,0,0.18);
+  padding: 10px 20px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.progress-steps { display: flex; gap: 5px; margin-bottom: 5px; }
+.prog-dot {
+  height: 3px; flex: 1; border-radius: 2px;
+  background: rgba(245,240,232,0.1);
+  transition: background 0.3s;
+}
+.prog-dot.done   { background: var(--county); }
+.prog-dot.active { background: var(--county-light); }
+.progress-label {
+  font-size: 0.68rem;
+  color: var(--stone);
+  letter-spacing: 0.06em;
+  text-align: center;
+}
+
+/* =====================================================
+   SURVEY STEPS
+   ===================================================== */
+.step { display: none; }
+.step.active { display: block; }
+
+.required-tag {
+  display: inline-block;
+  background: var(--county);
+  color: #fff;
+  font-size: 0.6rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  vertical-align: middle;
+  margin-left: 6px;
+  font-style: normal;
+}
+
+/* JUDGE TAGS */
+.judge-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.judge-tag {
+  padding: 8px 14px;
+  border: 1.5px solid rgba(140,123,107,0.32);
+  border-radius: 20px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: rgba(245,240,232,0.04);
+  color: var(--text);
+  font-family: 'Source Serif 4', Georgia, serif;
+}
+.judge-tag.selected {
+  background: var(--county);
+  color: #fff;
+  border-color: var(--county);
+}
+
+/* VIOLATION GROUPS */
+.violation-section { margin-bottom: 18px; }
+.violation-heading {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--county-light);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--county-border);
+}
+
+/* COMPLETION */
+.completion-card {
+  background: var(--county-dim);
+  border: 1px solid var(--county-border);
+  border-radius: var(--radius);
+  padding: 36px 24px;
+  text-align: center;
+}
+.completion-icon { font-size: 2.8rem; display: block; margin-bottom: 16px; }
+.completion-card h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.35rem;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+.completion-card p {
+  font-size: 0.9rem;
+  color: rgba(245,240,232,0.8);
+  line-height: 1.75;
+  margin-bottom: 10px;
+}
+
+/* =====================================================
+   ATTORNEY SELECTOR
+   ===================================================== */
+.atty-search-wrap { position: relative; }
+.atty-search-input {
+  width: 100%; padding: 13px 38px 13px 15px;
+  border: 1.5px solid rgba(140,123,107,0.38); border-radius: 10px;
+  font-size: 0.97rem; font-family: 'Source Serif 4', Georgia, serif;
+  color: var(--text); background: rgba(245,240,232,0.05);
+  -webkit-appearance: none; transition: border-color 0.2s;
+}
+.atty-search-input::placeholder { color: rgba(245,240,232,0.24); }
+.atty-search-input:focus {
+  outline: none; border-color: var(--county-light);
+  box-shadow: 0 0 0 3px var(--county-dim); background: rgba(245,240,232,0.09);
+}
+.atty-clear-btn {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: var(--stone);
+  font-size: 0.95rem; cursor: pointer; padding: 4px; display: none;
+}
+.atty-dropdown {
+  background: #3a3028; border: 1.5px solid rgba(140,123,107,0.38);
+  border-top: none; border-radius: 0 0 10px 10px;
+  max-height: 220px; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  display: none; box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  position: relative; z-index: 50;
+}
+.atty-dropdown.open { display: block; }
+.atty-dropdown-item {
+  padding: 11px 14px; font-size: 0.87rem; cursor: pointer;
+  border-bottom: 1px solid rgba(140,123,107,0.12); color: var(--text);
+  font-family: 'Source Serif 4', Georgia, serif;
+}
+.atty-dropdown-item:last-child { border-bottom: none; }
+.atty-dropdown-item:hover { background: var(--county-dim); }
+.atty-dropdown-item mark { background: rgba(198,146,42,0.3); color: var(--text); border-radius: 2px; padding: 0 1px; }
+.atty-dropdown-empty { padding: 11px 14px; font-size: 0.8rem; color: var(--stone); font-style: italic; text-align: center; }
+.atty-selected-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px; }
+.atty-tag {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--county); color: #fff;
+  padding: 6px 10px 6px 12px; border-radius: 20px;
+  font-size: 0.76rem; font-family: 'Source Serif 4', Georgia, serif; font-weight: 600;
+}
+.atty-tag-remove {
+  background: rgba(255,255,255,0.22); border: none; color: #fff;
+  width: 17px; height: 17px; border-radius: 50%; cursor: pointer;
+  font-size: 0.7rem; display: flex; align-items: center;
+  justify-content: center; padding: 0; flex-shrink: 0;
+}
+.atty-free-text {
+  width: 100%; margin-top: 8px; padding: 10px 14px;
+  border: 1.5px solid rgba(140,123,107,0.32); border-radius: 10px;
+  font-size: 0.9rem; font-family: 'Source Serif 4', Georgia, serif;
+  color: var(--text); background: rgba(245,240,232,0.04);
+  -webkit-appearance: none;
+}
+.atty-free-text::placeholder { color: rgba(245,240,232,0.24); }
+.atty-free-text:focus { outline: none; border-color: var(--county-light); background: rgba(245,240,232,0.08); }
+.atty-free-label { font-size: 0.76rem; color: var(--stone); margin: 8px 0 4px; font-style: italic; }
+
+/* =====================================================
+   ABOUT PAGE
+   ===================================================== */
+.about-section {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 28px 24px;
+  margin-bottom: 18px;
+}
+.about-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--county-light);
+  margin-bottom: 10px;
+}
+.about-section h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.2rem;
+  color: var(--text);
+  font-weight: 700;
+  margin-bottom: 16px;
+  line-height: 1.3;
+}
+.about-section p {
+  font-size: 0.93rem;
+  color: rgba(245,240,232,0.8);
+  margin-bottom: 14px;
+  line-height: 1.78;
+}
+.about-section p:last-child { margin-bottom: 0; }
+.about-section strong { color: var(--text); font-weight: 600; }
+
+.callout {
+  background: var(--county-dim);
+  border: 1px solid var(--county-border);
+  border-radius: var(--radius);
+  padding: 26px 24px;
+  margin-bottom: 18px;
+}
+.callout h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.15rem;
+  color: var(--text);
+  margin-bottom: 14px;
+  font-weight: 700;
+}
+.callout p {
+  font-size: 0.9rem;
+  color: rgba(245,240,232,0.84);
+  line-height: 1.75;
+  margin-bottom: 12px;
+}
+.callout p:last-child { margin-bottom: 0; }
+
+.judge-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+.judge-row {
+  background: rgba(245,240,232,0.04);
+  border: 1px solid rgba(140,123,107,0.22);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.judge-name { font-weight: 700; font-size: 0.93rem; color: var(--text); margin-bottom: 4px; }
+.judge-detail { font-size: 0.8rem; color: var(--stone); line-height: 1.5; }
+.judge-flag {
+  display: inline-block;
+  background: rgba(198,146,42,0.16);
+  color: #d4a844;
+  font-size: 0.7rem; font-weight: 700;
+  padding: 2px 8px; border-radius: 10px; margin-top: 6px;
+}
+.judge-flag.red { background: rgba(192,57,43,0.16); color: #e07a72; }
+
+.highlight {
+  border-left: 2px solid var(--county);
+  background: var(--county-dim);
+  padding: 13px 16px;
+  border-radius: 0 10px 10px 0;
+  margin: 16px 0;
+  font-size: 0.88rem;
+  font-style: italic;
+  color: rgba(245,240,232,0.84);
+  line-height: 1.7;
+}
+
+.cta-section {
+  background: var(--county-dim);
+  border: 1px solid var(--county-border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  text-align: center;
+  margin-top: 24px;
+}
+.cta-section h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.25rem;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+.cta-section p {
+  font-size: 0.88rem;
+  color: rgba(245,240,232,0.74);
+  margin-bottom: 20px;
+  line-height: 1.7;
+}
+.cta-btn {
+  display: inline-block;
+  background: var(--county);
+  color: #fff;
+  padding: 14px 32px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: 'Source Serif 4', serif;
+  text-decoration: none;
+  box-shadow: 0 4px 16px var(--county-dim);
+}
+.cta-btn:hover { background: var(--county-light); }
+
+/* =====================================================
+   COMING SOON
+   ===================================================== */
+.coming-soon-wrap {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 48px 20px 80px;
+  text-align: center;
+}
+.soon-card {
+  background: var(--county-dim);
+  border: 1px solid var(--county-border);
+  border-radius: var(--radius);
+  padding: 36px 28px;
+  margin-bottom: 24px;
+}
+.soon-icon { font-size: 2.2rem; margin-bottom: 18px; display: block; }
+.soon-card h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.3rem;
+  color: var(--text);
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.soon-card p {
+  font-size: 0.92rem;
+  color: rgba(245,240,232,0.72);
+  line-height: 1.75;
+}
+.hub-link {
+  display: inline-block;
+  margin-top: 28px;
+  color: var(--accent-light);
+  font-size: 0.82rem;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(140,123,107,0.32);
+  padding-bottom: 1px;
+}
+.hub-link:hover { border-color: var(--accent-light); }
+
+/* =====================================================
+   MISC UTILITIES
+   ===================================================== */
+.divider { height: 1px; background: rgba(140,123,107,0.2); margin: 20px 0; }
+.char-count { font-size: 0.73rem; color: var(--stone); text-align: right; margin-top: 4px; }
+.field-hint { font-size: 0.78rem; color: var(--stone); margin-top: 5px; font-style: italic; }
+.about-link-wrap { text-align: center; margin-top: 32px; }
+.about-link {
+  color: var(--accent-light);
+  font-size: 0.82rem;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(140,123,107,0.3);
+  padding-bottom: 1px;
+}
+.about-link:hover { border-color: var(--accent-light); }
+
+/* =====================================================
+   LAYOUT
+   ===================================================== */
+.main        { padding: 20px 16px 60px; max-width: 600px; margin: 0 auto; }
+.main-wide   { max-width: 720px; margin: 0 auto; padding: 36px 20px 80px; }
+.main-narrow { max-width: 580px; margin: 0 auto; padding: 40px 20px 80px; }
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 26px 24px;
+  text-align: center;
+  font-size: 0.72rem;
+  font-style: italic;
+  line-height: 1.7;
+}
+body.hub .site-footer { color: rgba(46,41,38,0.4); }
+body:not(.hub) .site-footer { color: rgba(245,240,232,0.28); }
+
+.footnote {
+  font-size: 0.75rem;
+  color: rgba(245,240,232,0.28);
+  text-align: center;
+  margin-top: 32px;
+  line-height: 1.6;
+  font-style: italic;
+}
