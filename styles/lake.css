@@ -2,6 +2,6 @@
 :root {
   --county:        #2A6B6B;
   --county-light:  #388888;
-  --county-dim:    rgba(42,107,107,0.20);
-  --county-border: rgba(42,107,107,0.50);
+  --county-dim:    rgba(42,107,107,0.08);
+  --county-border: rgba(42,107,107,0.32);
 }

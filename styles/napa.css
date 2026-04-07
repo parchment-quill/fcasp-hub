@@ -1,7 +1,7 @@
 /* Napa County — Amber Gold */
 :root {
   --county:        #C6922A;
-  --county-light:  #d4a840;
-  --county-dim:    rgba(198,146,42,0.18);
-  --county-border: rgba(198,146,42,0.48);
+  --county-light:  #a07a1a;
+  --county-dim:    rgba(198,146,42,0.08);
+  --county-border: rgba(198,146,42,0.35);
 }

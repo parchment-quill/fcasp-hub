@@ -15,13 +15,13 @@
     {
       "source": "/(.*)",
       "has": [{ "type": "host", "value": "scfca-survey.us" }],
-      "destination": "/sonoma",
+      "destination": "https://www.fcasp.org/sonoma",
       "permanent": true
     },
     {
       "source": "/(.*)",
       "has": [{ "type": "host", "value": "www.scfca-survey.us" }],
-      "destination": "/sonoma",
+      "destination": "https://www.fcasp.org/sonoma",
       "permanent": true
     },
     {
