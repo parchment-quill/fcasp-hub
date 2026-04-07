@@ -117,6 +117,10 @@ const SUPABASE_URL = 'https://gjzdpqgbfgzephsqowex.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqemRwcWdiZmd6ZXBoc3Fvd2V4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MjY5MDEsImV4cCI6MjA5MDMwMjkwMX0.Pn2PQBWkqrB7Ffz_Ovhaelegga-BjTI1XM9rtpGHE1g';
 const COUNTY_NAME = 'Napa';
 const TABLE = 'napa_survey_responses';
+// TODO (follow-up session): This viewer was built against the simplified schema and only surfaces
+// core structured columns. The survey_data jsonb column — which holds GAL conduct, 730 evaluator,
+// DV/abuse, parental alienation, mental health labeling, children's wellbeing, financial harm,
+// and contact/consent fields — is not displayed here. Rebuild viewer once responses start coming in.
 
 let allResponses = [], filteredResponses = [];
 let activeFilters = { judge: [], status: [], outcome: [] };

@@ -81,6 +81,10 @@
 const SUPABASE_URL='https://gjzdpqgbfgzephsqowex.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdqemRwcWdiZmd6ZXBoc3Fvd2V4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3MjY5MDEsImV4cCI6MjA5MDMwMjkwMX0.Pn2PQBWkqrB7Ffz_Ovhaelegga-BjTI1XM9rtpGHE1g';
 const COUNTY_NAME='Lake';const TABLE='lake_survey_responses';
+// TODO (follow-up session): This viewer was built against the simplified schema and only surfaces
+// core structured columns. The survey_data jsonb column — which holds GAL conduct, 730 evaluator,
+// DV/abuse, parental alienation, mental health labeling, children's wellbeing, financial harm,
+// and contact/consent fields — is not displayed here. Rebuild viewer once responses start coming in.
 let allResponses=[],filteredResponses=[],activeFilters={judge:[],status:[],outcome:[]},openCards=new Set();
 async function loadData(){const main=document.getElementById('mainContent');main.innerHTML='<div style="text-align:center;padding:40px 20px;"><div class="spinner"></div><p style="color:var(--stone);font-size:0.88rem;">Loading…</p></div>';document.getElementById('toolbarCount').innerHTML='<strong>—</strong> responses';try{const res=await fetch(`${SUPABASE_URL}/rest/v1/${TABLE}?select=*&order=submitted_at.desc`,{headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}});if(!res.ok)throw new Error('Status '+res.status);allResponses=await res.json();filteredResponses=[...allResponses];buildJudgeFilters();render();}catch(err){main.innerHTML=`<div class="alert alert-error" style="margin:16px;">Could not load responses: ${err.message}</div>`;}}
 function buildJudgeFilters(){const s=new Set();allResponses.forEach(r=>(r.judges||[]).forEach(j=>s.add(j)));const el=document.getElementById('judgeFilters');el.innerHTML=[...s].sort().map(j=>{const d=j.replace(/^Hon\.\s*/i,'');const e=j.replace(/'/g,"\\'");return`<div class="filter-chip" onclick="toggleFilter(this,'judge','${e}')">${d}</div>`;}).join('')||'<span style="font-size:0.8rem;color:var(--stone);">No data yet</span>';}
